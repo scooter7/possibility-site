@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+<title>The Possibility - Retention & Engagement Playbook</title>
+<meta name="description" content="Data-driven retention strategy: push notifications, habit loops, lifecycle emails, and the 96% churn problem.">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+<link rel="icon" type="image/png" href="app-icon.png">
+<link rel="apple-touch-icon" href="app-icon.png">
+<link rel="preload" as="style" href="design-system.css">
+<link rel="stylesheet" href="design-system.css">
+<style>
+/* ===== SMOOTH SCROLL ===== */
+html { scroll-behavior: smooth; }
+
+/* ===== MAIN CONTENT ===== */
+.main { margin-left: var(--sidebar-w); overflow-x: clip; }
+
+/* ===== SUBTLE GRAIN TEXTURE ===== */
+.main::before {
+  content: ''; position: fixed; inset: 0; z-index: 9997; pointer-events: none;
+  opacity: 0.018;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat; background-size: 200px;
+}
+
+/* ===== FLOATING PARTICLES (CSS ONLY) ===== */
+.hero::before {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.25), transparent),
+    radial-gradient(1px 1px at 25% 65%, rgba(255,255,255,0.2), transparent),
+    radial-gradient(1.5px 1.5px at 40% 35%, rgba(51,163,163,0.35), transparent),
+    radial-gradient(1px 1px at 55% 80%, rgba(255,255,255,0.15), transparent),
+    radial-gradient(1px 1px at 70% 15%, rgba(255,255,255,0.2), transparent),
+    radial-gradient(1.5px 1.5px at 85% 55%, rgba(51,163,163,0.3), transparent),
+    radial-gradient(1px 1px at 15% 85%, rgba(99,102,241,0.2), transparent),
+    radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,0.15), transparent),
+    radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.2), transparent),
+    radial-gradient(1.5px 1.5px at 30% 10%, rgba(51,163,163,0.25), transparent),
+    radial-gradient(1px 1px at 65% 90%, rgba(255,255,255,0.15), transparent),
+    radial-gradient(1px 1px at 80% 75%, rgba(52,211,153,0.2), transparent);
+  animation: particleDrift 20s ease-in-out infinite alternate;
+}
+@keyframes particleDrift {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(-8px, 6px); }
+  100% { transform: translate(4px, -4px); }
+}
+
+/* ===== TLDR CALLOUT ===== */
+.tldr {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 20px 24px; margin: 32px 0 0;
+  background: rgba(51,163,163,0.04);
+  border-left: 3px solid var(--teal);
+  border-radius: 0 12px 12px 0;
+  transition: transform 0.3s var(--zen);
+}
+.tldr:hover { transform: translateX(4px); }
+.tldr-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--teal);
+  white-space: nowrap; padding-top: 2px;
+}
+.tldr p { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.6; margin: 0; }
+.dark-section .tldr { background: rgba(51,163,163,0.06); border-left-color: rgba(51,163,163,0.5); }
+.dark-section .tldr p { color: var(--text-light); }
+
+/* ===== SECTION BADGE NUMBER ===== */
+.section-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 10px;
+  background: rgba(51,163,163,0.08);
+  border: 0.5px solid rgba(51,163,163,0.15);
+  font-size: 14px; font-weight: 600; color: var(--teal);
+  letter-spacing: -0.5px; margin-bottom: 16px;
+  position: relative;
+  transition: transform 0.3s var(--zen), box-shadow 0.3s var(--zen);
+}
+.section-badge:hover { transform: scale(1.1); box-shadow: 0 0 20px rgba(51,163,163,0.15); }
+.section-badge.visible { animation: badgePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+@keyframes badgePop {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.dark-section .section-badge { background: rgba(51,163,163,0.1); border-color: rgba(51,163,163,0.2); }
+
+/* ===== KEY INSIGHT CALLOUT ===== */
+.key-insight {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 24px 28px; margin: 32px 0;
+  background: linear-gradient(135deg, rgba(51,163,163,0.04) 0%, rgba(99,102,241,0.02) 100%);
+  border: 0.5px solid rgba(51,163,163,0.12);
+  border-radius: 16px;
+  position: relative; overflow: hidden;
+  transition: transform 0.3s var(--zen), box-shadow 0.3s var(--zen);
+}
+.key-insight:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(31,38,135,0.08); }
+.key-insight::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 3px; height: 100%; background: linear-gradient(to bottom, var(--teal), var(--align));
+  border-radius: 3px 0 0 3px;
+}
+.key-insight-icon {
+  min-width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+  background: rgba(51,163,163,0.08); display: flex; padding: 0 8px;
+  align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: var(--teal); letter-spacing: -0.5px;
+}
+.key-insight p { font-size: 14px; color: var(--text-2); line-height: 1.7; margin: 0; }
+.key-insight strong { color: var(--text); font-weight: 600; }
+.dark-section .key-insight { background: linear-gradient(135deg, rgba(51,163,163,0.06) 0%, rgba(99,102,241,0.03) 100%); border-color: rgba(51,163,163,0.15); }
+.dark-section .key-insight:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
+.dark-section .key-insight p { color: var(--text-light-2); }
+.dark-section .key-insight strong { color: var(--text-light); }
+
+/* ===== SECTION TRANSITION BREATHING ===== */
+.section-breather {
+  height: 1px; margin: 0 auto; width: min(200px, 40%);
+  background: linear-gradient(90deg, transparent, rgba(51,163,163,0.15), transparent);
+}
+
+/* ===== GRADIENT TEXT ===== */
+.gradient-text {
+  background: linear-gradient(135deg, var(--teal), #2DD4BF, var(--become));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  min-height: 80vh; min-height: 80dvh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center; overflow: hidden;
+  background: var(--dark); padding: 80px 48px;
+}
+.hero-bg { position: absolute; inset: 0; z-index: 0; }
+.hero-bg img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 30%;
+  transform-origin: center center; opacity: 0;
+  animation: heroImgReveal 2.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards,
+             heroKenBurns 20s ease-out 2.5s forwards;
+  will-change: transform, opacity;
+}
+@keyframes heroImgReveal { 0% { opacity: 0; transform: scale(1.1); } 100% { opacity: 0.3; transform: scale(1.0); } }
+@keyframes heroKenBurns { 0% { transform: scale(1.0); } 100% { transform: scale(1.05); } }
+.hero-bg::after {
+  content: ''; position: absolute; inset: 0;
+  opacity: 0; animation: heroScrimFade 2s ease-out 0.3s forwards;
+  background:
+    linear-gradient(180deg, rgba(8,10,15,0.6) 0%, rgba(8,10,15,0.2) 35%, rgba(8,10,15,0.65) 70%, rgba(8,10,15,0.97) 100%),
+    radial-gradient(ellipse 600px 400px at 30% 70%, rgba(232,117,138,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 400px at 70% 60%, rgba(99,102,241,0.06) 0%, transparent 70%);
+}
+@keyframes heroScrimFade { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes heroFadeUp { 0% { opacity: 0; transform: translateY(24px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes dotPulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(51,163,163,0.6); }
+  50% { box-shadow: 0 0 20px rgba(51,163,163,0.9), 0 0 40px rgba(51,163,163,0.3); }
+}
+.hero-orb {
+  position: absolute; border-radius: 50%; filter: blur(80px);
+  pointer-events: none; z-index: 1; opacity: 0;
+  animation: orbFloat 8s ease-in-out infinite alternate, heroFadeUp 2s var(--zen) 1s forwards;
+}
+.hero-orb.orb-1 { width: 300px; height: 300px; background: rgba(51,163,163,0.12); top: 20%; left: 15%; }
+.hero-orb.orb-2 { width: 250px; height: 250px; background: rgba(99,102,241,0.08); bottom: 15%; right: 10%; animation-delay: 2s; }
+.hero-orb.orb-3 { width: 200px; height: 200px; background: rgba(232,117,138,0.06); top: 50%; left: 55%; animation-delay: 4s; }
+@keyframes orbFloat {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(20px, -15px) scale(1.05); }
+  66% { transform: translate(-10px, 10px) scale(0.95); }
+  100% { transform: translate(15px, -20px) scale(1.02); }
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 20px; background: rgba(255,252,250,0.06);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border: 0.5px solid rgba(255,252,250,0.1); border-radius: 100px;
+  font-size: 10px; font-weight: 600; color: rgba(255,252,250,0.45);
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 32px;
+  opacity: 0; animation: heroFadeUp 1s var(--zen) 0.3s forwards;
+  position: relative; z-index: 2;
+}
+.hero-badge .dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--teal);
+  box-shadow: 0 0 12px rgba(51,163,163,0.6);
+  animation: dotPulse 3s ease-in-out 2s infinite;
+}
+.hero h1 {
+  font-size: clamp(32px, 5vw, 60px); font-weight: 200; line-height: 1.1;
+  letter-spacing: -2px; color: rgba(255,252,250,0.95);
+  margin-bottom: 20px; max-width: 800px;
+  opacity: 0; animation: heroFadeUp 1s var(--zen) 0.5s forwards;
+  position: relative; z-index: 2;
+  text-shadow: 0 0 80px rgba(51,163,163,0.08);
+}
+.hero h1 em {
+  font-style: normal; font-weight: 300;
+  background: linear-gradient(135deg, var(--teal-bright), #2DD4BF, #A7F3D0);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  font-size: 16px; font-weight: 400; color: rgba(255,252,250,0.4);
+  max-width: 540px; line-height: 1.7; margin-bottom: 12px;
+  opacity: 0; animation: heroFadeUp 1s var(--zen) 0.7s forwards;
+  position: relative; z-index: 2;
+}
+.hero-subtitle {
+  font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(255,252,250,0.25);
+  opacity: 0; animation: heroFadeUp 1s var(--zen) 0.9s forwards;
+  position: relative; z-index: 2;
+}
+
+/* Hero stats */
+.hero-stats-bar {
+  position: relative; z-index: 2; display: flex;
+  justify-content: center; gap: 48px;
+  padding: 100px 48px 0; background: var(--bg);
+}
+.hero-stat { text-align: center; transition: transform 0.5s var(--zen); }
+.hero-stat:hover { transform: translateY(-3px); }
+.hero-stat .val { font-size: 32px; font-weight: 300; color: var(--text); letter-spacing: -1px; }
+.hero-stat .lbl { font-size: 11px; color: var(--text-3); margin-top: 4px; }
+.hero-stat::after {
+  content: ''; display: block; width: 0; height: 2px; margin: 8px auto 0;
+  background: linear-gradient(90deg, var(--teal), var(--become));
+  border-radius: 2px; transition: width 0.4s var(--zen);
+}
+.hero-stat:hover::after { width: 32px; }
+
+/* ===== READING BADGE ===== */
+.reading-badge {
+  display: none; position: fixed; top: 12px; right: 12px; z-index: 9999;
+  padding: 6px 12px; background: rgba(8,10,15,0.85);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: 0.5px solid rgba(51,163,163,0.2); border-radius: 8px;
+  font-size: 10px; font-weight: 600; color: var(--teal);
+  letter-spacing: 0.5px; pointer-events: none;
+  opacity: 0; transition: opacity 0.3s ease;
+}
+.reading-badge.show { opacity: 1; }
+
+/* ===== SECTIONS ===== */
+section { padding: 110px 56px; position: relative; overflow-x: hidden; }
+section + section::before {
+  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: min(260px, 50%); height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(51,163,163,0.2), rgba(99,102,241,0.15), transparent);
+  animation: shimmerLine 4s ease-in-out infinite;
+}
+@keyframes shimmerLine { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+/* ===== SECTION AMBIENT GLOW ===== */
+section > .container::after {
+  content: ''; position: absolute; top: 50%; right: -200px;
+  width: 400px; height: 400px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(51,163,163,0.02) 0%, transparent 70%);
+  pointer-events: none; filter: blur(40px);
+}
+section > .container { position: relative; }
+
+/* ===== PHOTO BREAK ===== */
+.photo-break {
+  position: relative; width: 100%; margin: 0;
+  overflow: hidden; max-height: 420px;
+}
+.photo-break img {
+  width: 100%; height: 420px; object-fit: cover;
+  display: block; filter: brightness(0.65) saturate(1.1);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.photo-break:hover img { transform: scale(1.02); }
+.photo-break blockquote {
+  position: absolute; bottom: 48px; left: 0; right: 0;
+  text-align: center; font-size: clamp(18px, 2.5vw, 26px);
+  font-weight: 300; color: rgba(255,252,250,0.9);
+  line-height: 1.5; padding: 0 48px; z-index: 2;
+  letter-spacing: -0.3px; margin: 0;
+  text-shadow: 0 2px 24px rgba(0,0,0,0.6), 0 0 60px rgba(0,0,0,0.3);
+}
+.photo-break .attrib {
+  position: absolute; bottom: 20px; left: 0; right: 0;
+  text-align: center; font-size: 10px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(255,252,250,0.35); z-index: 2;
+}
+.photo-break::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(8,10,15,0.1) 0%, rgba(8,10,15,0.5) 70%, rgba(8,10,15,0.8) 100%);
+  z-index: 1; pointer-events: none;
+}
+
+/* ===== INSET PHOTO CARD ===== */
+.inset-photo-card {
+  border-radius: 20px; overflow: hidden; position: relative;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.12);
+  transition: transform 0.4s var(--zen), box-shadow 0.4s var(--zen);
+}
+.inset-photo-card:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 24px 64px rgba(0,0,0,0.18); }
+.inset-photo-card img {
+  width: 100%; height: 240px; object-fit: cover;
+  filter: brightness(0.7) saturate(1.1);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.inset-photo-card:hover img { transform: scale(1.05); }
+.inset-photo-card .ipc-content {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 24px; z-index: 2;
+  background: linear-gradient(to top, rgba(8,10,15,0.9) 0%, transparent 100%);
+}
+.ipc-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--teal); margin-bottom: 6px;
+}
+.ipc-title { font-size: 16px; font-weight: 500; color: rgba(255,252,250,0.9); line-height: 1.4; }
+.ipc-desc { font-size: 12px; color: rgba(255,252,250,0.5); margin-top: 4px; line-height: 1.5; }
+
+/* ===== GLASS CARDS ===== */
+.gc {
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 0.5px solid rgba(26,20,16,0.08); border-radius: 24px;
+  padding: 32px; position: relative; overflow: hidden;
+  transition: transform 0.4s var(--zen), box-shadow 0.4s var(--zen);
+  box-shadow: 0 8px 32px rgba(31,38,135,0.08), 0 0 0 0.5px rgba(255,255,255,0.3) inset;
+}
+.gc::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 40%; border-radius: inherit;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.45) 0%, transparent 100%);
+  pointer-events: none; z-index: 0;
+}
+.gc:hover { box-shadow: 0 16px 48px rgba(31,38,135,0.12), 0 0 40px rgba(51,163,163,0.08), 0 0 0 0.5px rgba(255,255,255,0.4) inset; transform: translateY(-4px); }
+.gc::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--teal), rgba(99,102,241,0.3), transparent);
+  opacity: 0; transition: opacity 0.4s ease; border-radius: 24px 24px 0 0; z-index: 3;
+}
+.gc:hover::before { opacity: 1; }
+
+/* ===== DARK GLASS CARDS ===== */
+.dgc {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: 0.5px solid rgba(255,255,255,0.06); border-radius: 20px;
+  padding: 32px; position: relative; overflow: hidden;
+  transition: transform 0.4s var(--zen), box-shadow 0.4s var(--zen);
+}
+.dgc:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.2), 0 0 40px rgba(51,163,163,0.06); border-color: rgba(255,255,255,0.1); }
+.dgc::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(51,163,163,0.3), transparent);
+  opacity: 0; transition: opacity 0.4s ease; z-index: 1;
+}
+.dgc:hover::before { opacity: 1; }
+
+/* ===== WATERFALL DROP-OFF ===== */
+.waterfall { display: flex; flex-direction: column; gap: 0; margin: 32px 0; }
+.wf-stage { display: grid; grid-template-columns: 120px 1fr 80px; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid rgba(26,20,16,0.04); transition: background 0.3s ease; }
+.wf-stage:hover { background: rgba(51,163,163,0.02); }
+.wf-stage:last-child { border-bottom: none; }
+.wf-stage-label { font-size: 12px; font-weight: 600; color: var(--text-2); }
+.wf-bar-wrap { position: relative; height: 40px; border-radius: 12px; overflow: hidden; background: rgba(26,20,16,0.025); }
+.wf-bar { height: 100%; border-radius: 12px; display: flex; align-items: center; padding-left: 16px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.9); width: 0; transition: width 1.6s cubic-bezier(0.16,1,0.3,1); position: relative; overflow: hidden; }
+.wf-bar::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); animation: barShimmer 2.5s ease-in-out 2s; }
+.wf-bleed { font-size: 12px; font-weight: 700; color: var(--release); text-align: right; white-space: nowrap; opacity: 0; transform: translateX(-8px); transition: opacity 0.6s ease 1.6s, transform 0.6s ease 1.6s; }
+.wf-stage.visible .wf-bleed { opacity: 1; transform: translateX(0); }
+.wf-bar.wf-healthy { background: linear-gradient(90deg, var(--teal), #2DD4BF); }
+.wf-bar.wf-caution { background: linear-gradient(90deg, rgba(99,102,241,0.6), var(--align)); }
+.wf-bar.wf-danger { background: linear-gradient(90deg, rgba(232,117,138,0.5), var(--release)); }
+.wf-bar.wf-critical { background: linear-gradient(90deg, rgba(232,117,138,0.7), rgba(180,50,70,0.9)); }
+
+/* ===== COMPARISON BARS ===== */
+.bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.bar-label { width: 120px; font-size: 13px; font-weight: 500; color: var(--text-2); flex-shrink: 0; }
+.bar-track { flex: 1; height: 36px; background: rgba(26,20,16,0.03); border-radius: 10px; overflow: hidden; position: relative; }
+.bar-fill {
+  height: 100%; border-radius: 10px; display: flex; align-items: center;
+  justify-content: flex-end; padding-right: 14px;
+  font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.9);
+  width: 0; transition: width 1.4s cubic-bezier(0.16,1,0.3,1);
+  position: relative; overflow: hidden;
+}
+.bar-fill.teal { background: linear-gradient(90deg, var(--teal), #2DD4BF); }
+.bar-fill.teal::after {
+  content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  animation: barShimmer 2.5s ease-in-out 1.5s;
+}
+@keyframes barShimmer { 0% { left: -100%; } 100% { left: 100%; } }
+.bar-fill.muted { background: linear-gradient(90deg, rgba(26,20,16,0.08), rgba(26,20,16,0.18)); color: var(--text-3); }
+.bar-fill.red { background: linear-gradient(90deg, rgba(232,117,138,0.5), var(--release)); }
+.bar-fill.green { background: linear-gradient(90deg, rgba(52,211,153,0.6), var(--become)); }
+.bar-fill.indigo { background: linear-gradient(90deg, rgba(99,102,241,0.5), var(--align)); }
+
+/* ===== STAT CARDS ===== */
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 28px 0; }
+.stat-card {
+  text-align: center; padding: 28px 14px;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 0.5px solid rgba(26,20,16,0.08); border-radius: 24px;
+  position: relative; overflow: hidden;
+  transition: transform 0.4s var(--zen), box-shadow 0.4s var(--zen);
+  box-shadow: 0 8px 32px rgba(31,38,135,0.08), 0 0 0 0.5px rgba(255,255,255,0.3) inset;
+}
+.stat-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 40%; border-radius: inherit;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.45) 0%, transparent 100%); pointer-events: none;
+}
+.stat-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(31,38,135,0.12), 0 0 40px rgba(51,163,163,0.08); }
+.stat-card::before {
+  content: ''; position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+  width: 40px; height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--teal), var(--become));
+  opacity: 0; transition: opacity 0.4s ease, width 0.4s ease;
+}
+.stat-card:hover::before { opacity: 1; width: 60px; }
+.stat-card:hover .stat-val {
+  background: linear-gradient(135deg, var(--teal), #2DD4BF, var(--become));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.stat-val { font-size: 32px; font-weight: 200; letter-spacing: -1px; line-height: 1.2; transition: all 0.3s ease; }
+.stat-label { font-size: 11px; color: var(--text-3); margin-top: 6px; line-height: 1.4; }
+
+/* ===== TIMELINE ===== */
+.timeline { position: relative; padding-left: 32px; margin: 32px 0; }
+.timeline::before {
+  content: ''; position: absolute; left: 11px; top: 0; bottom: 0;
+  width: 2px; background: linear-gradient(to bottom, var(--teal), var(--align), var(--become));
+  border-radius: 2px;
+}
+.tl-item { position: relative; margin-bottom: 28px; }
+.tl-item:last-child { margin-bottom: 0; }
+.tl-dot {
+  position: absolute; left: -32px; top: 2px;
+  width: 22px; height: 22px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700; color: #fff;
+  box-shadow: 0 0 12px rgba(51,163,163,0.3);
+  transition: transform 0.3s var(--zen), box-shadow 0.3s var(--zen);
+}
+.tl-item:hover .tl-dot { transform: scale(1.2); }
+.tl-dot.teal { background: var(--teal); }
+.tl-dot.indigo { background: var(--align); box-shadow: 0 0 12px rgba(99,102,241,0.3); }
+.tl-dot.green { background: var(--become); box-shadow: 0 0 12px rgba(52,211,153,0.3); }
+.tl-dot.red { background: var(--release); box-shadow: 0 0 12px rgba(232,117,138,0.3); }
+.tl-day { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 4px; }
+.tl-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.tl-desc { font-size: 13px; color: var(--text-2); line-height: 1.6; }
+.tl-source { font-size: 10px; color: var(--text-3); margin-top: 4px; font-style: italic; }
+
+/* ===== DARK INSET ===== */
+.dark-inset {
+  border-radius: 28px; background: var(--dark);
+  padding: 48px 40px; position: relative; overflow: hidden;
+  border: 0.5px solid rgba(51,163,163,0.1);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.15), 0 0 60px rgba(51,163,163,0.04);
+}
+.dark-inset::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 500px 400px at 20% 30%, rgba(51,163,163,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 300px at 80% 70%, rgba(99,102,241,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ===== DARK TABLE ===== */
+.dark-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.dark-table th {
+  text-align: left; font-size: 10px; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(255,252,250,0.3); padding: 14px 16px;
+  border-bottom: 1px solid rgba(255,252,250,0.08);
+}
+.dark-table td {
+  padding: 14px 16px; color: rgba(255,252,250,0.6);
+  border-bottom: 1px solid rgba(255,252,250,0.05);
+}
+.dark-table td strong { color: rgba(255,252,250,0.9); }
+.dark-table .app-cell { display: flex; align-items: center; gap: 10px; }
+.dark-table .app-cell img { width: 28px; height: 28px; border-radius: 7px; object-fit: contain; }
+.dark-table .bad { color: var(--release); font-weight: 600; }
+.dark-table .good { color: var(--become); font-weight: 600; }
+.dark-table tr:last-child td { border-bottom: none; }
+.dark-table tr.highlight td { background: rgba(51,163,163,0.05); border-bottom-color: rgba(51,163,163,0.1); }
+.dark-table tr.highlight td:first-child { border-radius: 8px 0 0 8px; }
+.dark-table tr.highlight td:last-child { border-radius: 0 8px 8px 0; }
+.dark-table tr { transition: background 0.3s ease; }
+.dark-table tr:hover td { background: rgba(255,252,250,0.02); }
+
+/* ===== RING CHART ===== */
+.ring-row { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; margin: 32px 0; }
+.ring-item { text-align: center; }
+.ring-svg { width: 120px; height: 120px; transform: rotate(-90deg); }
+.ring-bg { fill: none; stroke: rgba(26,20,16,0.06); stroke-width: 8; }
+.ring-fill { fill: none; stroke-width: 8; stroke-linecap: round; transition: stroke-dasharray 1.4s cubic-bezier(0.16,1,0.3,1); }
+.ring-center { font-size: 22px; font-weight: 200; letter-spacing: -0.5px; margin-top: -78px; position: relative; z-index: 1; }
+.ring-label { font-size: 11px; color: var(--text-3); margin-top: 10px; line-height: 1.3; }
+
+/* ===== HABIT LOOP ===== */
+.loop-visual {
+  display: flex; align-items: center; justify-content: center; gap: 0; margin: 40px 0;
+  position: relative;
+}
+.loop-node {
+  width: 140px; height: 140px; border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; position: relative; z-index: 2;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 0.5px solid rgba(26,20,16,0.08);
+  box-shadow: 0 8px 32px rgba(31,38,135,0.08);
+  transition: transform 0.4s var(--zen), box-shadow 0.4s var(--zen);
+}
+.loop-node:hover { transform: scale(1.06); box-shadow: 0 12px 40px rgba(31,38,135,0.12); }
+.loop-node-label { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+.loop-node-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.loop-node-desc { font-size: 10px; color: var(--text-3); margin-top: 2px; }
+.loop-arrow { font-size: 24px; color: var(--text-3); opacity: 0.3; margin: 0 -8px; z-index: 1; animation: arrowPulse 2s ease-in-out infinite; }
+@keyframes arrowPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.6; } }
+
+/* ===== VERDICT ===== */
+.verdict {
+  background: var(--teal-soft); border: 1px solid rgba(51,163,163,0.12);
+  border-radius: var(--r); padding: 28px 32px; margin: 24px 0;
+}
+.verdict-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 10px; display: flex; align-items: center; gap: 8px; color: var(--become);
+}
+.verdict-label::before {
+  content: ''; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--become); box-shadow: 0 0 8px rgba(52,211,153,0.5);
+}
+
+/* ===== RISK CALLOUT ===== */
+.risk-card {
+  background: rgba(26,20,16,0.025); border: 1px solid rgba(232,117,138,0.12);
+  border-radius: var(--r); padding: 24px 28px; margin: 24px 0;
+}
+.risk-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--release);
+  margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+}
+.risk-label::before {
+  content: ''; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--release); box-shadow: 0 0 8px rgba(232,117,138,0.4);
+}
+
+/* ===== PRINCIPLE GRID ===== */
+.principle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.principle-card {
+  padding: 28px; border-radius: 20px;
+  background: rgba(255,255,255,0.5); border: 0.5px solid rgba(26,20,16,0.06);
+  transition: transform 0.4s var(--zen), box-shadow 0.4s var(--zen), border-color 0.4s ease;
+  position: relative; overflow: hidden;
+}
+.principle-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(31,38,135,0.08); border-color: rgba(51,163,163,0.12); }
+.principle-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--teal), rgba(99,102,241,0.3), transparent);
+  opacity: 0; transition: opacity 0.4s ease;
+}
+.principle-card:hover::before { opacity: 1; }
+.principle-num { font-size: 11px; font-weight: 700; color: var(--teal); letter-spacing: 1.5px; margin-bottom: 8px; }
+.principle-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.principle-desc { font-size: 13px; color: var(--text-2); line-height: 1.65; }
+
+/* ===== PULL QUOTE ENHANCED ===== */
+.pull-quote { position: relative; overflow: hidden; }
+.pull-quote::after {
+  content: '\201C'; position: absolute; top: 0; left: 50%;
+  transform: translateX(-50%);
+  font-family: Georgia, serif; font-size: 200px; line-height: 1;
+  color: rgba(51,163,163,0.03); pointer-events: none; z-index: 0;
+}
+.pull-quote blockquote { position: relative; z-index: 1; }
+.pull-quote::before {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px; height: 320px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(51,163,163,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ===== CLOSING GLOW ===== */
+.closing { position: relative; overflow: hidden; }
+.closing::before {
+  content: ''; position: absolute;
+  top: -100px; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(51,163,163,0.06) 0%, transparent 60%);
+  pointer-events: none; filter: blur(60px);
+}
+
+/* ===== CLOSING BAR SHIMMER ===== */
+@keyframes closingBarShimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.closing-gradient-bar {
+  background-size: 200% auto;
+  animation: closingBarShimmer 4s linear infinite;
+}
+
+/* ===== SUMMARY TAGS ===== */
+.summary-tag {
+  padding: 6px 14px; background: rgba(51,163,163,0.06);
+  border: 0.5px solid rgba(51,163,163,0.12); border-radius: 100px;
+  font-size: 11px; color: rgba(255,252,250,0.5); white-space: nowrap;
+  transition: all 0.3s var(--zen); cursor: default;
+}
+.summary-tag:hover {
+  background: rgba(51,163,163,0.12); border-color: rgba(51,163,163,0.25);
+  color: rgba(255,252,250,0.7); transform: translateY(-2px);
+}
+
+/* ===== WATERFALL RESPONSIVE ===== */
+@media (max-width: 480px) {
+  .wf-stage { grid-template-columns: 80px 1fr 60px; gap: 8px; }
+  .wf-stage-label { font-size: 11px; }
+  .wf-bar-wrap { height: 32px; }
+  .wf-bar { font-size: 10px; padding-left: 10px; }
+  .wf-bleed { font-size: 10px; }
+}
+
+/* ===== DARK SECTION PARTICLES ===== */
+.dark-section::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 15% 25%, rgba(51,163,163,0.25), transparent),
+    radial-gradient(1px 1px at 35% 70%, rgba(255,255,255,0.12), transparent),
+    radial-gradient(1.5px 1.5px at 55% 40%, rgba(51,163,163,0.2), transparent),
+    radial-gradient(1px 1px at 75% 85%, rgba(99,102,241,0.15), transparent),
+    radial-gradient(1px 1px at 90% 20%, rgba(255,255,255,0.1), transparent),
+    radial-gradient(1px 1px at 45% 15%, rgba(52,211,153,0.15), transparent),
+    radial-gradient(1px 1px at 65% 60%, rgba(255,255,255,0.08), transparent),
+    radial-gradient(1.5px 1.5px at 25% 90%, rgba(51,163,163,0.18), transparent);
+  animation: particleDrift 20s ease-in-out infinite alternate;
+}
+.dark-section { position: relative; overflow: hidden; }
+
+/* ===== RING CHART CENTER GLOW ===== */
+.ring-item { position: relative; }
+.ring-center { transition: transform 0.3s var(--zen), text-shadow 0.3s ease; }
+.ring-item:hover .ring-center { transform: scale(1.08); text-shadow: 0 0 20px currentColor; }
+
+/* ===== PHOTO BREAK BOTTOM GLOW ===== */
+.photo-glow {
+  position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 400px; height: 200px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(51,163,163,0.08) 0%, transparent 70%);
+  filter: blur(40px); pointer-events: none; z-index: 1;
+}
+
+/* ===== INSET PHOTO CARD SHIMMER ===== */
+.inset-photo-card::after {
+  content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+  transition: left 0.6s ease; z-index: 3; pointer-events: none;
+}
+.inset-photo-card:hover::after { left: 150%; }
+
+/* ===== PRINCIPLE NUM GLOW ===== */
+.principle-num { transition: text-shadow 0.3s ease; }
+.principle-card:hover .principle-num { text-shadow: 0 0 12px rgba(51,163,163,0.4); }
+
+/* ===== VERDICT ANIMATED DOT ===== */
+.verdict-label::before {
+  animation: verdictPulse 2s ease-in-out infinite;
+}
+@keyframes verdictPulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(52,211,153,0.5); transform: scale(1); }
+  50% { box-shadow: 0 0 16px rgba(52,211,153,0.8), 0 0 32px rgba(52,211,153,0.3); transform: scale(1.15); }
+}
+
+/* ===== RISK ANIMATED DOT ===== */
+.risk-label::before {
+  animation: riskPulse 2s ease-in-out infinite;
+}
+@keyframes riskPulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(232,117,138,0.4); transform: scale(1); }
+  50% { box-shadow: 0 0 16px rgba(232,117,138,0.7), 0 0 32px rgba(232,117,138,0.2); transform: scale(1.15); }
+}
+
+/* ===== CLOSING AURORA ===== */
+.closing::after {
+  content: ''; position: absolute;
+  bottom: -200px; left: 50%; transform: translateX(-50%);
+  width: 800px; height: 400px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(99,102,241,0.04) 0%, transparent 60%);
+  pointer-events: none; filter: blur(80px);
+  animation: auroraFloat 8s ease-in-out infinite alternate;
+}
+@keyframes auroraFloat {
+  0% { transform: translateX(-50%) translateY(0); }
+  100% { transform: translateX(-50%) translateY(-30px); }
+}
+
+/* ===== TIMELINE ITEM STAGGER ===== */
+.tl-item {
+  opacity: 0; transform: translateX(-12px);
+  transition: opacity 0.6s var(--zen), transform 0.6s var(--zen);
+}
+.tl-item.visible { opacity: 1; transform: translateX(0); }
+
+/* ===== SUMMARY TAG STAGGER ENTRANCE ===== */
+@keyframes tagFloat {
+  0% { opacity: 0; transform: translateY(8px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ===== DARK TABLE ROW HOVER GLOW ===== */
+.dark-table tr.highlight:hover td {
+  background: rgba(51,163,163,0.08);
+  box-shadow: 0 0 24px rgba(51,163,163,0.06) inset;
+}
+
+/* ===== SECTION NUMBER WATERMARK ===== */
+.section-number {
+  position: absolute; top: -20px; right: -20px; font-size: 280px;
+  font-weight: 100; color: rgba(51,163,163,0.03); line-height: 1;
+  pointer-events: none; z-index: 0; letter-spacing: -15px;
+  font-variant-numeric: tabular-nums;
+}
+.dark-section .section-number { color: rgba(51,163,163,0.04); }
+
+/* ===== SECTION TITLE LETTER SPACING TRANSITION ===== */
+.section-title {
+  transition: letter-spacing 0.6s var(--zen);
+}
+
+/* ===== KEY INSIGHT ICON PULSE ===== */
+.key-insight-icon {
+  transition: transform 0.3s var(--zen), box-shadow 0.3s var(--zen);
+}
+.key-insight:hover .key-insight-icon {
+  transform: scale(1.08);
+  box-shadow: 0 0 16px rgba(51,163,163,0.15);
+}
+
+/* ===== TLDR GRADIENT BORDER HOVER ===== */
+.tldr {
+  position: relative;
+}
+.tldr::after {
+  content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
+  background: linear-gradient(to bottom, var(--teal), var(--align));
+  border-radius: 3px 0 0 3px;
+  opacity: 0; transition: opacity 0.3s ease;
+}
+.tldr:hover::after { opacity: 1; }
+.tldr:hover { border-left-color: transparent; }
+
+/* ===== BAR FILL SHIMMER ON ALL ===== */
+.bar-fill.green::after, .bar-fill.indigo::after, .bar-fill.red::after {
+  content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  animation: barShimmer 2.5s ease-in-out 2s;
+}
+
+/* ===== AMBIENT WARM WASH ===== */
+body::after {
+  content: ''; position: fixed; inset: 0; z-index: 9998; pointer-events: none;
+  background: linear-gradient(180deg, rgba(51,163,163,0.008) 0%, transparent 40%, rgba(99,102,241,0.006) 100%);
+  mix-blend-mode: multiply;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .main { margin-left: 0; }
+  section { padding: 80px 32px; }
+  .hero { padding: 60px 32px; }
+  .hero-stats-bar { padding-top: 72px; gap: 32px; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .wf-stage { grid-template-columns: 100px 1fr 70px; }
+  .loop-visual { flex-wrap: wrap; gap: 16px; }
+  .loop-arrow { display: none; }
+  .reading-badge { display: block; }
+  .photo-break blockquote { font-size: clamp(16px, 2.5vw, 22px); padding: 0 32px; }
+}
+@media (max-width: 768px) {
+  section { padding: 72px 24px; }
+  .hero { min-height: 65vh; padding: 56px 24px; }
+  .hero-stats-bar { gap: 24px; padding: 56px 24px 0; }
+  .hero-stat .val { font-size: 28px; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .principle-grid { grid-template-columns: 1fr; }
+  .dark-inset { padding: 32px 24px; border-radius: 20px; }
+  .bar-label { width: 80px; font-size: 12px; }
+  .ring-row { gap: 20px; }
+  .ring-svg { width: 100px; height: 100px; }
+  .ring-center { font-size: 18px; margin-top: -68px; }
+  .loop-node { width: 110px; height: 110px; }
+  .loop-node-title { font-size: 12px; }
+  .photo-break { max-height: 320px; }
+  .photo-break img { height: 320px; }
+  .inset-photo-card img { height: 180px; }
+  .summary-grid { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 480px) {
+  section { padding: 56px 20px; }
+  .hero { padding: 48px 20px; min-height: 55vh; }
+  .hero h1 { font-size: clamp(26px, 7vw, 40px); letter-spacing: -1px; }
+  .hero-sub { font-size: 14px; max-width: 100%; }
+  .hero-stats-bar { gap: 16px; padding: 48px 20px 0; flex-wrap: wrap; justify-content: center; }
+  .hero-stat { min-width: 80px; }
+  .hero-stat .val { font-size: 24px; }
+  .stat-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat-val { font-size: 26px; }
+  .stat-card { padding: 22px 12px; border-radius: 18px; }
+  .dark-inset { padding: 24px 12px; border-radius: 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .dark-table { font-size: 11px; min-width: 580px; }
+  .dark-table th { padding: 10px 10px; font-size: 9px; }
+  .dark-table td { padding: 10px 10px; }
+  .bar-row { flex-direction: column; gap: 4px; align-items: stretch; }
+  .bar-label { width: auto; font-size: 12px; font-weight: 600; }
+  .bar-track { height: 28px; }
+  .bar-fill { font-size: 10px; }
+  .principle-card { padding: 20px; border-radius: 16px; }
+  .timeline { padding-left: 28px; }
+  .tl-dot { left: -28px; width: 18px; height: 18px; font-size: 8px; }
+  .ring-row { gap: 16px; }
+  .ring-svg { width: 90px; height: 90px; }
+  .ring-center { font-size: 16px; margin-top: -62px; }
+  .wf-bar-wrap { height: 32px; }
+  .hero-orb { display: none; }
+  .verdict { padding: 20px 24px; }
+  .risk-card { padding: 20px; }
+  .loop-node { width: 100px; height: 100px; }
+  .loop-node-label { font-size: 8px; }
+  .loop-node-title { font-size: 11px; }
+  .loop-node-desc { display: none; }
+  .photo-break { max-height: 260px; }
+  .photo-break img { height: 260px; }
+  .photo-break blockquote { font-size: 16px; bottom: 36px; padding: 0 20px; }
+  .inset-photo-card img { height: 160px; }
+}
+@media (max-width: 375px) {
+  section { padding: 48px 16px; }
+  .hero { padding: 40px 16px; }
+  .hero h1 { font-size: clamp(24px, 7vw, 36px); }
+  .hero-stats-bar { padding: 40px 16px 0; gap: 12px; }
+  .stat-grid { gap: 10px; }
+  .stat-card { padding: 18px 10px; }
+  .stat-val { font-size: 22px; }
+}
+@media (max-width: 320px) {
+  section { padding: 40px 14px; }
+  .hero { padding: 36px 14px; }
+  .hero h1 { font-size: 22px; }
+  .stat-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Reading Badge -->
+<div class="reading-badge" id="readingBadge"></div>
+
+<!-- Scroll Progress -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Mobile Burger -->
+<button class="mob-burger" id="mobBurger" aria-label="Menu">
+  <span></span><span></span><span></span>
+</button>
+
+<!-- Mobile Overlay -->
+<div class="mob-overlay" id="mobOverlay">
+  <div class="mob-menu">
+    <div class="mob-menu-cross">
+      <a href="index.html">Hub <span>&rarr;</span></a>
+      <a href="jim-strategy-briefing.html">Strategic Briefing <span>&rarr;</span></a>
+      <a href="jim-marketing-playbook.html">Marketing Playbook <span>&rarr;</span></a>
+      <a href="pricing-strategy.html">Pricing Strategy <span>&rarr;</span></a>
+      <a href="onboarding-teardown.html">Onboarding Teardown <span>&rarr;</span></a>
+    </div>
+    <div class="mob-menu-label">Retention Playbook</div>
+    <div class="mob-menu-section">
+      <a href="#hero">Overview</a>
+      <a href="#problem">The 96% Problem</a>
+      <a href="#funnel">The Drop-Off</a>
+      <a href="#first14">The First 14 Days</a>
+      <a href="#habits">The Habit Loop</a>
+      <a href="#notifications">Notification Strategy</a>
+      <a href="#lifecycle">Lifecycle Emails</a>
+      <a href="#competitors">Competitor Retention</a>
+      <a href="#architecture">Our Architecture</a>
+      <a href="#targets">Target Metrics</a>
+    </div>
+  </div>
+</div>
+
+<!-- Sidebar -->
+<nav class="sidebar" aria-label="Page navigation">
+  <a href="index.html" class="sidebar-brand" style="text-decoration:none; display:block;">Agency OS</a>
+  <div class="sidebar-title">Retention Playbook</div>
+
+  <div class="nav-cross-group">
+    <a href="index.html" class="nav-cross-link"><span class="nc-icon">&#127968;</span> Hub <span class="nc-arrow">&rarr;</span></a>
+    <a href="jim-strategy-briefing.html" class="nav-cross-link"><span class="nc-icon">&#127919;</span> Strategic Briefing <span class="nc-arrow">&rarr;</span></a>
+    <a href="jim-marketing-playbook.html" class="nav-cross-link"><span class="nc-icon">&#128640;</span> Marketing Playbook <span class="nc-arrow">&rarr;</span></a>
+    <a href="pricing-strategy.html" class="nav-cross-link"><span class="nc-icon">&#128176;</span> Pricing Strategy <span class="nc-arrow">&rarr;</span></a>
+    <a href="onboarding-teardown.html" class="nav-cross-link"><span class="nc-icon">&#128270;</span> Onboarding Teardown <span class="nc-arrow">&rarr;</span></a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">The Problem</div>
+    <a href="#hero" class="nav-link active">Overview</a>
+    <a href="#problem" class="nav-link">The 96% Problem</a>
+    <a href="#funnel" class="nav-link">The Drop-Off</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">The System</div>
+    <a href="#first14" class="nav-link">First 14 Days</a>
+    <a href="#habits" class="nav-link">Habit Loop</a>
+    <a href="#notifications" class="nav-link">Notifications</a>
+    <a href="#lifecycle" class="nav-link">Lifecycle Emails</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Intelligence</div>
+    <a href="#competitors" class="nav-link">Competitor Data</a>
+    <a href="#architecture" class="nav-link">Our Architecture</a>
+    <a href="#targets" class="nav-link">Target Metrics</a>
+  </div>
+
+  <div class="sidebar-footer">
+    Confidential<br>
+    Eric Yerke &amp; Dr. James Vineburgh<br>
+    March 2026
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="main">
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <img src="photos/ivan-bandura-Z1jyU-1ixXE-unsplash.jpg" alt="Atmospheric landscape" loading="eager" onerror="this.parentElement.style.background='var(--dark)'">
+  </div>
+  <div class="hero-orb orb-1"></div>
+  <div class="hero-orb orb-2"></div>
+  <div class="hero-orb orb-3"></div>
+  <div class="hero-badge"><span class="dot"></span> Retention Playbook &middot; March 2026</div>
+  <h1>96% of users leave<br>within <em>12 months.</em></h1>
+  <p class="hero-sub">The meditation app industry has a $9 billion retention crisis. Every competitor acquires users brilliantly and loses them silently. This is our plan to break the pattern.</p>
+  <div class="hero-subtitle">10 Sections &middot; Every Claim Sourced &middot; Data-Driven</div>
+</section>
+
+<!-- Stats Bridge -->
+<div class="hero-stats-bar">
+  <div class="hero-stat reveal"><div class="val">96%</div><div class="lbl">Gone in 12 Months</div></div>
+  <div class="hero-stat reveal"><div class="val">75%</div><div class="lbl">Gone by Day 1</div></div>
+  <div class="hero-stat reveal"><div class="val">3x</div><div class="lbl">Reminder Retention Lift</div></div>
+  <div class="hero-stat reveal"><div class="val">66</div><div class="lbl">Days to Form Habit</div></div>
+</div>
+
+<!-- ===== SECTION 1: THE 96% PROBLEM ===== -->
+<section id="problem">
+  <div class="container">
+    <div class="section-number">01</div>
+    <div class="section-badge reveal">1</div>
+    <div class="section-label reveal">The Problem</div>
+    <div class="section-title reveal">$9 billion market. 96% churn.</div>
+    <p class="section-desc reveal">Five major competitors have raised over $2 billion in combined funding. All of them hit the same wall: users love the product but stop using it. The problem is not content quality. The problem is habit architecture.</p>
+
+    <div class="tldr reveal">
+      <div class="tldr-label">TL;DR</div>
+      <p>The meditation app industry loses 96% of users within 12 months. The #1 reason is not price, not content, not features. It is that nobody builds the habit. 40% of churned users say they simply forgot.</p>
+    </div>
+
+    <div class="gc reveal" style="margin-top: 28px;">
+      <div style="font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-3); margin-bottom: 20px;">User Survival Over Time</div>
+      <div class="bar-row">
+        <div class="bar-label">Day 0 (Install)</div>
+        <div class="bar-track"><div class="bar-fill teal" data-width="100%">100%</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Day 1</div>
+        <div class="bar-track"><div class="bar-fill teal" data-width="27%">27%</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Day 7</div>
+        <div class="bar-track"><div class="bar-fill muted" data-width="12%">12%</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Day 30</div>
+        <div class="bar-track"><div class="bar-fill red" data-width="5%">4.7%</div></div>
+      </div>
+      <div class="bar-row" style="margin-bottom: 0;">
+        <div class="bar-label">12 Months</div>
+        <div class="bar-track"><div class="bar-fill red" data-width="4%">~4%</div></div>
+      </div>
+      <div style="font-size: 10px; color: var(--text-3); margin-top: 12px; font-style: italic;">Sources: Statista Health & Fitness App Retention 2024; Adjust Global Benchmarks 2024; Appsflyer Retention Report 2023</div>
+    </div>
+
+    <div class="key-insight reveal">
+      <div class="key-insight-icon">WHY</div>
+      <p>The #1 churn reason across the category: <strong>no habit formation (40% of churned users).</strong> Not price. Not content quality. Not missing features. Users simply forget to come back. Average lifetime use of a meditation app: 1 to 4 sessions. The product works when used. The challenge is building the system that ensures it gets used. <em style="font-size: 11px; color: var(--text-3); display: block; margin-top: 8px;">Source: Phiture Mobile Growth Consultancy Churn Analysis 2023; Headspace Internal Retention Data</em></p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;" class="reveal">
+      <div class="inset-photo-card">
+        <img src="photos/EY-003.jpg" alt="Strategy planning" loading="lazy">
+        <div class="ipc-content">
+          <div class="ipc-label">The Scale</div>
+          <div class="ipc-title">$9B market, 5 major players, $2B+ raised</div>
+          <div class="ipc-desc">Every competitor acquires brilliantly. None retain.</div>
+        </div>
+      </div>
+      <div class="inset-photo-card">
+        <img src="photos/EY-007.jpg" alt="Data analysis" loading="lazy">
+        <div class="ipc-content">
+          <div class="ipc-label">The Gap</div>
+          <div class="ipc-title">Calm: $300M revenue, 1.7 Trustpilot rating</div>
+          <div class="ipc-desc">Revenue without retention. Growth without trust.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="risk-card reveal" style="margin-top: 20px;">
+      <div class="risk-label">THE COST OF INACTION</div>
+      <p style="font-size: 14px; color: var(--text-2); line-height: 1.75; margin: 0;">Calm spends <strong style="color: var(--text);">$12.6M per year on advertising</strong> to replace the users it loses. Headspace merged with Ginger (now Headspace Health) partly because consumer retention was unsustainable. The industry's answer to churn is spending more on acquisition. <strong style="color: var(--text);">That is the trap we avoid.</strong> <em style="font-size: 11px; color: var(--text-3); display: block; margin-top: 8px;">Source: Calm SEC Filings; Pathmatics Ad Spend Data 2024</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- Photo Break -->
+<div class="photo-break reveal">
+  <img src="photos/seashore.jpg" alt="Ocean waves" loading="lazy">
+  <div class="photo-glow"></div>
+  <blockquote>"Nobody leaves because the content wasn't good enough. They leave because nobody reminded them why they started."</blockquote>
+  <div class="attrib">The Possibility Thesis</div>
+</div>
+
+<!-- ===== SECTION 2: RETENTION FUNNEL ===== -->
+<section id="funnel">
+  <div class="container">
+    <div class="section-number">02</div>
+    <div class="section-badge reveal">2</div>
+    <div class="section-label reveal">The Drop-Off</div>
+    <div class="section-title reveal">Where 953 out of 1,000 users vanish.</div>
+    <p class="section-desc reveal">Retention is not one problem. It is five sequential failures, each with its own solution. Every stage bleeds users. The data shows exactly where, and exactly how many.</p>
+
+    <div class="tldr reveal">
+      <div class="tldr-label">TL;DR</div>
+      <p>73% of users are lost between install and first session completion. The biggest single drop is Day 0 to Day 1. Push notifications and daily reminders are the two interventions with the highest proven impact.</p>
+    </div>
+
+    <div class="gc reveal" style="margin-top: 20px;">
+      <div style="font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-3); margin-bottom: 8px;">User Bleed: 1,000 Installs &rarr; 47 Retained</div>
+      <div class="waterfall">
+        <div class="wf-stage">
+          <div class="wf-stage-label">Install</div>
+          <div class="wf-bar-wrap"><div class="wf-bar wf-healthy" data-width="100%">1,000 users</div></div>
+          <div class="wf-bleed">&nbsp;</div>
+        </div>
+        <div class="wf-stage">
+          <div class="wf-stage-label">Onboarding</div>
+          <div class="wf-bar-wrap"><div class="wf-bar wf-healthy" data-width="78%">780</div></div>
+          <div class="wf-bleed">&minus;220</div>
+        </div>
+        <div class="wf-stage">
+          <div class="wf-stage-label">First Session</div>
+          <div class="wf-bar-wrap"><div class="wf-bar wf-caution" data-width="55%">550</div></div>
+          <div class="wf-bleed">&minus;230</div>
+        </div>
+        <div class="wf-stage">
+          <div class="wf-stage-label">Day 1 Return</div>
+          <div class="wf-bar-wrap"><div class="wf-bar wf-caution" data-width="27%">270</div></div>
+          <div class="wf-bleed">&minus;280</div>
+        </div>
+        <div class="wf-stage">
+          <div class="wf-stage-label">Day 7</div>
+          <div class="wf-bar-wrap"><div class="wf-bar wf-danger" data-width="12%">120</div></div>
+          <div class="wf-bleed">&minus;150</div>
+        </div>
+        <div class="wf-stage">
+          <div class="wf-stage-label">Day 30</div>
+          <div class="wf-bar-wrap"><div class="wf-bar wf-critical" data-width="4.7%"  style="min-width: 60px;">47</div></div>
+          <div class="wf-bleed">&minus;73</div>
+        </div>
+      </div>
+      <div style="font-size: 10px; color: var(--text-3); margin-top: 8px; font-style: italic;">Source: Adjust Global App Trends 2024; Appsflyer Health & Fitness Benchmarks</div>
+    </div>
+
+    <div class="stat-grid reveal" style="margin-top: 28px;">
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--release);">73%</div>
+        <div class="stat-label">Lost between install<br>and first session end</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--release);">51%</div>
+        <div class="stat-label">Lost between Day 1<br>and Day 7</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--teal);">3x</div>
+        <div class="stat-label">Retention with<br>daily reminders set</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--become);">88%</div>
+        <div class="stat-label">More likely to stay<br>with push enabled</div>
+      </div>
+    </div>
+
+    <div class="key-insight reveal">
+      <div class="key-insight-icon">DATA</div>
+      <p><strong>The critical window is 0 to 24 hours.</strong> Users who complete their first session AND return on Day 1 are 4.2x more likely to reach Day 30. The entire retention architecture must be weighted toward this window. Everything else is optimization. <em style="font-size: 11px; color: var(--text-3); display: block; margin-top: 8px;">Source: Headspace/Phiture Retention Analysis; Calm Internal Data via Former Employee Interviews</em></p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;" class="reveal">
+      <div class="inset-photo-card">
+        <img src="frederik-lower-YZbpHJ-m6Ig-unsplash.jpg" alt="Contemplation" loading="lazy">
+        <div class="ipc-content">
+          <div class="ipc-label">The Pattern</div>
+          <div class="ipc-title">73% lost before first session ends</div>
+          <div class="ipc-desc">The biggest drop happens before users ever experience the product's value.</div>
+        </div>
+      </div>
+      <div class="inset-photo-card">
+        <img src="silas-baisch-LDiZP1yLQxg-unsplash.jpg" alt="Clarity" loading="lazy">
+        <div class="ipc-content">
+          <div class="ipc-label">The Intervention</div>
+          <div class="ipc-title">Push + reminders = 3x retention</div>
+          <div class="ipc-desc">Two simple interventions proven across every major competitor.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Photo Break -->
+<div class="photo-break reveal">
+  <img src="justin-kauffman-6Q-Rvj7wYCM-unsplash.jpg" alt="Stillness" loading="lazy">
+  <div class="photo-glow"></div>
+  <blockquote>"The data is not a death sentence. It is a blueprint for exactly where to intervene."</blockquote>
+  <div class="attrib">Retention Playbook Principle</div>
+</div>
+
+<!-- ===== SECTION 3: FIRST 14 DAYS ===== -->
+<section id="first14">
+  <div class="container">
+    <div class="section-number">03</div>
+    <div class="section-badge reveal">3</div>
+    <div class="section-label reveal">The Critical Window</div>
+    <div class="section-title reveal">14 days to build a habit.<br>Every hour matters.</div>
+    <p class="section-desc reveal">Headspace's internal data: users who log in 10 consecutive days become long-term retainers. The research says 66 days for automaticity, but the app's job is to get users through the first 14. Everything after that is momentum.</p>
+
+    <div class="tldr reveal">
+      <div class="tldr-label">TL;DR</div>
+      <p>The first 14 days are a choreographed sequence: session completion, reminder prompt, push opt-in, streak building, milestone celebration, trial conversion. Every touchpoint is timed to behavioral research, not guesswork.</p>
+    </div>
+
+    <div class="gc reveal" style="margin-top: 20px;">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot teal">0</div>
+          <div class="tl-day">Minute 0</div>
+          <div class="tl-title">First session, not home screen</div>
+          <div class="tl-desc">Onboarding flows directly into a guided session. No browsing, no choice paralysis. Headspace's pattern: highest first-session conversion in the category.</div>
+          <div class="tl-source">Source: Headspace Onboarding Flow Analysis; Phiture Best Practices 2024</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot teal">+5</div>
+          <div class="tl-day">After First Session</div>
+          <div class="tl-title">Daily reminder prompt</div>
+          <div class="tl-desc">Calm's data: users who set reminders retain at 3x the rate of those who don't. We prompt immediately after the first completed session, when emotional investment is highest. Less than 1% of users found the setting when Calm buried it in Settings.</div>
+          <div class="tl-source">Source: Calm Product Teardown; Lenny's Newsletter Retention Deep-Dive</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot teal">+6</div>
+          <div class="tl-day">After Reminder Set</div>
+          <div class="tl-title">Push notification soft-ask</div>
+          <div class="tl-desc">Soft-ask after value delivered: 91.1% opt-in vs. 43.9% baseline. We never ask during onboarding. Endel asks for 4 permissions in a row. We ask for one, after earning it.</div>
+          <div class="tl-source">Source: OneSignal Push Notification Benchmarks 2024; CleverTap Timing Study</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot indigo">1</div>
+          <div class="tl-day">Day 1</div>
+          <div class="tl-title">Welcome email + Jim's voice message</div>
+          <div class="tl-desc">Lifecycle email #1. Not a "thanks for signing up" template. A personal message from Jim with a 60-second audio clip. Achievement-based triggers convert 258% better than "trial expires" emails.</div>
+          <div class="tl-source">Source: Vero Email Benchmark Report; Customer.io Lifecycle Best Practices</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot indigo">2</div>
+          <div class="tl-day">Day 2</div>
+          <div class="tl-title">AI detects: did they return?</div>
+          <div class="tl-desc">Bifurcated path (Headspace/Phiture pattern): Active users get content recommendations. Inactive users get re-engagement nudge. 40%+ first-week engagement boost documented.</div>
+          <div class="tl-source">Source: Phiture Retention Framework; Braze Cross-Channel Engagement Report 2024</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot indigo">3</div>
+          <div class="tl-day">Day 3</div>
+          <div class="tl-title">Streak established or intervention</div>
+          <div class="tl-desc">3-day streak: celebrate with particle burst + milestone badge. No streak: Jim AI sends a check-in. Apps with streaks + milestones see 40-60% higher DAU.</div>
+          <div class="tl-source">Source: Duolingo Gamification Case Study; Nir Eyal "Hooked" Framework</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot green">7</div>
+          <div class="tl-day">Day 7</div>
+          <div class="tl-title">First milestone celebration</div>
+          <div class="tl-desc">7-day streak = 2.3x more likely to engage daily going forward. Share prompt, progress visualization, and Jim's congratulatory message unlocked.</div>
+          <div class="tl-source">Source: Duolingo Retention Research; Streaks & Engagement Meta-Analysis 2023</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot green">10</div>
+          <div class="tl-day">Day 10</div>
+          <div class="tl-title">Habit prediction checkpoint</div>
+          <div class="tl-desc">Headspace's internal finding: 10 consecutive days predicts long-term retention. If the user reaches this point, probability of 30-day retention exceeds 80%.</div>
+          <div class="tl-source">Source: Headspace Internal Retention Metrics (via industry analysis)</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot green">14</div>
+          <div class="tl-day">Day 14</div>
+          <div class="tl-title">Trial decision point</div>
+          <div class="tl-desc">14-day trials convert at 45.7% vs. 27% for 7-day trials. The user has built a habit. The decision to pay is confirming what they already feel, not a new commitment.</div>
+          <div class="tl-source">Source: RevenueCat State of Subscriptions 2024; Qonversion Trial Length Study</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="key-insight reveal" style="margin-top: 20px;">
+      <div class="key-insight-icon">66</div>
+      <p><strong>66 days to automaticity</strong> (University College London, Phillippa Lally et al., 2009). Range: 18 to 254 days. The "21 days" myth comes from a 1960 self-help book by Maxwell Maltz. Our job is not to create a 66-day streak. It is to make each of the first 14 days feel worth returning for. <em style="font-size: 11px; color: var(--text-3); display: block; margin-top: 8px;">Source: Lally, P. et al. (2010). "How are habits formed." European Journal of Social Psychology, 40(6), 998-1009.</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- Photo Break -->
+<div class="photo-break reveal">
+  <img src="photos/EY-015.jpg" alt="Mindful moment" loading="lazy">
+  <div class="photo-glow"></div>
+  <blockquote>"Structure beats volume. A teacher beats a library. A relationship beats a streak."</blockquote>
+  <div class="attrib">The Possibility Thesis</div>
+</div>
+
+<!-- ===== SECTION 4: THE HABIT LOOP ===== -->
+<section id="habits">
+  <div class="container">
+    <div class="section-number">04</div>
+    <div class="section-badge reveal">4</div>
+    <div class="section-label reveal">Behavioral Design</div>
+    <div class="section-title reveal">The habit loop that keeps<br>96% of the industry awake at night.</div>
+    <p class="section-desc reveal">Every retained user runs through the same cycle. Our job is to make each step invisible. The loop should feel like a natural rhythm, not an engagement trap.</p>
+
+    <div class="tldr reveal">
+      <div class="tldr-label">TL;DR</div>
+      <p>Cue (audio notification) &rarr; Routine (5-min session) &rarr; Reward (Jim + streak) &rarr; Investment (identity). Our loop differs from competitors: the cue IS the experience, the reward is a relationship, the investment is who you become.</p>
+    </div>
+
+    <div class="gc reveal" style="margin-top: 20px;">
+      <div class="loop-visual">
+        <div class="loop-node" style="background: rgba(51,163,163,0.08);">
+          <div class="loop-node-label" style="color: var(--teal);">Cue</div>
+          <div class="loop-node-title">Daily Reminder</div>
+          <div class="loop-node-desc">Push + time</div>
+        </div>
+        <div class="loop-arrow">&rarr;</div>
+        <div class="loop-node" style="background: rgba(99,102,241,0.06);">
+          <div class="loop-node-label" style="color: var(--align);">Routine</div>
+          <div class="loop-node-title">Session</div>
+          <div class="loop-node-desc">5-15 min</div>
+        </div>
+        <div class="loop-arrow">&rarr;</div>
+        <div class="loop-node" style="background: rgba(52,211,153,0.06);">
+          <div class="loop-node-label" style="color: var(--become);">Reward</div>
+          <div class="loop-node-title">Streak + Feel</div>
+          <div class="loop-node-desc">Milestone</div>
+        </div>
+        <div class="loop-arrow">&rarr;</div>
+        <div class="loop-node" style="background: rgba(232,117,138,0.06);">
+          <div class="loop-node-label" style="color: var(--release);">Investment</div>
+          <div class="loop-node-title">Progress</div>
+          <div class="loop-node-desc">Data + identity</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;" class="reveal">
+      <div class="gc" style="padding: 28px;">
+        <div style="font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 12px;">What makes our loop different</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px;">
+          <li style="font-size: 13px; color: var(--text-2); line-height: 1.6; padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--teal); opacity: 0.5;"></span><strong style="color: var(--text);">The cue is a 30-second audio clip</strong>, not a "don't forget to meditate" text. Waking Up pioneered this: the notification IS the experience.</li>
+          <li style="font-size: 13px; color: var(--text-2); line-height: 1.6; padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--teal); opacity: 0.5;"></span><strong style="color: var(--text);">The reward is Jim, not points.</strong> A personal check-in from the teacher, not a gamification badge. Relationship beats mechanics.</li>
+          <li style="font-size: 13px; color: var(--text-2); line-height: 1.6; padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--teal); opacity: 0.5;"></span><strong style="color: var(--text);">The investment is identity, not data.</strong> "I'm someone who meditates" is stickier than "I have a 14-day streak."</li>
+        </ul>
+        <div style="font-size: 10px; color: var(--text-3); margin-top: 12px; font-style: italic;">Framework: Nir Eyal "Hooked" Model, adapted for wellness</div>
+      </div>
+      <div class="gc" style="padding: 28px;">
+        <div style="font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--release); margin-bottom: 12px;">What competitors get wrong</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px;">
+          <li style="font-size: 13px; color: var(--text-2); line-height: 1.6; padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--release); opacity: 0.5;"></span>Calm: 50,000 minutes of content. <strong style="color: var(--text);">80% leave within 30 minutes.</strong> Library overwhelm kills habit formation.</li>
+          <li style="font-size: 13px; color: var(--text-2); line-height: 1.6; padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--release); opacity: 0.5;"></span>Headspace Ebb chatbot: 7M+ messages, <strong style="color: var(--text);">zero personalization.</strong> High volume, no relationship.</li>
+          <li style="font-size: 13px; color: var(--text-2); line-height: 1.6; padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--release); opacity: 0.5;"></span>Waking Up: 92% retention. <strong style="color: var(--text);">Too fast for beginners.</strong> By Day 14, asking about "attention vs. consciousness."</li>
+        </ul>
+        <div style="font-size: 10px; color: var(--text-3); margin-top: 12px; font-style: italic;">Sources: Calm App Store data; Headspace Ebb launch coverage; Waking Up curriculum analysis</div>
+      </div>
+    </div>
+
+    <div class="stat-grid reveal" style="margin-top: 20px;">
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--teal);">35%</div>
+        <div class="stat-label">Churn reduction<br>from streak mechanics</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--become);">2.3x</div>
+        <div class="stat-label">Daily engagement after<br>7-day streak (Duolingo)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--align);">40-60%</div>
+        <div class="stat-label">Higher DAU with<br>streaks + milestones</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--release);">40%</div>
+        <div class="stat-label">Churned users cite<br>"no habit" as #1 reason</div>
+      </div>
+    </div>
+
+    <div class="verdict reveal" style="margin-top: 20px;">
+      <div class="verdict-label">THE RESEARCH</div>
+      <p style="font-size: 14px; color: var(--text-2); line-height: 1.75; margin: 0;"><strong style="color: var(--text);">Streaks reduce 30-day churn by 35%</strong> (Duolingo case study, confirmed across fitness and language learning apps). Session completion drops 22% when default session length exceeds 6 minutes (Headspace A/B test data). <strong style="color: var(--text);">We start at 5 minutes.</strong> <em style="font-size: 11px; color: var(--text-3); display: block; margin-top: 8px;">Sources: Duolingo S-1 Filing; Headspace Product Blog; BJ Fogg "Tiny Habits" Research, Stanford</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- Photo Break -->
+<div class="photo-break reveal">
+  <img src="photos/matt-paul-catalano-0QEG_xOoY7Y-unsplash.jpg" alt="Peaceful nature" loading="lazy">
+  <div class="photo-glow"></div>
+  <blockquote>"The meditation works. The user knows it works. They just forget to do it. Retention is a design problem, not a content problem."</blockquote>
+  <div class="attrib">Retention Playbook Principle</div>
+</div>
+
+<!-- ===== SECTION 5: NOTIFICATION STRATEGY ===== -->
+<section id="notifications">
+  <div class="container">
+    <div class="section-number">05</div>
+    <div class="section-badge reveal">5</div>
+    <div class="section-label reveal">Notifications</div>
+    <div class="section-title reveal">91.1% opt-in is possible.<br>Here is how.</div>
+    <p class="section-desc reveal">The difference between 43.9% and 91.1% push opt-in is timing. Not copy. Not design. When you ask.</p>
+
+    <div class="tldr reveal">
+      <div class="tldr-label">TL;DR</div>
+      <p>Ask after value is delivered, not during onboarding. Make notifications deliver content (audio clips), not reminders. Use ML for send-time optimization. Granular opt-in allows higher volume without fatigue.</p>
+    </div>
+
+    <div class="ring-row reveal" style="margin-top: 28px;">
+      <div class="ring-item">
+        <svg class="ring-svg" viewBox="0 0 120 120">
+          <circle class="ring-bg" cx="60" cy="60" r="50"/>
+          <circle class="ring-fill" cx="60" cy="60" r="50" stroke="var(--release)" data-pct="44" style="stroke-dasharray: 0 314;"/>
+        </svg>
+        <div class="ring-center" style="color: var(--release);">43.9%</div>
+        <div class="ring-label">Cold ask<br>(during onboarding)</div>
+      </div>
+      <div class="ring-item">
+        <svg class="ring-svg" viewBox="0 0 120 120">
+          <circle class="ring-bg" cx="60" cy="60" r="50"/>
+          <circle class="ring-fill" cx="60" cy="60" r="50" stroke="var(--become)" data-pct="91" style="stroke-dasharray: 0 314;"/>
+        </svg>
+        <div class="ring-center" style="color: var(--become);">91.1%</div>
+        <div class="ring-label">Soft ask<br>(after first session)</div>
+      </div>
+      <div class="ring-item">
+        <svg class="ring-svg" viewBox="0 0 120 120">
+          <circle class="ring-bg" cx="60" cy="60" r="50"/>
+          <circle class="ring-fill" cx="60" cy="60" r="50" stroke="var(--teal)" data-pct="71" style="stroke-dasharray: 0 314;"/>
+        </svg>
+        <div class="ring-center" style="color: var(--teal);">71%</div>
+        <div class="ring-label">Wellness category<br>average opt-in</div>
+      </div>
+    </div>
+    <div style="text-align: center; font-size: 10px; color: var(--text-3); font-style: italic; margin-top: -16px;">Source: OneSignal Push Notification Benchmarks 2024; CleverTap Permission Timing Study</div>
+
+    <div class="gc reveal" style="margin-top: 28px;">
+      <div style="font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-3); margin-bottom: 20px;">Notification Impact on Retention</div>
+      <div class="bar-row">
+        <div class="bar-label">With push enabled</div>
+        <div class="bar-track"><div class="bar-fill teal" data-width="88%">88% more likely to stay</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Without push</div>
+        <div class="bar-track"><div class="bar-fill red" data-width="18%">Lost after ~2 sessions</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Personalized timing</div>
+        <div class="bar-track"><div class="bar-fill green" data-width="70%">7x retention lift</div></div>
+      </div>
+      <div class="bar-row" style="margin-bottom: 0;">
+        <div class="bar-label">Smart send-time</div>
+        <div class="bar-track"><div class="bar-fill indigo" data-width="40%">+40% open rate</div></div>
+      </div>
+      <div style="font-size: 10px; color: var(--text-3); margin-top: 12px; font-style: italic;">Sources: Braze Engagement Report 2024; Airship Push Notification Benchmarks; Headspace Intelligent Timing Data</div>
+    </div>
+
+    <div class="key-insight reveal" style="margin-top: 20px;">
+      <div class="key-insight-icon">32%</div>
+      <p><strong>Headspace's Intelligent Timing system delivers a 32% session completion lift</strong> from personalized delivery windows. Their ML model recalculates optimal send time every 2 hours based on user behavior patterns. We build this from Day 1. <em style="font-size: 11px; color: var(--text-3); display: block; margin-top: 8px;">Source: Headspace Product Blog; Braze Customer Case Study: Headspace</em></p>
+    </div>
+
+    <div class="principle-grid reveal" style="margin-top: 24px;">
+      <div class="principle-card">
+        <div class="principle-num">01</div>
+        <div class="principle-title">Never ask during onboarding</div>
+        <div class="principle-desc">Asking before value is demonstrated reduces opt-in by up to 40%. Endel asks for 4 permissions in a row. We ask for zero during onboarding. <em style="font-size: 10px; color: var(--text-3); display: block; margin-top: 6px;">Source: Endel onboarding teardown; Apple HIG Permission Guidelines</em></div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">02</div>
+        <div class="principle-title">The notification IS the experience</div>
+        <div class="principle-desc">Waking Up sends 30-60 second audio clips via push. The notification delivers value, not a reminder to open the app. We adopt this pattern with Jim's voice. <em style="font-size: 10px; color: var(--text-3); display: block; margin-top: 6px;">Source: Waking Up app notification analysis</em></div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">03</div>
+        <div class="principle-title">Granular opt-in, high volume</div>
+        <div class="principle-desc">Let users choose: morning quote, session reminder, weekly reflection. Granular control allows higher volume without complaint. One-size messaging fails. <em style="font-size: 10px; color: var(--text-3); display: block; margin-top: 6px;">Source: Airship Notification Preference Study 2024</em></div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">04</div>
+        <div class="principle-title">ML-powered send time</div>
+        <div class="principle-desc">Optimal delivery recalculated every 2 hours based on user behavior. Headspace's Intelligent Timing: 32% session completion lift from personalized delivery windows. <em style="font-size: 10px; color: var(--text-3); display: block; margin-top: 6px;">Source: Headspace/Braze Case Study 2024</em></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Photo Break -->
+<div class="photo-break reveal">
+  <img src="olaf-wisser-PesEl7dh638-unsplash.jpg" alt="Perspective" loading="lazy">
+  <div class="photo-glow"></div>
+  <blockquote>"The app that earns the notification permission earns the user."</blockquote>
+  <div class="attrib">Retention Playbook Principle</div>
+</div>
+
+<!-- ===== SECTION 6: LIFECYCLE EMAILS ===== -->
+<section id="lifecycle">
+  <div class="container">
+    <div class="section-number">06</div>
+    <div class="section-badge reveal">6</div>
+    <div class="section-label reveal">Lifecycle Emails</div>
+    <div class="section-title reveal">8 emails. 15 days.<br><span class="gradient-text">4x revenue lift.</span></div>
+    <p class="section-desc reveal">Calm compressed their onboarding email sequence from 27 days to 15 days and saw a 4x revenue lift. Headspace's Braze integration drove 109% uplift in Week 1 retention. The pattern is clear: shorter, smarter, triggered by behavior.</p>
+
+    <div class="tldr reveal">
+      <div class="tldr-label">TL;DR</div>
+      <p>Every email is behavior-triggered, not time-based. Active and inactive users get different paths. Achievement-based messaging converts 258% better than FOMO. We never offer discounts to win back churned users.</p>
+    </div>
+
+    <div class="dark-inset reveal" style="margin-top: 20px;">
+      <div style="position: relative; z-index: 1;">
+        <div style="font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,252,250,0.3); margin-bottom: 24px;">15-Day Email Sequence</div>
+        <table class="dark-table">
+          <tr>
+            <th>Day</th><th>Trigger</th><th>Content</th><th>Goal</th>
+          </tr>
+          <tr>
+            <td><strong>0</strong></td><td>Sign up</td><td>Welcome + Jim audio clip</td><td class="good">Emotional anchor</td>
+          </tr>
+          <tr>
+            <td><strong>1</strong></td><td>No return</td><td>Re-engagement nudge</td><td>Bring back Day 1</td>
+          </tr>
+          <tr>
+            <td><strong>1</strong></td><td>Returned</td><td>Session recommendation</td><td class="good">Deepen engagement</td>
+          </tr>
+          <tr>
+            <td><strong>3</strong></td><td>Streak or not</td><td>Celebrate or encourage</td><td>Habit reinforcement</td>
+          </tr>
+          <tr>
+            <td><strong>5</strong></td><td>Behavior-based</td><td>Content aligned to goals</td><td class="good">Personalization proof</td>
+          </tr>
+          <tr>
+            <td><strong>7</strong></td><td>Milestone</td><td>Week 1 celebration + stats</td><td class="good">Achievement trigger</td>
+          </tr>
+          <tr>
+            <td><strong>10</strong></td><td>Habit prediction</td><td>Progress report + Jim note</td><td>Confidence building</td>
+          </tr>
+          <tr>
+            <td><strong>12</strong></td><td>Trial warning</td><td>24-48hr charge notice</td><td>Trust preservation</td>
+          </tr>
+        </table>
+        <div style="font-size: 10px; color: rgba(255,252,250,0.25); margin-top: 16px; font-style: italic;">Design pattern: Calm 27&rarr;15 day compression (4x lift); Headspace/Braze bifurcated paths (109% Week 1 uplift)</div>
+      </div>
+    </div>
+
+    <div class="stat-grid reveal" style="margin-top: 28px;">
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--teal);">258%</div>
+        <div class="stat-label">Achievement triggers vs.<br>"trial expires" emails</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--become);">109%</div>
+        <div class="stat-label">Week 1 retention uplift<br>(Headspace/Braze)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">4x</div>
+        <div class="stat-label">Revenue lift from<br>compressed sequence</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--release);">40%</div>
+        <div class="stat-label">Boost from bifurcated<br>active/inactive paths</div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;" class="reveal">
+      <div class="inset-photo-card">
+        <img src="photos/EY-020.jpg" alt="Personal connection" loading="lazy">
+        <div class="ipc-content">
+          <div class="ipc-label">The Difference</div>
+          <div class="ipc-title">Jim's voice, not a template</div>
+          <div class="ipc-desc">Every email feels personal because it is. Audio clips, personalized stats, behavior-aware content.</div>
+        </div>
+      </div>
+      <div class="inset-photo-card">
+        <img src="photos/EY-025.jpg" alt="Data-driven approach" loading="lazy">
+        <div class="ipc-content">
+          <div class="ipc-label">The Warning</div>
+          <div class="ipc-title">Never train users to churn for a deal</div>
+          <div class="ipc-desc">Calm's 40-60% discount win-backs taught users to cancel and wait. We never discount.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="risk-card reveal" style="margin-top: 20px;">
+      <div class="risk-label">WHAT NOT TO DO</div>
+      <p style="font-size: 14px; color: var(--text-2); line-height: 1.75; margin: 0;">Calm's win-back emails offer 40-60% discounts. Short-term: 4x revenue lift. Long-term: <strong style="color: var(--text);">users learned to cancel and wait for the discount email.</strong> The Calm subreddit became a guide for gaming their pricing. Never train users to churn for a deal. <em style="font-size: 11px; color: var(--text-3); display: block; margin-top: 8px;">Source: r/Calm subreddit analysis; Calm pricing strategy teardown; RevenueCat Churn & Win-back Report 2024</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- Photo Break -->
+<div class="photo-break reveal">
+  <img src="photos/ice-cave-hero.jpg" alt="Ice cave" loading="lazy">
+  <div class="photo-glow"></div>
+  <blockquote>"Waking Up retains 92% at 12 months with zero ad spend, zero discounts, and the highest price in the category. The only variable: a genuine teacher-student relationship."</blockquote>
+  <div class="attrib">Competitor Intelligence</div>
+</div>
+
+<!-- ===== SECTION 7: COMPETITOR RETENTION ===== -->
+<section id="competitors">
+  <div class="container-wide">
+    <div class="section-number">07</div>
+    <div class="section-badge reveal">7</div>
+    <div class="section-label reveal">Intelligence</div>
+    <div class="section-title reveal">How every competitor retains<br>(or doesn't).</div>
+    <p class="section-desc reveal" style="max-width: 640px;">Five competitors, five retention strategies, five different outcomes. The data tells one story: the teacher-student relationship is the only variable that correlates with long-term retention.</p>
+
+    <div class="tldr reveal">
+      <div class="tldr-label">TL;DR</div>
+      <p>Waking Up's 92% 12-month retention with $0 ad spend proves the model. Calm and Headspace spend billions acquiring users they cannot keep. The trust gap (Trustpilot vs. App Store rating) reveals the disconnect between marketing and reality.</p>
+    </div>
+
+    <div class="dark-inset reveal" style="margin-top: 20px;">
+      <div style="position: relative; z-index: 1;">
+        <div style="font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,252,250,0.3); margin-bottom: 24px;">Competitor Retention Comparison</div>
+        <table class="dark-table">
+          <tr>
+            <th>App</th><th>Day 30</th><th>12-Mo</th><th>Trust Gap</th><th>Ad Spend</th><th>Strategy</th><th>Fatal Flaw</th>
+          </tr>
+          <tr>
+            <td><div class="app-cell"><img src="competitor-logos/Calm_(company)_logo.svg.png" alt="Calm"><strong>Calm</strong></div></td>
+            <td>8.5%</td><td class="bad">~4%</td><td class="bad">3.0 pts</td>
+            <td class="bad">$12.6M/yr</td>
+            <td>Content volume</td><td class="bad">Library overwhelm</td>
+          </tr>
+          <tr>
+            <td><div class="app-cell"><img src="competitor-logos/Mental-Health-Directory-Images-12.png" alt="Headspace"><strong>Headspace</strong></div></td>
+            <td>7.7%</td><td class="bad">~4%</td><td class="bad">3.3 pts</td>
+            <td class="bad">$8.2M/yr</td>
+            <td>Structured courses</td><td class="bad">100% paywall</td>
+          </tr>
+          <tr>
+            <td><div class="app-cell"><img src="competitor-logos/wakingup.webp" alt="Waking Up"><strong>Waking Up</strong></div></td>
+            <td class="good">~16%</td><td class="good">92%</td><td>1.7 pts</td>
+            <td class="good">$0</td>
+            <td>Teacher bond</td><td>Too intellectual</td>
+          </tr>
+          <tr>
+            <td><div class="app-cell"><img src="competitor-logos/images.png" alt="Open"><strong>Open</strong></div></td>
+            <td class="bad">&lt;5%</td><td class="bad">&lt;3%</td><td class="bad">N/A</td>
+            <td>Unknown</td>
+            <td>Premium content</td><td class="bad">Trust destruction</td>
+          </tr>
+          <tr>
+            <td><div class="app-cell"><img src="competitor-logos/endel.svg" alt="Endel"><strong>Endel</strong></div></td>
+            <td>~10%</td><td>~15%</td><td>N/A</td>
+            <td>Minimal</td>
+            <td>Personalized audio</td><td>Not meditation</td>
+          </tr>
+          <tr class="highlight">
+            <td><div class="app-cell"><img src="app-icon.png" alt="The Possibility"><strong style="color: var(--teal);">The Possibility</strong></div></td>
+            <td class="good" style="color: var(--teal);">Target: 20%+</td>
+            <td class="good" style="color: var(--teal);">Target: 50%+</td>
+            <td style="color: var(--teal);">0 pts</td>
+            <td style="color: var(--teal);">$0 (organic)</td>
+            <td style="color: var(--teal);">Teacher + AI</td>
+            <td class="good" style="color: var(--teal);">None (new)</td>
+          </tr>
+        </table>
+        <div style="font-size: 10px; color: rgba(255,252,250,0.25); margin-top: 16px; font-style: italic;">Sources: Statista App Retention 2024; Trustpilot public ratings; Pathmatics/Sensor Tower ad spend data; App Store ratings as of March 2026</div>
+      </div>
+    </div>
+
+    <div class="key-insight reveal" style="margin-top: 24px;">
+      <div class="key-insight-icon">92%</div>
+      <p>Waking Up retains <strong>92% at 12 months</strong> with zero ad spend, zero discounts, and the highest price in the category ($129.99/year). The only variable: a genuine teacher-student relationship with Sam Harris. <strong>That is the model.</strong> We replicate it with Jim, then extend it with AI that scales the relationship without diluting it. <em style="font-size: 11px; color: var(--text-3); display: block; margin-top: 8px;">Source: Waking Up app analysis; RevenueCat subscription data; Sam Harris public interviews on growth strategy</em></p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 20px;" class="reveal">
+      <div class="gc" style="padding: 24px; text-align: center;">
+        <div style="font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--release); margin-bottom: 12px;">Calm</div>
+        <div style="font-size: 28px; font-weight: 200; color: var(--release); letter-spacing: -1px;" data-counter="1.7">1.7</div>
+        <div style="font-size: 11px; color: var(--text-3); margin-top: 4px;">Trustpilot Rating</div>
+        <div style="font-size: 11px; color: var(--text-3); margin-top: 2px;">vs. 4.5 App Store</div>
+        <div style="font-size: 10px; color: var(--text-3); margin-top: 8px; font-style: italic;">Class action: Twilio SDK<br>keystroke tracking</div>
+      </div>
+      <div class="gc" style="padding: 24px; text-align: center;">
+        <div style="font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--release); margin-bottom: 12px;">Headspace</div>
+        <div style="font-size: 28px; font-weight: 200; color: var(--release); letter-spacing: -1px;" data-counter="1.4">1.4</div>
+        <div style="font-size: 11px; color: var(--text-3); margin-top: 4px;">Trustpilot Rating</div>
+        <div style="font-size: 11px; color: var(--text-3); margin-top: 2px;">vs. 4.7 App Store</div>
+        <div style="font-size: 10px; color: var(--text-3); margin-top: 8px; font-style: italic;">Bait-and-switch<br>pricing complaints</div>
+      </div>
+      <div class="gc" style="padding: 24px; text-align: center;">
+        <div style="font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--become); margin-bottom: 12px;">Waking Up</div>
+        <div style="font-size: 28px; font-weight: 200; color: var(--become); letter-spacing: -1px;" data-counter="3.2">3.2</div>
+        <div style="font-size: 11px; color: var(--text-3); margin-top: 4px;">Trustpilot Rating</div>
+        <div style="font-size: 11px; color: var(--text-3); margin-top: 2px;">vs. 4.9 App Store</div>
+        <div style="font-size: 10px; color: var(--text-3); margin-top: 8px; font-style: italic;">Scholarship model:<br>free access on request</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Photo Break -->
+<div class="photo-break reveal">
+  <img src="alex-beholder-06iB0-tMV2w-unsplash.jpg" alt="Architecture" loading="lazy">
+  <div class="photo-glow"></div>
+  <blockquote>"Every competitor relies on one lever. We build seven. If any single layer fails, six others catch the user."</blockquote>
+  <div class="attrib">Defense in Depth</div>
+</div>
+
+<!-- ===== SECTION 8: OUR ARCHITECTURE ===== -->
+<section id="architecture">
+  <div class="container">
+    <div class="section-number">08</div>
+    <div class="section-badge reveal">8</div>
+    <div class="section-label reveal">Our Architecture</div>
+    <div class="section-title reveal">Seven layers of retention.<br>No single point of failure.</div>
+    <p class="section-desc reveal">Every competitor relies on one or two retention levers. We build seven. If any single layer fails, six others catch the user. This is defense in depth applied to engagement.</p>
+
+    <div class="tldr reveal">
+      <div class="tldr-label">TL;DR</div>
+      <p>Teacher bond + AI companion + habit architecture + smart notifications + lifecycle emails + content pacing + trust pricing. Seven layers, each backed by competitor data proving it works. No single point of failure.</p>
+    </div>
+
+    <div class="principle-grid reveal" style="grid-template-columns: 1fr 1fr 1fr; margin-top: 20px; margin-bottom: 16px;">
+      <div class="principle-card">
+        <div class="principle-num">LAYER 1</div>
+        <div class="principle-title">Teacher Bond</div>
+        <div class="principle-desc">Jim is present in every notification, email, and session. Not a brand. A person. Waking Up's model: single-instructor bond drives 92% retention. <em style="font-size: 10px; color: var(--text-3); display: block; margin-top: 6px;">Proof: Waking Up 92% 12-mo retention</em></div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">LAYER 2</div>
+        <div class="principle-title">AI Companion</div>
+        <div class="principle-desc">Jim AI detects 3+ days inactive and initiates re-engagement. Trained on Jim's teaching voice. Not a chatbot. An extension of the relationship. <em style="font-size: 10px; color: var(--text-3); display: block; margin-top: 6px;">Counter: Headspace Ebb: 7M msgs, 0 personalization</em></div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">LAYER 3</div>
+        <div class="principle-title">Habit Architecture</div>
+        <div class="principle-desc">Daily reminder + streak + milestone system. Duolingo's model adapted for wellness: 40-60% higher DAU. Streaks reduce 30-day churn by 35%. <em style="font-size: 10px; color: var(--text-3); display: block; margin-top: 6px;">Proof: Duolingo S-1 gamification data</em></div>
+      </div>
+    </div>
+    <div class="principle-grid reveal" style="grid-template-columns: 1fr 1fr 1fr 1fr; margin-bottom: 16px;">
+      <div class="principle-card">
+        <div class="principle-num">LAYER 4</div>
+        <div class="principle-title">Smart Notifications</div>
+        <div class="principle-desc">ML-powered timing. Audio clips as notifications. Granular opt-in. 91.1% target opt-in. <em style="font-size: 10px; color: var(--text-3); display: block; margin-top: 6px;">32% session lift (Headspace)</em></div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">LAYER 5</div>
+        <div class="principle-title">Lifecycle Emails</div>
+        <div class="principle-desc">8 emails, 15 days. Bifurcated paths. Achievement triggers. 258% lift over FOMO messaging. <em style="font-size: 10px; color: var(--text-3); display: block; margin-top: 6px;">4x revenue (Calm compression)</em></div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">LAYER 6</div>
+        <div class="principle-title">Content Pacing</div>
+        <div class="principle-desc">Structured daily content, not a library. Session completion dropped 22% when defaults exceeded 6 minutes. We start at 5. <em style="font-size: 10px; color: var(--text-3); display: block; margin-top: 6px;">Counter: Calm 50K min, 80% leave in 30</em></div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">LAYER 7</div>
+        <div class="principle-title">Trust Pricing</div>
+        <div class="principle-desc">No discounts. No countdown timers. Scholarship option. 24-48hr charge warning. Zero trust gap target. <em style="font-size: 10px; color: var(--text-3); display: block; margin-top: 6px;">Counter: Calm 1.7, Headspace 1.4 Trustpilot</em></div>
+      </div>
+    </div>
+
+    <div class="key-insight reveal">
+      <div class="key-insight-icon">7</div>
+      <p><strong>Defense in depth.</strong> Calm relies on content volume (fails: 80% leave in 30 minutes). Headspace relies on structured courses (fails: 100% paywall kills trust). Waking Up relies on teacher bond (succeeds: 92% retention, but too intellectual for mass market). <strong>We take what works from each and layer them into a single system.</strong> <em style="font-size: 11px; color: var(--text-3); display: block; margin-top: 8px;">Architecture derived from analysis of all 5 competitor retention strategies + Duolingo gamification model</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- Photo Break -->
+<div class="photo-break reveal">
+  <img src="photos/EY-030.jpg" alt="The path forward" loading="lazy" onerror="this.src='photos/surf.jpg'">
+  <div class="photo-glow"></div>
+  <blockquote>"Build the system around the teacher, and the numbers follow."</blockquote>
+  <div class="attrib">Retention Playbook Principle</div>
+</div>
+
+<!-- ===== SECTION 9: TARGET METRICS ===== -->
+<section id="targets">
+  <div class="container">
+    <div class="section-number">09</div>
+    <div class="section-badge reveal">9</div>
+    <div class="section-label reveal">Targets</div>
+    <div class="section-title reveal">What success looks like.</div>
+    <p class="section-desc reveal">Every target is benchmarked against the industry average and the best-in-class competitor. We are not optimizing for incremental improvement. We are building for Waking Up-level retention with mass-market accessibility.</p>
+
+    <div class="tldr reveal">
+      <div class="tldr-label">TL;DR</div>
+      <p>Our targets: 40% Day 1 (industry: 27%), 20%+ Day 30 (industry: 4.7%), 50%+ 12-month (industry: 4%), 91%+ push opt-in (baseline: 43.9%), 45%+ trial conversion (industry: 27%), zero trust gap.</p>
+    </div>
+
+    <div class="stat-grid reveal" style="margin-top: 20px;">
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--teal);">40%+</div>
+        <div class="stat-label">Day 1 retention<br><span style="font-size: 10px; opacity: 0.7;">Industry: 27%</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--teal);">25%+</div>
+        <div class="stat-label">Day 7 retention<br><span style="font-size: 10px; opacity: 0.7;">Industry: 12%</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--become);">20%+</div>
+        <div class="stat-label">Day 30 retention<br><span style="font-size: 10px; opacity: 0.7;">Industry: 4.7%</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--become);">50%+</div>
+        <div class="stat-label">12-month retention<br><span style="font-size: 10px; opacity: 0.7;">Industry: 4%</span></div>
+      </div>
+    </div>
+
+    <div class="stat-grid reveal">
+      <div class="stat-card">
+        <div class="stat-val">&gt;91%</div>
+        <div class="stat-label">Push notification opt-in<br><span style="font-size: 10px; opacity: 0.7;">Baseline: 43.9%</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">45%+</div>
+        <div class="stat-label">Trial-to-paid conversion<br><span style="font-size: 10px; opacity: 0.7;">Industry: 27%</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--teal);">10+</div>
+        <div class="stat-label">Avg consecutive days<br><span style="font-size: 10px; opacity: 0.7;">Habit threshold</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--teal);">0</div>
+        <div class="stat-label">Trust gap (pts)<br><span style="font-size: 10px; opacity: 0.7;">Calm: 3.0. Headspace: 3.3</span></div>
+      </div>
+    </div>
+
+    <div class="key-insight reveal" style="margin-top: 20px;">
+      <div class="key-insight-icon">50%</div>
+      <p><strong>50% 12-month retention would make The Possibility the second-highest-retaining meditation app ever built</strong>, behind only Waking Up (92%). The difference: Waking Up is built for experienced meditators willing to pay $129.99/year. We are built for anyone willing to try. Same retention architecture, broader accessibility. <em style="font-size: 11px; color: var(--text-3); display: block; margin-top: 8px;">Benchmark: Waking Up 92%; Calm ~4%; Headspace ~4%; Endel ~15%; Industry average 4%</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 10: THE SUMMARY ===== -->
+<section id="summary" class="dark-section" style="background: var(--dark); padding: 80px 56px;">
+  <div class="container" style="text-align: center;">
+    <div class="section-badge reveal">10</div>
+    <div style="font-size: 10px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,252,250,0.3); margin-bottom: 24px;" class="reveal">The System at a Glance</div>
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 40px;" class="reveal">
+      <span class="summary-tag">Teacher Bond</span>
+      <span class="summary-tag">AI Companion</span>
+      <span class="summary-tag">Habit Architecture</span>
+      <span class="summary-tag">Smart Notifications</span>
+      <span class="summary-tag">Lifecycle Emails</span>
+      <span class="summary-tag">Content Pacing</span>
+      <span class="summary-tag">Trust Pricing</span>
+      <span class="summary-tag">91.1% Push Opt-in</span>
+      <span class="summary-tag">14-Day Trials</span>
+      <span class="summary-tag">Streak Mechanics</span>
+      <span class="summary-tag">Bifurcated Paths</span>
+      <span class="summary-tag">Zero Trust Gap</span>
+      <span class="summary-tag">5-Min Sessions</span>
+      <span class="summary-tag">Scholarship Model</span>
+    </div>
+  </div>
+</section>
+
+<!-- Photo Break -->
+<div class="photo-break reveal">
+  <img src="angela-bailey-5rokU4g5ZAU-unsplash.jpg" alt="The path forward" loading="lazy">
+  <div class="photo-glow"></div>
+  <blockquote>"The product works when used. Our job is to build the system that ensures it gets used."</blockquote>
+  <div class="attrib">The Core Insight</div>
+</div>
+
+<!-- ===== CLOSING ===== -->
+<div class="closing" style="text-align: center;">
+  <div class="wrap">
+    <img src="possibility-logo.svg" alt="The Possibility" class="closing-logo reveal" loading="lazy" onerror="this.style.display='none'">
+    <h2 class="reveal">Retention is not a feature.<br><span class="gradient-text">It is the product.</span></h2>
+    <p class="reveal">Every competitor treats retention as an optimization problem: better emails, smarter notifications, more content. We treat it as a relationship problem. Jim is not a brand. He is the reason people come back. Build the system around the teacher, and the numbers follow.</p>
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 32px;" class="reveal">
+      <div style="text-align: center; padding: 16px 24px;">
+        <div style="font-size: 28px; font-weight: 200; color: var(--teal); letter-spacing: -1px;">50%+</div>
+        <div style="font-size: 10px; color: rgba(255,252,250,0.35); margin-top: 4px;">12-mo retention target</div>
+      </div>
+      <div style="text-align: center; padding: 16px 24px;">
+        <div style="font-size: 28px; font-weight: 200; color: var(--become); letter-spacing: -1px;">7</div>
+        <div style="font-size: 10px; color: rgba(255,252,250,0.35); margin-top: 4px;">layers of defense</div>
+      </div>
+      <div style="text-align: center; padding: 16px 24px;">
+        <div style="font-size: 28px; font-weight: 200; color: var(--align); letter-spacing: -1px;">0</div>
+        <div style="font-size: 10px; color: rgba(255,252,250,0.35); margin-top: 4px;">trust gap target</div>
+      </div>
+    </div>
+    <div style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; background: rgba(255,252,250,0.06); border: 0.5px solid rgba(255,252,250,0.1); border-radius: 100px; font-size: 10px; font-weight: 600; color: rgba(255,252,250,0.4); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 28px;" class="reveal">
+      <span style="width: 5px; height: 5px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 8px rgba(51,163,163,0.5);"></span>
+      10 Sections &middot; Every Claim Sourced
+    </div>
+    <div class="closing-gradient-bar reveal" style="margin-top: 32px;"></div>
+    <div class="closing-sign reveal" style="margin-top: 48px;">
+      <div style="font-weight: 600; color: rgba(255,252,250,0.72); margin-bottom: 4px;">Eric Yerke &amp; Dr. James Vineburgh</div>
+      <div>Agency OS</div>
+    </div>
+  </div>
+</div>
+
+<!-- Cross Navigation -->
+<div class="cross-nav reveal">
+  <a href="onboarding-teardown.html" class="cross-nav-card">
+    <div class="cross-nav-body">
+      <div class="cross-nav-label">Continue Reading</div>
+      <div class="cross-nav-title">Onboarding Teardown</div>
+      <div class="cross-nav-hint">Competitor flows mapped step by step</div>
+    </div>
+    <div class="cross-nav-arrow">&rarr;</div>
+  </a>
+</div>
+
+<!-- Footer -->
+<footer style="margin-left: 0;">
+  <div>The Possibility &middot; Retention Playbook &middot; March 2026 &middot; Confidential</div>
+</footer>
+
+</div><!-- end .main -->
+
+<script>
+// Scroll progress
+(function(){var b=document.getElementById('scrollProgress');if(!b)return;window.addEventListener('scroll',function(){b.style.width=(window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100)+'%'},{passive:true})})();
+
+// Active nav
+(function(){var l=document.querySelectorAll('.nav-link'),s=[];l.forEach(function(a){var i=a.getAttribute('href')?.replace('#',''),e=i?document.getElementById(i):null;if(e)s.push({link:a,el:e})});function u(){var y=window.scrollY+window.innerHeight*0.35,a=s[0];s.forEach(function(x){if(x.el.offsetTop<=y)a=x});l.forEach(function(x){x.classList.remove('active')});if(a)a.link.classList.add('active')}window.addEventListener('scroll',u,{passive:true});u()})();
+
+// Reveal
+(function(){var o=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){x.target.classList.add('visible');o.unobserve(x.target)}})},{threshold:0.08,rootMargin:'0px 0px -60px 0px'});document.querySelectorAll('.reveal').forEach(function(e){o.observe(e)})})();
+
+// Animated stat counters
+(function(){var s=document.querySelectorAll('.hero-stat .val');if(!s.length)return;var a=false;var o=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting&&!a){a=true;s.forEach(function(st){var t=st.textContent.trim(),su=t.replace(/[0-9]/g,''),ta=parseInt(t.replace(/[^0-9]/g,''),10);if(isNaN(ta))return;var d=1600,start=performance.now();function step(n){var el=n-start,p=Math.min(el/d,1),ea=1-Math.pow(1-p,3);st.textContent=Math.round(ea*ta)+su;if(p<1)requestAnimationFrame(step)}st.textContent='0'+su;requestAnimationFrame(step)});o.disconnect()}})},{threshold:0.3});var b=document.querySelector('.hero-stats-bar');if(b)o.observe(b)})();
+
+// Animate bars
+(function(){var b=document.querySelectorAll('.bar-fill[data-width]');if(!b.length)return;var o=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){x.target.style.width=x.target.dataset.width;o.unobserve(x.target)}})},{threshold:0.2});b.forEach(function(x){o.observe(x)})})();
+
+// Animate waterfall bars with stagger
+(function(){var stages=document.querySelectorAll('.wf-stage');if(!stages.length)return;var o=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){var idx=Array.from(stages).indexOf(x.target);setTimeout(function(){var bar=x.target.querySelector('.wf-bar');if(bar&&bar.dataset.width)bar.style.width=bar.dataset.width;x.target.classList.add('visible')},idx*200);o.unobserve(x.target)}})},{threshold:0.15});stages.forEach(function(s){o.observe(s)})})();
+
+// Animate ring charts
+(function(){var rings=document.querySelectorAll('.ring-fill[data-pct]');if(!rings.length)return;var o=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){var pct=parseInt(x.target.dataset.pct,10);var circ=2*Math.PI*50;x.target.style.strokeDasharray=(circ*pct/100)+' '+circ;o.unobserve(x.target)}})},{threshold:0.3});rings.forEach(function(r){o.observe(r)})})();
+
+// Mobile burger
+(function(){var b=document.getElementById('mobBurger'),o=document.getElementById('mobOverlay');if(!b||!o)return;b.addEventListener('click',function(){b.classList.toggle('active');o.classList.toggle('open');document.body.style.overflow=o.classList.contains('open')?'hidden':''});o.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){b.classList.remove('active');o.classList.remove('open');document.body.style.overflow=''})})})();
+
+// Reading badge (mobile)
+(function(){var badge=document.getElementById('readingBadge');if(!badge)return;var sections=document.querySelectorAll('section[id]');if(!sections.length)return;var ticking=false;window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(function(){var y=window.scrollY+window.innerHeight*0.4;var current=null;sections.forEach(function(s){if(s.offsetTop<=y)current=s});if(current){var label=current.querySelector('.section-label');badge.textContent=label?label.textContent:'';badge.classList.add('show')}else{badge.classList.remove('show')}ticking=false})}},{passive:true})})();
+
+// Section badge pop animation
+(function(){var badges=document.querySelectorAll('.section-badge');if(!badges.length)return;var o=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){x.target.classList.add('visible');o.unobserve(x.target)}})},{threshold:0.5});badges.forEach(function(b){o.observe(b)})})();
+
+// Timeline item stagger reveal
+(function(){var items=document.querySelectorAll('.tl-item');if(!items.length)return;var o=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){var idx=Array.from(items).indexOf(x.target);setTimeout(function(){x.target.classList.add('visible')},idx*80);o.unobserve(x.target)}})},{threshold:0.15,rootMargin:'0px 0px -40px 0px'});items.forEach(function(i){o.observe(i)})})();
+
+// Summary tag stagger entrance
+(function(){var tags=document.querySelectorAll('.summary-tag');if(!tags.length)return;var o=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){tags.forEach(function(t,i){t.style.animation='tagFloat 0.4s cubic-bezier(0.34,1.56,0.64,1) '+(i*0.06)+'s both'});o.disconnect()}})},{threshold:0.3});var wrap=tags[0]?.parentElement;if(wrap)o.observe(wrap)})();
+
+// Animated stat card counters (all stat-val elements)
+(function(){var cards=document.querySelectorAll('.stat-card .stat-val');if(!cards.length)return;var o=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){var el=x.target,t=el.textContent.trim();var match=t.match(/([<>~]*)(\d+\.?\d*)(.*)/);if(!match){o.unobserve(el);return}var prefix=match[1],target=parseFloat(match[2]),suffix=match[3];var isFloat=t.includes('.');var d=1200,start=performance.now();function step(now){var elapsed=now-start,p=Math.min(elapsed/d,1),ease=1-Math.pow(1-p,3);var val=ease*target;el.textContent=prefix+(isFloat?val.toFixed(1):Math.round(val))+suffix;if(p<1)requestAnimationFrame(step)}el.textContent=prefix+'0'+suffix;requestAnimationFrame(step);o.unobserve(el)}})},{threshold:0.3});cards.forEach(function(c){o.observe(c)})})();
+
+// Trust gap card counters (the Trustpilot ratings)
+(function(){var els=document.querySelectorAll('[data-counter]');if(!els.length)return;var o=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){var target=parseFloat(x.target.dataset.counter);var d=1000,start=performance.now();function step(now){var elapsed=now-start,p=Math.min(elapsed/d,1),ease=1-Math.pow(1-p,3);x.target.textContent=(ease*target).toFixed(1);if(p<1)requestAnimationFrame(step)}x.target.textContent='0.0';requestAnimationFrame(step);o.unobserve(x.target)}})},{threshold:0.3});els.forEach(function(e){o.observe(e)})})();
+</script>
+
+<!-- Visual Enhancements: Lenis + GSAP + ScrollTrigger -->
+<link rel="stylesheet" href="visual-enhancements.css">
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+<script src="visual-enhancements.js"></script>
+<script src="chat-widget.js" defer></script>
+
+<script src="/settings-widget.js" defer></script>
+</body>
+</html>

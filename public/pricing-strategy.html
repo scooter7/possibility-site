@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+<meta name="view-transition" content="same-origin">
+<title>The Possibility - Pricing Strategy</title>
+<meta name="description" content="Pricing strategy reference for The Possibility. Trial design, tier structure, and trust architecture.">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+<link rel="icon" type="image/png" href="app-icon.png">
+<link rel="apple-touch-icon" href="app-icon.png">
+<link rel="preload" as="style" href="design-system.css">
+<link rel="stylesheet" href="design-system.css">
+<style>
+/* ===== MAIN CONTENT ===== */
+.main { margin-left: var(--sidebar-w); overflow-x: clip; }
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  min-height: 80vh; min-height: 80dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  background: var(--dark);
+  padding: 80px 48px;
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+}
+.hero-bg img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 30%;
+  transform-origin: center center;
+  opacity: 0;
+  animation: heroImgReveal 2.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards,
+             heroKenBurns 20s ease-out 2.5s forwards;
+  will-change: transform, opacity;
+}
+@keyframes heroImgReveal {
+  0% { opacity: 0; transform: scale(1.1); }
+  100% { opacity: 0.45; transform: scale(1.0); }
+}
+@keyframes heroKenBurns {
+  0% { transform: scale(1.0); }
+  100% { transform: scale(1.05); }
+}
+.hero-bg::after {
+  content: ''; position: absolute; inset: 0;
+  opacity: 0; animation: heroScrimFade 2s ease-out 0.3s forwards;
+  background:
+    linear-gradient(180deg, rgba(8,10,15,0.4) 0%, rgba(8,10,15,0.15) 35%, rgba(8,10,15,0.6) 70%, rgba(8,10,15,0.95) 100%),
+    radial-gradient(ellipse 600px 400px at 30% 70%, rgba(51,163,163,0.1) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 400px at 70% 60%, rgba(99,102,241,0.06) 0%, transparent 70%);
+}
+@keyframes heroScrimFade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes heroFadeUp {
+  0% { opacity: 0; transform: translateY(24px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes dotPulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(51,163,163,0.6); }
+  50% { box-shadow: 0 0 20px rgba(51,163,163,0.9), 0 0 40px rgba(51,163,163,0.3); }
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 20px;
+  background: rgba(255,252,250,0.06);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border: 0.5px solid rgba(255,252,250,0.1);
+  border-radius: 100px;
+  font-size: 10px; font-weight: 600;
+  color: rgba(255,252,250,0.45);
+  letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 32px;
+  opacity: 0; animation: heroFadeUp 1s var(--zen) 0.3s forwards;
+  position: relative; z-index: 2;
+}
+.hero-badge .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 12px rgba(51,163,163,0.6);
+  animation: dotPulse 3s ease-in-out 2s infinite;
+}
+.hero h1 {
+  font-size: clamp(32px, 5vw, 60px);
+  font-weight: 200; line-height: 1.1;
+  letter-spacing: -2px;
+  color: rgba(255,252,250,0.95);
+  margin-bottom: 20px;
+  max-width: 700px;
+  opacity: 0; animation: heroFadeUp 1s var(--zen) 0.5s forwards;
+  position: relative; z-index: 2;
+}
+.hero h1 em {
+  font-style: normal; font-weight: 300;
+  color: var(--teal-bright);
+}
+.hero-sub {
+  font-size: 16px; font-weight: 400;
+  color: rgba(255,252,250,0.4);
+  max-width: 480px; line-height: 1.7;
+  opacity: 0; animation: heroFadeUp 1s var(--zen) 0.7s forwards;
+  position: relative; z-index: 2;
+}
+
+/* Hero stats bar */
+.hero-stats-bar {
+  position: relative; z-index: 2;
+  display: flex; justify-content: center; gap: 48px;
+  padding: 100px 48px 0;
+  background: var(--bg);
+}
+.hero-stat { text-align: center; }
+.hero-stat .val {
+  font-size: 32px; font-weight: 300;
+  color: var(--text); letter-spacing: -1px;
+}
+.hero-stat .lbl {
+  font-size: 11px; color: var(--text-3); margin-top: 4px;
+}
+
+/* ===== SECTIONS ===== */
+section { padding: 110px 56px; position: relative; overflow-x: hidden; }
+section + section::before {
+  content: ''; position: absolute; top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: min(200px, 40%); height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(51,163,163,0.15), transparent);
+}
+
+/* ===== GLASS CARDS (page-specific) ===== */
+.ps-card {
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 0.5px solid rgba(26,20,16,0.08);
+  border-radius: 24px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s var(--zen), box-shadow 0.4s var(--zen);
+  box-shadow: 0 8px 32px rgba(31,38,135,0.08), 0 0 0 0.5px rgba(255,255,255,0.3) inset;
+}
+.ps-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 40%; border-radius: inherit;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.45) 0%, transparent 100%);
+  pointer-events: none; z-index: 0;
+}
+.ps-card:hover {
+  box-shadow: 0 16px 48px rgba(31,38,135,0.12), 0 0 40px rgba(51,163,163,0.08), 0 0 0 0.5px rgba(255,255,255,0.4) inset;
+  transform: translateY(-4px);
+}
+
+/* ===== VERDICT CARDS ===== */
+.verdict {
+  background: var(--teal-soft);
+  border: 1px solid rgba(51,163,163,0.12);
+  border-radius: var(--r);
+  padding: 28px 32px;
+  margin: 24px 0;
+}
+.verdict-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+}
+.verdict-label::before {
+  content: ''; width: 8px; height: 8px; border-radius: 50%;
+}
+.verdict-label.go { color: var(--become); }
+.verdict-label.go::before { background: var(--become); box-shadow: 0 0 8px rgba(52,211,153,0.5); }
+.verdict-label.caution { color: #F59E0B; }
+.verdict-label.caution::before { background: #F59E0B; }
+
+/* ===== RISK CALLOUT ===== */
+.risk-card {
+  background: rgba(26,20,16,0.025);
+  border: 1px solid rgba(232,117,138,0.12);
+  border-radius: var(--r);
+  padding: 24px 28px;
+  margin: 24px 0;
+}
+.risk-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--release);
+  margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+}
+.risk-label::before {
+  content: ''; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--release); box-shadow: 0 0 8px rgba(232,117,138,0.4);
+}
+
+/* ===== STAT CARDS ===== */
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 28px 0; }
+.stat-card {
+  text-align: center; padding: 28px 14px;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 0.5px solid rgba(26,20,16,0.08);
+  border-radius: 24px; position: relative; overflow: hidden;
+  transition: transform 0.4s var(--zen), box-shadow 0.4s var(--zen);
+  box-shadow: 0 8px 32px rgba(31,38,135,0.08), 0 0 0 0.5px rgba(255,255,255,0.3) inset;
+}
+.stat-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 40%; border-radius: inherit;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.45) 0%, transparent 100%);
+  pointer-events: none;
+}
+.stat-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(31,38,135,0.12), 0 0 40px rgba(51,163,163,0.08); }
+.stat-val { font-size: 32px; font-weight: 200; letter-spacing: -1px; line-height: 1.2; }
+.stat-label { font-size: 11px; color: var(--text-3); margin-top: 6px; line-height: 1.4; }
+
+/* ===== COMPARISON BARS ===== */
+.bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.bar-label { width: 110px; font-size: 13px; font-weight: 500; color: var(--text-2); flex-shrink: 0; }
+.bar-track { flex: 1; height: 32px; background: rgba(26,20,16,0.03); border-radius: 8px; overflow: hidden; }
+.bar-fill {
+  height: 100%; border-radius: 8px;
+  display: flex; align-items: center; justify-content: flex-end;
+  padding-right: 12px;
+  font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.9);
+  width: 0; transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+}
+.bar-fill.teal { background: linear-gradient(90deg, var(--teal), #2DD4BF); }
+.bar-fill.muted { background: linear-gradient(90deg, rgba(26,20,16,0.08), rgba(26,20,16,0.18)); color: var(--text-3); }
+
+/* ===== COMPETITOR TABLE (dark) ===== */
+.comp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.comp-table th {
+  text-align: left; font-size: 10px; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(255,252,250,0.3); padding: 14px 16px;
+  border-bottom: 1px solid rgba(255,252,250,0.08);
+}
+.comp-table td {
+  padding: 16px; color: rgba(255,252,250,0.65);
+  border-bottom: 1px solid rgba(255,252,250,0.05);
+}
+.comp-table td strong { color: rgba(255,252,250,0.9); font-weight: 600; }
+.comp-table .app-cell {
+  display: flex; align-items: center; gap: 12px;
+}
+.comp-table .app-cell img {
+  width: 32px; height: 32px; border-radius: 8px;
+  object-fit: contain; flex-shrink: 0;
+}
+.comp-table .trust-bad { color: var(--release); font-weight: 600; }
+.comp-table .trust-good { color: var(--become); font-weight: 600; }
+.comp-table tr:last-child td { border-bottom: none; }
+
+/* ===== PRICING TIERS ===== */
+.tier-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.tier-card {
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 0.5px solid rgba(26,20,16,0.08);
+  border-radius: 24px; padding: 36px 28px; text-align: center;
+  position: relative; overflow: hidden;
+  transition: transform 0.4s var(--zen), box-shadow 0.4s var(--zen);
+  box-shadow: 0 8px 32px rgba(31,38,135,0.08), 0 0 0 0.5px rgba(255,255,255,0.3) inset;
+}
+.tier-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 40%; border-radius: inherit;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.45) 0%, transparent 100%);
+  pointer-events: none;
+}
+.tier-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(31,38,135,0.12), 0 0 40px rgba(51,163,163,0.08); }
+.tier-card.featured {
+  border: 1.5px solid var(--teal);
+  box-shadow: 0 8px 32px rgba(31,38,135,0.08), 0 0 40px rgba(51,163,163,0.06), 0 0 0 0.5px rgba(255,255,255,0.3) inset;
+}
+.tier-badge {
+  display: inline-block; font-size: 9px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--teal); background: var(--teal-soft);
+  padding: 4px 12px; border-radius: 100px;
+  margin-bottom: 16px;
+}
+.tier-name { font-size: 14px; font-weight: 600; color: var(--text-2); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+.tier-price { font-size: 40px; font-weight: 200; letter-spacing: -2px; color: var(--text); margin-bottom: 4px; }
+.tier-price span { font-size: 16px; font-weight: 400; color: var(--text-3); letter-spacing: 0; }
+.tier-sub { font-size: 12px; color: var(--text-3); margin-bottom: 16px; }
+.tier-desc { font-size: 13px; color: var(--text-2); line-height: 1.65; }
+
+/* ===== FREE VS PAID SPLIT ===== */
+.split-tiers {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+}
+.split-tier {
+  border-radius: 20px; padding: 32px;
+}
+.split-tier.free {
+  background: rgba(26,20,16,0.025);
+  border: 0.5px solid rgba(26,20,16,0.06);
+}
+.split-tier.paid {
+  background: var(--teal-soft);
+  border: 0.5px solid rgba(51,163,163,0.1);
+}
+.split-tier-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.split-tier.free .split-tier-label { color: var(--text-3); }
+.split-tier.paid .split-tier-label { color: var(--teal); }
+.split-tier ul {
+  list-style: none; padding: 0; margin: 0;
+}
+.split-tier li {
+  position: relative; padding-left: 18px; margin-bottom: 10px;
+  font-size: 13.5px; color: var(--text-2); line-height: 1.6;
+}
+.split-tier li::before {
+  content: ''; position: absolute; left: 0; top: 8px;
+  width: 5px; height: 5px; border-radius: 50%;
+}
+.split-tier.free li::before { background: var(--text-3); opacity: 0.4; }
+.split-tier.paid li::before { background: var(--teal); opacity: 0.6; }
+
+/* ===== DAY TIMELINE ===== */
+.timeline { position: relative; padding-left: 32px; }
+.timeline::before {
+  content: ''; position: absolute; left: 8px; top: 8px; bottom: 8px;
+  width: 1.5px; background: linear-gradient(180deg, var(--release), var(--align), var(--become));
+  border-radius: 2px;
+}
+.timeline-item { position: relative; margin-bottom: 28px; }
+.timeline-item:last-child { margin-bottom: 0; }
+.timeline-dot {
+  position: absolute; left: -28px; top: 6px;
+  width: 12px; height: 12px; border-radius: 50%;
+  border: 2px solid var(--bg); box-shadow: 0 0 0 1px rgba(51,163,163,0.3);
+}
+.timeline-item:nth-child(1) .timeline-dot { background: var(--become); }
+.timeline-item:nth-child(2) .timeline-dot { background: var(--align); }
+.timeline-item:nth-child(3) .timeline-dot { background: var(--teal); }
+.timeline-item:nth-child(4) .timeline-dot { background: rgba(26,20,16,0.15); }
+.timeline-day {
+  font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--teal); margin-bottom: 4px;
+}
+.timeline-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.timeline-desc { font-size: 14px; color: var(--text-2); line-height: 1.7; }
+
+/* ===== CHECKLIST ===== */
+.checklist { list-style: none; padding: 0; margin: 0; counter-reset: check; }
+.checklist li {
+  display: grid; grid-template-columns: 32px 1fr auto; gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(26,20,16,0.05);
+  align-items: start;
+  font-size: 14px; color: var(--text-2); line-height: 1.65;
+}
+.checklist li:last-child { border-bottom: none; }
+.check-num {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: var(--teal-soft); color: var(--teal);
+  font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.check-fail {
+  font-size: 11px; color: var(--release); font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ===== INFOGRAPHIC DARK SECTION ===== */
+.dark-inset {
+  border-radius: 28px;
+  background: var(--dark);
+  padding: 48px 40px;
+  position: relative; overflow: hidden;
+}
+.dark-inset::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 500px 400px at 20% 30%, rgba(51,163,163,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 300px at 80% 70%, rgba(99,102,241,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ===== SUMMARY ARCHITECTURE ===== */
+.arch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.arch-card {
+  padding: 28px; border-radius: 20px;
+  background: rgba(255,255,255,0.5);
+  border: 0.5px solid rgba(26,20,16,0.06);
+}
+.arch-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 10px;
+}
+.arch-card p { font-size: 13.5px; color: var(--text-2); line-height: 1.65; margin: 0; }
+.arch-card p strong { color: var(--text); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .main { margin-left: 0; }
+  section { padding: 80px 32px; }
+  .hero { padding: 60px 32px; }
+  .hero-stats-bar { padding-top: 72px; gap: 32px; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .tier-grid { grid-template-columns: 1fr 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  section { padding: 72px 24px; }
+  .hero { min-height: 60vh; padding: 56px 24px; }
+  .hero-stats-bar { gap: 24px; padding: 56px 24px 0; }
+  .hero-stat .val { font-size: 28px; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .tier-grid { grid-template-columns: 1fr; }
+  .split-tiers { grid-template-columns: 1fr; }
+  .arch-grid { grid-template-columns: 1fr; }
+  .bar-label { width: 80px; font-size: 12px; }
+  .dark-inset { padding: 32px 24px; border-radius: 20px; }
+}
+@media (max-width: 480px) {
+  section { padding: 56px 20px; }
+  .hero { padding: 48px 20px; min-height: 55vh; }
+  .hero h1 { font-size: clamp(26px, 7vw, 40px); letter-spacing: -1px; }
+  .hero-sub { font-size: 14px; }
+  .hero-stats-bar { gap: 16px; padding: 48px 20px 0; flex-wrap: wrap; }
+  .hero-stat .val { font-size: 24px; }
+  .stat-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat-val { font-size: 26px; }
+  .tier-price { font-size: 32px; }
+  .checklist li { grid-template-columns: 28px 1fr; }
+  .check-fail { grid-column: 2; font-size: 10px; }
+  .dark-inset { padding: 28px 20px; border-radius: 16px; }
+}
+@media (max-width: 375px) {
+  section { padding: 48px 16px; }
+  .hero { padding: 40px 16px; }
+  .hero-stats-bar { padding: 40px 16px 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- Scroll Progress -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Mobile Burger -->
+<button class="mob-burger" id="mobBurger" aria-label="Menu">
+  <span></span><span></span><span></span>
+</button>
+
+<!-- Mobile Overlay -->
+<div class="mob-overlay" id="mobOverlay">
+  <div class="mob-menu">
+    <div class="mob-menu-cross">
+      <a href="index.html">Hub <span>&rarr;</span></a>
+      <a href="jim-strategy-briefing.html">Strategic Briefing <span>&rarr;</span></a>
+      <a href="jim-marketing-playbook.html">Marketing Playbook <span>&rarr;</span></a>
+      <a href="the-thesis.html">The Thesis <span>&rarr;</span></a>
+    </div>
+    <div class="mob-menu-label">Pricing Strategy</div>
+    <div class="mob-menu-section">
+      <a href="#hero">Overview</a>
+      <a href="#rule">The One Rule</a>
+      <a href="#model">Trial Model</a>
+      <a href="#trial-length">14-Day Length</a>
+      <a href="#free-tier">Free Tier</a>
+      <a href="#credit-card">Credit Card</a>
+      <a href="#pricing">Price Points</a>
+      <a href="#scholarship">Scholarship Access</a>
+      <a href="#transition">Day 14 Transition</a>
+      <a href="#checklist">Trust Checklist</a>
+      <a href="#architecture">Full Architecture</a>
+    </div>
+  </div>
+</div>
+
+<!-- Sidebar -->
+<nav class="sidebar" aria-label="Page navigation">
+  <a href="index.html" class="sidebar-brand" style="text-decoration:none; display:block;">Agency OS</a>
+  <div class="sidebar-title">Pricing Strategy</div>
+
+  <div class="nav-cross-group">
+    <a href="index.html" class="nav-cross-link">
+      <span class="nc-icon">&#127968;</span> Hub <span class="nc-arrow">&rarr;</span>
+    </a>
+    <a href="jim-strategy-briefing.html" class="nav-cross-link">
+      <span class="nc-icon">&#127919;</span> Strategic Briefing <span class="nc-arrow">&rarr;</span>
+    </a>
+    <a href="jim-marketing-playbook.html" class="nav-cross-link">
+      <span class="nc-icon">&#128640;</span> Marketing Playbook <span class="nc-arrow">&rarr;</span>
+    </a>
+    <a href="the-thesis.html" class="nav-cross-link">
+      <span class="nc-icon">&#128218;</span> The Thesis <span class="nc-arrow">&rarr;</span>
+    </a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Foundation</div>
+    <a href="#hero" class="nav-link active">Overview</a>
+    <a href="#rule" class="nav-link">The One Rule</a>
+    <a href="#model" class="nav-link">Trial Model</a>
+    <a href="#trial-length" class="nav-link">14-Day Length</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Structure</div>
+    <a href="#free-tier" class="nav-link">Free Tier</a>
+    <a href="#credit-card" class="nav-link">Credit Card</a>
+    <a href="#pricing" class="nav-link">Price Points</a>
+    <a href="#scholarship" class="nav-link">Scholarship Access</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Execution</div>
+    <a href="#transition" class="nav-link">Day 14 Transition</a>
+    <a href="#checklist" class="nav-link">Trust Checklist</a>
+    <a href="#architecture" class="nav-link">Full Architecture</a>
+  </div>
+
+  <div class="sidebar-footer">
+    Confidential<br>
+    Eric Yerke &amp; Dr. James Vineburgh<br>
+    March 2026
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="main">
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <img src="david-becker-Kt9xrNQQpBk-unsplash.jpg" alt="Mountain peak emerging through clouds">
+  </div>
+  <div class="hero-badge">
+    <span class="dot"></span>
+    Pricing Strategy &middot; March 2026
+  </div>
+  <h1>Reputation first.<br><em>Revenue follows.</em></h1>
+  <p class="hero-sub">The formula for high conversion, happy users, and zero "bait and switch" risk. Every decision backed by data.</p>
+</section>
+
+<!-- Hero Stats Bridge -->
+<div class="hero-stats-bar">
+  <div class="hero-stat reveal"><div class="val">5</div><div class="lbl">Competitors Analyzed</div></div>
+  <div class="hero-stat reveal reveal-delay-1"><div class="val">10</div><div class="lbl">Trust Principles</div></div>
+  <div class="hero-stat reveal reveal-delay-2"><div class="val">258%</div><div class="lbl">Better Conversion via Achievement Triggers</div></div>
+  <div class="hero-stat reveal reveal-delay-3"><div class="val">50%</div><div class="lbl">Convert After Trial Ends</div></div>
+</div>
+
+<!-- ===== THE ONE RULE ===== -->
+<section id="rule">
+  <div class="container">
+    <div class="section-label reveal">The One Rule</div>
+    <div class="section-title reveal">Activation beats everything.</div>
+    <p class="section-desc reveal">Activated users convert at 5 to 10x the rate of unactivated users. Everything else (trial length, pricing tiers, credit card policy) is secondary to getting someone to their aha moment.</p>
+
+    <div class="stat-grid reveal">
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--teal);">5-10x</div>
+        <div class="stat-label">Activated vs. unactivated conversion</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">36%</div>
+        <div class="stat-label">Users who actually activate (industry avg)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">36h</div>
+        <div class="stat-label">Average time-to-first-value</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--become);">60%+</div>
+        <div class="stat-label">Activation rate = outperform regardless of trial length</div>
+      </div>
+    </div>
+
+    <div class="verdict reveal">
+      <div class="verdict-label go">THE POSSIBILITY ADVANTAGE</div>
+      <p style="font-size: 15px; color: var(--text-2); line-height: 1.75; margin: 0;">The 14-day engine IS the activation event. Release, Align, Become is not a feature tour. It is a structured psychological journey that builds the aha moment into the product itself. <strong style="color: var(--text);">The pricing model just needs to not get in its way.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PULL QUOTE ===== -->
+<div class="pull-quote reveal">
+  <blockquote>"The industry converts through restriction. We convert through completion."</blockquote>
+  <div class="attrib">The Possibility Strategy</div>
+</div>
+
+<!-- ===== TRIAL MODEL ===== -->
+<section id="model">
+  <div class="container">
+    <div class="section-label reveal">Trial Model</div>
+    <div class="section-title reveal">Reverse trial wins.</div>
+    <p class="section-desc reveal">Three models exist. Only one matches a product where habit formation is the entire value proposition.</p>
+
+    <!-- Comparison bars -->
+    <div class="ps-card reveal" style="margin-bottom: 32px;">
+      <div style="font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-3); margin-bottom: 20px;">Conversion Rate by Model</div>
+      <div class="bar-row">
+        <div class="bar-label">Free Trial</div>
+        <div class="bar-track"><div class="bar-fill teal" data-width="50%">15-25%</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Freemium</div>
+        <div class="bar-track"><div class="bar-fill muted" data-width="15%">2-5%</div></div>
+      </div>
+      <div class="bar-row" style="margin-bottom: 0;">
+        <div class="bar-label">Reverse Trial</div>
+        <div class="bar-track"><div class="bar-fill teal" data-width="65%" style="background: linear-gradient(90deg, var(--teal), var(--become));">Highest retention</div></div>
+      </div>
+    </div>
+
+    <div class="verdict reveal">
+      <div class="verdict-label go">RECOMMENDATION</div>
+      <p style="font-size: 15px; color: var(--text-2); line-height: 1.75; margin: 0;"><strong style="color: var(--text);">14-day reverse trial.</strong> Full access to everything (the complete Release, Align, Become engine), then downgrade to a meaningful free tier. Users who don't convert keep access to basic meditations. Nobody feels tricked. Nobody hits a wall.</p>
+    </div>
+
+    <div class="ps-card reveal" style="padding: 28px 32px;">
+      <div style="font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 14px;">Why reverse trial wins here</div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; gap: 12px; align-items: start;">
+          <span style="color: var(--teal); font-weight: 700; flex-shrink: 0;">01</span>
+          <span style="font-size: 14px; color: var(--text-2); line-height: 1.65;"><strong style="color: var(--text);">Loss aversion is real.</strong> After 14 days of Jim's voice, personalized AI coaching, and the full pillar journey, losing that feels like losing progress.</span>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: start;">
+          <span style="color: var(--teal); font-weight: 700; flex-shrink: 0;">02</span>
+          <span style="font-size: 14px; color: var(--text-2); line-height: 1.65;"><strong style="color: var(--text);">Soft landing protects reputation.</strong> Users who can't pay land on a free tier, not a locked door. They tell friends "I use The Possibility" not "they cut me off."</span>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: start;">
+          <span style="color: var(--teal); font-weight: 700; flex-shrink: 0;">03</span>
+          <span style="font-size: 14px; color: var(--text-2); line-height: 1.65;"><strong style="color: var(--text);">It matches your philosophy.</strong> "We convert through completion, not restriction." A reverse trial is the pricing structure version of that belief.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 14-DAY LENGTH ===== -->
+<section id="trial-length" class="inset-section">
+  <div class="container">
+    <div class="section-label reveal">Trial Length</div>
+    <div class="section-title reveal">14 days. Not negotiable.</div>
+    <p class="section-desc reveal">The trial length is not arbitrary. It is the minimum time for the full psychological arc of Release, Align, Become.</p>
+
+    <div class="stat-grid reveal">
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--release);">40.4%</div>
+        <div class="stat-label">7-day trial conversion (but needs fast time-to-value)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--teal);">14 days</div>
+        <div class="stat-label">The sweet spot for habit-forming products</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">28 days</div>
+        <div class="stat-label">Waking Up's trial (too long, engagement drops)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--release);">0 days</div>
+        <div class="stat-label">Headspace free (nothing free at all)</div>
+      </div>
+    </div>
+
+    <div class="ps-card reveal" style="margin-top: 24px;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; text-align: center;">
+        <div>
+          <div style="font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--release); margin-bottom: 8px;">Release</div>
+          <div style="font-size: 20px; font-weight: 300; color: var(--text); margin-bottom: 4px;">Days 1-3</div>
+          <div style="font-size: 12px; color: var(--text-3);">Let go of what no longer serves you</div>
+        </div>
+        <div>
+          <div style="font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--align); margin-bottom: 8px;">Align</div>
+          <div style="font-size: 20px; font-weight: 300; color: var(--text); margin-bottom: 4px;">Days 4-10</div>
+          <div style="font-size: 12px; color: var(--text-3);">Align with your truest self</div>
+        </div>
+        <div>
+          <div style="font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--become); margin-bottom: 8px;">Become</div>
+          <div style="font-size: 20px; font-weight: 300; color: var(--text); margin-bottom: 4px;">Days 11-14</div>
+          <div style="font-size: 12px; color: var(--text-3);">You are already everything you seek to become</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FREE TIER ===== -->
+<section id="free-tier">
+  <div class="container">
+    <div class="section-label reveal">Free Tier Design</div>
+    <div class="section-title reveal">Give away the habit.<br>Charge for the depth.</div>
+    <p class="section-desc reveal">Get it wrong and you either give away too much (Evernote: 75M users, 1% conversion) or too little (Headspace: removed all free content, bleeding users).</p>
+
+    <div class="split-tiers reveal">
+      <div class="split-tier free">
+        <div class="split-tier-label">Free Forever</div>
+        <ul>
+          <li>1 to 2 guided meditations per pillar (curated, not random)</li>
+          <li>Daily quote or micro-reflection from Jim</li>
+          <li>Basic session history</li>
+          <li>Community access</li>
+        </ul>
+      </div>
+      <div class="split-tier paid">
+        <div class="split-tier-label">Paid Subscriber</div>
+        <ul>
+          <li>Full meditation library</li>
+          <li>All 9 hypno-meditation sessions</li>
+          <li>Jim AI coaching (personalized, remembers you)</li>
+          <li>Intelligence loop (emails, push, recommendations)</li>
+          <li>Full Release, Align, Become engine (re-runnable)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="verdict reveal" style="margin-top: 24px;">
+      <div class="verdict-label go">KEY INSIGHT</div>
+      <p style="font-size: 14px; color: var(--text-2); line-height: 1.75; margin: 0;">Free users should still feel Jim's voice daily. That is the habit. But AI coaching, hypno-meditations, and the full engine are what they will miss most after the trial. Those create the upgrade pull.</p>
+    </div>
+
+    <div class="risk-card reveal">
+      <div class="risk-label">DO NOT</div>
+      <p style="font-size: 14px; color: var(--text-2); line-height: 1.75; margin: 0;">Gate basic meditation behind the paywall. This is what Headspace did. Users called it "bait and switch" and drove Trustpilot to 1.4 stars. A few free sessions cost you nothing and keep the door open. <strong style="color: var(--text);">50% of eventual conversions happen after the formal trial ends.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CREDIT CARD ===== -->
+<section id="credit-card" class="inset-section">
+  <div class="container">
+    <div class="section-label reveal">Credit Card Policy</div>
+    <div class="section-title reveal">No credit card upfront.<br>Non-negotiable.</div>
+
+    <div class="stat-grid reveal" style="grid-template-columns: 1fr 1fr; max-width: 600px;">
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--release);">48.8%</div>
+        <div class="stat-label">With credit card<br><span style="font-size: 10px; opacity: 0.7;">Higher conversion, but 90-day retention tanks</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--become);">2x</div>
+        <div class="stat-label">Retention without credit card<br><span style="font-size: 10px; opacity: 0.7;">End-to-end economics win</span></div>
+      </div>
+    </div>
+
+    <div class="ps-card reveal" style="margin-top: 24px;">
+      <div style="font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 14px;">The trust math</div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="font-size: 14px; color: var(--text-2); line-height: 1.65;">
+          <strong style="color: var(--text);">81%</strong> of consumers have encountered hidden charges from trials
+        </div>
+        <div style="font-size: 14px; color: var(--text-2); line-height: 1.65;">
+          <strong style="color: var(--text);">43%</strong> completely stop purchasing from brands after feeling manipulated
+        </div>
+        <div style="font-size: 14px; color: var(--text-2); line-height: 1.65;">
+          No credit card signals: <strong style="color: var(--teal);">"We don't need to trap you. The experience speaks for itself."</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section id="pricing">
+  <div class="container">
+    <div class="section-label reveal">Price Points</div>
+    <div class="section-title reveal">Three tiers. One highlighted.</div>
+    <p class="section-desc reveal">Positioned between Headspace and Calm monthly, with a genuine annual discount that undercuts Waking Up while offering more.</p>
+
+    <div class="tier-grid reveal">
+      <div class="tier-card">
+        <div class="tier-name">Monthly</div>
+        <div class="tier-price">$14.99<span>/mo</span></div>
+        <div class="tier-sub">No commitment</div>
+        <div class="tier-desc">Flexible. Cancel anytime. For users who want to stay month to month.</div>
+      </div>
+      <div class="tier-card featured">
+        <div class="tier-badge">Recommended</div>
+        <div class="tier-name">Annual</div>
+        <div class="tier-price">$99.99<span>/yr</span></div>
+        <div class="tier-sub">$8.33/mo &middot; Two months free</div>
+        <div class="tier-desc">Clear savings. This is your target tier. 44% discount framed as "two months free."</div>
+      </div>
+      <div class="tier-card">
+        <div class="tier-name">Founding Member</div>
+        <div class="tier-price">$79.99<span>/yr</span></div>
+        <div class="tier-sub">Launch only &middot; First year</div>
+        <div class="tier-desc">Early adopter reward. Creates urgency without manipulation.</div>
+      </div>
+    </div>
+
+    <!-- Competitor context in dark card -->
+    <div class="dark-inset reveal" style="margin-top: 32px;">
+      <div style="position: relative; z-index: 1;">
+        <div style="font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 20px;">Competitor Pricing Context</div>
+        <table class="comp-table">
+          <tr><th>App</th><th>Monthly</th><th>Annual</th><th>Trust Signal</th></tr>
+          <tr><td><div class="app-cell"><img src="competitor-logos/Calm_(company)_logo.svg.png" alt="Calm"><strong>Calm</strong></div></td><td>$16.99</td><td>$79.99</td><td class="trust-bad">Trustpilot: 1.4 &middot; BBB: F</td></tr>
+          <tr><td><div class="app-cell"><img src="competitor-logos/Mental-Health-Directory-Images-12.png" alt="Headspace"><strong>Headspace</strong></div></td><td>$12.99</td><td>$69.99</td><td class="trust-bad">100% paywall &middot; Valuation down 89%</td></tr>
+          <tr><td><div class="app-cell"><img src="competitor-logos/wakingup.webp" alt="Waking Up"><strong>Waking Up</strong></div></td><td>$19.99</td><td>$129.99</td><td class="trust-good">Scholarship model &middot; Highest trust</td></tr>
+          <tr><td><div class="app-cell"><img src="competitor-logos/images.png" alt="Open"><strong>Open</strong></div></td><td>$20.00</td><td>$150.00</td><td class="trust-bad">Class action threats &middot; Surprise billing</td></tr>
+          <tr><td><div class="app-cell"><img src="competitor-logos/endel.svg" alt="Endel"><strong>Endel</strong></div></td><td>$5.99-19.99</td><td>Varies</td><td class="trust-bad">3 different prices &middot; Plans revoked</td></tr>
+          <tr><td><div class="app-cell"><img src="app-icon.png" alt="The Possibility"><strong style="color: var(--teal);">The Possibility</strong></div></td><td style="color: var(--teal);">$14.99</td><td style="color: var(--teal);">$99.99</td><td class="trust-good">Reverse trial &middot; Scholarship &middot; No CC</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PULL QUOTE ===== -->
+<div class="pull-quote reveal">
+  <blockquote>"A clinical hypnotherapist who gates healing behind a paywall contradicts the mission. Scholarship access resolves that tension."</blockquote>
+</div>
+
+<!-- ===== SCHOLARSHIP ===== -->
+<section id="scholarship" class="inset-section">
+  <div class="container">
+    <div class="section-label reveal">Scholarship Access</div>
+    <div class="section-title reveal">The Waking Up move.</div>
+    <p class="section-desc reveal">Waking Up is the only meditation app with meaningful Trustpilot trust. The reason: anyone who cannot afford the subscription gets free access, no questions asked.</p>
+
+    <div class="verdict reveal">
+      <div class="verdict-label go">STRONGLY RECOMMENDED</div>
+      <p style="font-size: 15px; color: var(--text-2); line-height: 1.75; margin: 0;"><strong style="color: var(--text);">Offer hardship access.</strong> A small, quiet link: "If cost is a barrier, we want you here anyway." No application. No proof. Near-zero marginal cost for a digital product.</p>
+    </div>
+
+    <div class="ps-card reveal" style="padding: 28px 32px;">
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; gap: 12px; align-items: start;">
+          <span style="color: var(--teal); font-weight: 700; flex-shrink: 0;">01</span>
+          <span style="font-size: 14px; color: var(--text-2); line-height: 1.65;"><strong style="color: var(--text);">Eliminates the #1 attack vector.</strong> Nobody can say "they only care about money."</span>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: start;">
+          <span style="color: var(--teal); font-weight: 700; flex-shrink: 0;">02</span>
+          <span style="font-size: 14px; color: var(--text-2); line-height: 1.65;"><strong style="color: var(--text);">Generates word of mouth.</strong> Waking Up's scholarship program is discussed more than its features.</span>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: start;">
+          <span style="color: var(--teal); font-weight: 700; flex-shrink: 0;">03</span>
+          <span style="font-size: 14px; color: var(--text-2); line-height: 1.65;"><strong style="color: var(--text);">Aligns with Jim's mission.</strong> A life coach who truly believes in this work makes it accessible to everyone.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DAY 14 TRANSITION ===== -->
+<section id="transition">
+  <div class="container">
+    <div class="section-label reveal">The Transition</div>
+    <div class="section-title reveal">Day 14. Where reputations<br>are made or destroyed.</div>
+    <p class="section-desc reveal">Achievement-based triggers convert 258% better than "your trial expires tomorrow" emails. Here is the exact sequence.</p>
+
+    <div class="timeline reveal" style="max-width: 600px;">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-day">Day 12</div>
+        <div class="timeline-title">Gentle acknowledgment</div>
+        <div class="timeline-desc">"You're nearing the end of the Become phase. Here's what you've built over the last 12 days." Reflect their journey back. No pricing mention.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-day">Day 13</div>
+        <div class="timeline-title">Transparent preview</div>
+        <div class="timeline-desc">"Tomorrow your trial completes. Here's what stays free and what changes." Clear, honest. Show exactly what the free tier includes.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-day">Day 14</div>
+        <div class="timeline-title">The single question</div>
+        <div class="timeline-desc">"Do you want to continue becoming?" One button. Annual highlighted. Monthly available. Scholarship link visible. No dark patterns.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-day">Day 15+</div>
+        <div class="timeline-title">Soft landing</div>
+        <div class="timeline-desc">Free tier. Jim still shows up daily. They can still meditate. They are still a user. 50% of eventual conversions happen post-trial.</div>
+      </div>
+    </div>
+
+    <div class="risk-card reveal" style="margin-top: 32px;">
+      <div class="risk-label">NEVER DO</div>
+      <p style="font-size: 14px; color: var(--text-2); line-height: 1.75; margin: 0;">Countdown timers. "Last chance" language. Auto-charging. Hiding the cancel button. Making annual the only visible option. These are what gave Calm an F rating with the BBB.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRUST CHECKLIST ===== -->
+<section id="checklist" class="inset-section">
+  <div class="container">
+    <div class="section-label reveal">Trust Checklist</div>
+    <div class="section-title reveal">10 rules. Every one from a<br>competitor's mistake.</div>
+    <p class="section-desc reveal">Do all of them. Every item is something a specific competitor got wrong.</p>
+
+    <div class="ps-card reveal" style="padding: 8px 32px;">
+      <ol class="checklist">
+        <li>
+          <div class="check-num">1</div>
+          <div><strong style="color: var(--text);">Show pricing before signup.</strong> Never hide it.</div>
+          <div class="check-fail">Open failed this</div>
+        </li>
+        <li>
+          <div class="check-num">2</div>
+          <div><strong style="color: var(--text);">Email reminder 24 to 48 hours</strong> before any charge.</div>
+          <div class="check-fail">Calm failed this</div>
+        </li>
+        <li>
+          <div class="check-num">3</div>
+          <div><strong style="color: var(--text);">Cancellation takes fewer clicks</strong> than signup.</div>
+          <div class="check-fail">Calm, Headspace</div>
+        </li>
+        <li>
+          <div class="check-num">4</div>
+          <div><strong style="color: var(--text);">Never auto-upgrade</strong> from free to paid without explicit consent.</div>
+          <div class="check-fail">Endel failed this</div>
+        </li>
+        <li>
+          <div class="check-num">5</div>
+          <div><strong style="color: var(--text);">Free tier is genuinely useful</strong>, not a crippled demo.</div>
+          <div class="check-fail">Headspace failed this</div>
+        </li>
+        <li>
+          <div class="check-num">6</div>
+          <div><strong style="color: var(--text);">Annual pricing shown as monthly equivalent</strong>, never hidden.</div>
+          <div class="check-fail">Open failed this</div>
+        </li>
+        <li>
+          <div class="check-num">7</div>
+          <div><strong style="color: var(--text);">Refund window clearly stated</strong> and honored.</div>
+          <div class="check-fail">Calm: BBB F rating</div>
+        </li>
+        <li>
+          <div class="check-num">8</div>
+          <div><strong style="color: var(--text);">Hardship/scholarship access</strong> available.</div>
+          <div class="check-fail">Only Waking Up does this</div>
+        </li>
+        <li>
+          <div class="check-num">9</div>
+          <div><strong style="color: var(--text);">Never change existing subscriber pricing</strong> without notice + grandfather period.</div>
+          <div class="check-fail">Evernote failed this</div>
+        </li>
+        <li>
+          <div class="check-num">10</div>
+          <div><strong style="color: var(--text);">If a user asks to cancel, cancel.</strong> No guilt screens.</div>
+          <div class="check-fail">Nearly everyone</div>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FULL ARCHITECTURE ===== -->
+<section id="architecture">
+  <div class="container">
+    <div class="section-label reveal">Complete Model</div>
+    <div class="section-title reveal">The Possibility<br>pricing architecture.</div>
+
+    <div class="arch-grid reveal">
+      <div class="arch-card">
+        <div class="arch-label">Acquisition</div>
+        <p>No credit card. 14-day reverse trial. <strong>Full access to everything</strong> including AI coaching, all meditations, hypno-meditations, and the complete Release, Align, Become engine.</p>
+      </div>
+      <div class="arch-card">
+        <div class="arch-label">Conversion</div>
+        <p>Single question on Day 14. <strong>Annual ($99.99/yr) highlighted.</strong> Monthly ($14.99/mo) available. Scholarship link visible. No dark patterns.</p>
+      </div>
+      <div class="arch-card">
+        <div class="arch-label">Free Tier</div>
+        <p>Curated meditations (1 to 2 per pillar). <strong>Daily Jim quote.</strong> Basic session history. Enough to maintain the habit and the relationship.</p>
+      </div>
+      <div class="arch-card">
+        <div class="arch-label">Paid Tier</div>
+        <p>Full library. All 9 hypno-meditations. <strong>Jim AI coaching.</strong> Intelligence loop. Unlimited engine re-runs.</p>
+      </div>
+    </div>
+
+    <div class="verdict reveal" style="margin-top: 24px;">
+      <div class="verdict-label go">TRUST ARCHITECTURE</div>
+      <p style="font-size: 14px; color: var(--text-2); line-height: 1.75; margin: 0;">Transparent pricing on website. Email reminders before any charge. One-tap cancellation. Hardship access. Refund window honored. No auto-upgrade ever.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CLOSING ===== -->
+<div class="closing" style="text-align: center;">
+  <div class="wrap">
+    <img src="possibility-logo.svg" alt="The Possibility" class="closing-logo reveal" onerror="this.style.display='none'">
+    <h2 class="reveal">Reputation first.<br>Revenue follows.</h2>
+    <p class="reveal">Every pricing decision signals something about the relationship with your users. This architecture is designed so that trust compounds and conversion follows naturally.</p>
+    <div class="closing-gradient-bar reveal"></div>
+    <div class="closing-sign reveal" style="margin-top: 48px;">
+      <div style="font-weight: 600; color: rgba(255,252,250,0.72); margin-bottom: 4px;">Eric Yerke &amp; Dr. James Vineburgh</div>
+      <div>Agency OS</div>
+    </div>
+  </div>
+</div>
+
+<!-- Cross Navigation -->
+<div class="cross-nav reveal">
+  <a href="jim-strategy-briefing.html" class="cross-nav-card">
+    <div class="cross-nav-body">
+      <div class="cross-nav-label">Continue Reading</div>
+      <div class="cross-nav-title">Strategic Briefing</div>
+      <div class="cross-nav-hint">Competitive landscape, product strategy, and the full blueprint</div>
+    </div>
+    <div class="cross-nav-arrow">&rarr;</div>
+  </a>
+</div>
+
+<!-- Footer -->
+<footer style="margin-left: 0;">
+  <div>The Possibility &middot; Pricing Strategy &middot; March 2026 &middot; Confidential</div>
+</footer>
+
+<p style="font-size: 11px; color: var(--text-3); text-align: center; padding: 0 32px 48px; max-width: 700px; margin: 0 auto;">
+  Based on data from OpenView, ProfitWell/Paddle, Totango, Reforge, Userpilot, First Page Sage, Chargebee, Baremetrics, and competitive analysis of Calm, Headspace, Waking Up, Open, and Endel.
+</p>
+
+</div><!-- end .main -->
+
+<script>
+// Scroll progress
+(function() {
+  const bar = document.getElementById('scrollProgress');
+  if (!bar) return;
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (scrollTop / docHeight * 100) + '%';
+  });
+})();
+
+// Active nav link tracking
+(function() {
+  const links = document.querySelectorAll('.nav-link');
+  const sections = [];
+  links.forEach(link => {
+    const id = link.getAttribute('href')?.replace('#', '');
+    const el = id ? document.getElementById(id) : null;
+    if (el) sections.push({ link, el });
+  });
+  function update() {
+    const scrollY = window.scrollY + window.innerHeight * 0.35;
+    let active = sections[0];
+    sections.forEach(s => {
+      if (s.el.offsetTop <= scrollY) active = s;
+    });
+    links.forEach(l => l.classList.remove('active'));
+    if (active) active.link.classList.add('active');
+  }
+  window.addEventListener('scroll', update);
+  update();
+})();
+
+// Scroll reveal
+(function() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+})();
+
+// Animated stat counters
+(function() {
+  var stats = document.querySelectorAll('.hero-stat .val');
+  if (!stats.length) return;
+  var animated = false;
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting && !animated) {
+        animated = true;
+        stats.forEach(function(stat) {
+          var text = stat.textContent.trim();
+          var suffix = text.replace(/[0-9]/g, '');
+          var target = parseInt(text.replace(/[^0-9]/g, ''), 10);
+          if (isNaN(target)) return;
+          var duration = 1600;
+          var start = performance.now();
+          function step(now) {
+            var elapsed = now - start;
+            var progress = Math.min(elapsed / duration, 1);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            var current = Math.round(eased * target);
+            stat.textContent = current + suffix;
+            if (progress < 1) requestAnimationFrame(step);
+          }
+          stat.textContent = '0' + suffix;
+          requestAnimationFrame(step);
+        });
+        obs.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+  var statsBar = document.querySelector('.hero-stats-bar');
+  if (statsBar) obs.observe(statsBar);
+})();
+
+// Animate comparison bars on scroll
+(function() {
+  const tracks = document.querySelectorAll('.bar-track');
+  if (!tracks.length) return;
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const fill = e.target.querySelector('.bar-fill[data-width]');
+        if (fill) fill.style.width = fill.dataset.width;
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  tracks.forEach(t => obs.observe(t));
+})();
+
+// Mobile burger
+(function() {
+  const burger = document.getElementById('mobBurger');
+  const overlay = document.getElementById('mobOverlay');
+  if (!burger || !overlay) return;
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('active');
+    overlay.classList.toggle('open');
+    document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
+  });
+  overlay.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      burger.classList.remove('active');
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+})();
+</script>
+
+<!-- Visual Enhancements: Lenis + GSAP + ScrollTrigger -->
+<link rel="stylesheet" href="visual-enhancements.css">
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+<script src="visual-enhancements.js"></script>
+<script src="chat-widget.js" defer></script>
+
+<script src="/settings-widget.js" defer></script>
+</body>
+</html>

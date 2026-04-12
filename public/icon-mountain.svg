@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="mtn" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8758A"/>
+      <stop offset="100%" stop-color="#F4A3B0"/>
+    </linearGradient>
+  </defs>
+  <!-- back peak -->
+  <path d="M21 11L29 25H13L21 11z" fill="url(#mtn)" opacity="0.2"/>
+  <!-- front peak -->
+  <path d="M14 5L5 25h18L14 5z" fill="url(#mtn)" opacity="0.4"/>
+  <!-- snow cap -->
+  <path d="M14 5l-3.5 6.5h7L14 5z" fill="url(#mtn)" opacity="0.7"/>
+</svg>

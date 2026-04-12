@@ -1,0 +1,2396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Progress Tracker | Possibility Strategy</title>
+<style>
+:root{
+  --bg:#FAF8F5;
+  --bg-elevated:#FFFFFF;
+  --card:#FFFFFF;
+  --card-hover:#FAFAFA;
+  --border:rgba(26,20,16,0.06);
+  --border-strong:rgba(26,20,16,0.1);
+  --text:#1A1410;
+  --t2:rgba(26,20,16,0.62);
+  --t3:rgba(26,20,16,0.38);
+  --teal:#2E9E9E;
+  --teal-bright:#33A3A3;
+  --teal-soft:rgba(51,163,163,0.07);
+  --teal-hover:rgba(51,163,163,0.04);
+  --align:#6366F1;
+  --align-soft:rgba(99,102,241,0.06);
+  --become:#34D399;
+  --become-soft:rgba(52,211,153,0.06);
+  --release:#E8758A;
+  --red:#EF4444;
+  --green:#22C55E;
+  --amber:#F59E0B;
+  --orange:#F97316;
+  --r:14px;
+  --r-sm:10px;
+  --r-xs:8px;
+  --shadow-xs:0 1px 2px rgba(0,0,0,0.03);
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.03), 0 2px 8px rgba(0,0,0,0.03);
+  --shadow-md:0 2px 6px rgba(0,0,0,0.03), 0 6px 20px rgba(0,0,0,0.05);
+  --shadow-lg:0 4px 12px rgba(0,0,0,0.04), 0 12px 40px rgba(0,0,0,0.07);
+  --zen:cubic-bezier(0.22,1,0.36,1);
+  --spring:cubic-bezier(0.34,1.56,0.64,1);
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --safe-left:env(safe-area-inset-left,0px);
+  --safe-right:env(safe-area-inset-right,0px);
+  --focus-ring:0 0 0 3px rgba(51,163,163,0.08);
+  --focus-border:rgba(51,163,163,0.35);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+::selection{background:rgba(51,163,163,0.18);color:var(--text)}
+html{height:-webkit-fill-available;scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Inter',system-ui,sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;min-height:-webkit-fill-available;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+  padding-top:var(--safe-top);
+  padding-bottom:var(--safe-bottom);
+  padding-left:var(--safe-left);
+  padding-right:var(--safe-right);
+  transition:background 0.3s ease, color 0.3s ease;
+}
+/* Smooth theme transitions after load (no FOUC) */
+body.loaded .hero-header,
+body.loaded .milestone-card,
+body.loaded .ai-card,
+body.loaded .burndown-card,
+body.loaded .p-stat,
+body.loaded .filter-pill,
+body.loaded .task,
+body.loaded .toast,
+body.loaded .cmd-panel,
+body.loaded .kb-panel{
+  transition:background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+}
+
+/* Auth overlay */
+.auth-gate{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:14px;
+}
+.auth-gate .brand{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--teal)}
+.auth-gate .title{font-size:22px;font-weight:800;letter-spacing:-0.5px}
+
+/* ===== HERO HEADER ===== */
+.hero-header{
+  background:linear-gradient(180deg, rgba(46,158,158,0.035) 0%, var(--bg) 100%);
+  padding:0 24px;
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);
+}
+.hero-top{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 0 0;
+  max-width:800px;margin:0 auto;
+}
+.hero-left{display:flex;flex-direction:column;gap:1px}
+.hero-brand{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--teal)}
+.hero-title{font-size:20px;font-weight:800;letter-spacing:-0.6px}
+.hero-actions{display:flex;gap:6px;align-items:center}
+.icon-btn{
+  width:36px;height:36px;border-radius:50%;
+  border:1px solid var(--border);background:transparent;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:var(--t2);transition:all 0.2s var(--zen);
+  font-family:inherit;-webkit-tap-highlight-color:transparent;
+  position:relative;
+}
+.icon-btn:hover{background:var(--teal-hover);color:var(--teal);border-color:rgba(51,163,163,0.15)}
+.icon-btn:active{transform:scale(0.92)}
+.icon-btn svg{width:16px;height:16px;display:block}
+
+/* ===== PROGRESS RING ===== */
+.progress-ring-wrap{
+  display:flex;align-items:center;gap:16px;
+  padding:12px 0 14px;
+  max-width:800px;margin:0 auto;
+}
+.progress-ring-container{position:relative;width:72px;height:72px;flex-shrink:0}
+.progress-ring-container svg{width:72px;height:72px;transform:rotate(-90deg)}
+.progress-ring-bg{fill:none;stroke:var(--border);stroke-width:5}
+.progress-ring-fill{
+  fill:none;stroke:url(#tealGrad);stroke-width:5;
+  stroke-linecap:round;
+  transition:stroke-dashoffset 1s var(--zen);
+  will-change:stroke-dashoffset;
+}
+.progress-ring-text{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+}
+.progress-ring-pct{font-size:18px;font-weight:800;color:var(--teal);line-height:1;font-variant-numeric:tabular-nums}
+.progress-ring-label{font-size:8px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.8px;margin-top:2px}
+.progress-stats{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;min-width:0}
+.p-stat{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r-sm);padding:10px 12px;
+  display:flex;flex-direction:column;gap:3px;
+  min-height:54px;justify-content:center;
+}
+.p-stat-num{font-size:20px;font-weight:800;letter-spacing:-0.5px;line-height:1;font-variant-numeric:tabular-nums}
+.p-stat-label{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.8px}
+.p-stat.teal .p-stat-num{color:var(--teal)}
+.p-stat.green .p-stat-num{color:var(--green)}
+.p-stat.amber .p-stat-num{color:var(--amber)}
+.p-stat.red .p-stat-num{color:var(--red)}
+.p-stat.align .p-stat-num{color:var(--align)}
+
+/* ===== AI INSIGHTS PANEL ===== */
+.ai-panel{
+  max-width:800px;margin:0 auto;padding:0 24px;
+}
+.ai-card{
+  background:linear-gradient(135deg, rgba(46,158,158,0.025) 0%, rgba(99,102,241,0.015) 100%);
+  border:1px solid rgba(46,158,158,0.1);
+  border-radius:var(--r);padding:16px 18px;
+  margin-bottom:16px;
+}
+.ai-header{
+  display:flex;align-items:center;gap:8px;margin-bottom:10px;
+}
+.ai-icon{
+  width:26px;height:26px;border-radius:50%;
+  background:linear-gradient(135deg, var(--teal), var(--align));
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  box-shadow:0 2px 8px rgba(46,158,158,0.2);
+}
+.ai-icon svg{width:13px;height:13px;color:#fff}
+.ai-title{font-size:13px;font-weight:700;letter-spacing:-0.2px}
+.ai-subtitle{font-size:10px;color:var(--t3);margin-left:auto;font-weight:500}
+.ai-insights{display:flex;flex-direction:column;gap:6px}
+.ai-insight{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 12px;
+  background:var(--card);border-radius:var(--r-xs);
+  border:1px solid var(--border);
+  transition:border-color 0.15s;
+}
+.ai-insight:hover{border-color:var(--border-strong)}
+.ai-insight-icon{
+  width:24px;height:24px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:12px;margin-top:1px;
+}
+.ai-insight-icon.velocity{background:rgba(51,163,163,0.08);color:var(--teal)}
+.ai-insight-icon.risk{background:rgba(239,68,68,0.06);color:var(--red)}
+.ai-insight-icon.prediction{background:rgba(99,102,241,0.06);color:var(--align)}
+.ai-insight-icon.effort{background:rgba(245,158,11,0.06);color:var(--amber)}
+.ai-insight-icon.streak{background:rgba(52,211,153,0.06);color:var(--green)}
+.ai-insight-body{flex:1;min-width:0}
+.ai-insight-title{font-size:12px;font-weight:700;line-height:1.35;letter-spacing:-0.1px}
+.ai-insight-desc{font-size:12px;color:var(--t2);line-height:1.45;margin-top:2px}
+.ai-toggle{
+  display:flex;align-items:center;gap:6px;
+  padding:6px 12px;border-radius:100px;
+  border:1px solid rgba(46,158,158,0.12);
+  background:transparent;color:var(--teal);
+  font-size:11px;font-weight:600;cursor:pointer;
+  font-family:inherit;transition:all 0.2s var(--zen);
+  margin-bottom:12px;max-width:800px;margin-left:auto;margin-right:auto;
+  -webkit-tap-highlight-color:transparent;
+}
+.ai-toggle:hover{background:var(--teal-hover)}
+.ai-toggle svg{width:14px;height:14px}
+.ai-panel.collapsed .ai-card{display:none}
+
+/* Launch date alert banner */
+.launch-alert{
+  max-width:800px;margin:0 auto;padding:0 24px;
+}
+.launch-alert-inner{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 16px;
+  background:rgba(239,68,68,0.04);
+  border:1px solid rgba(239,68,68,0.12);
+  border-radius:var(--r-sm);margin-bottom:12px;
+  flex-wrap:wrap;
+}
+.launch-alert-inner .alert-text{flex:1;font-size:13px;font-weight:600;color:var(--red);min-width:150px;line-height:1.4}
+.launch-alert-inner .alert-icon{font-size:15px;flex-shrink:0;line-height:1}
+.launch-alert-inner input[type="date"]{
+  border:1px solid rgba(239,68,68,0.15);border-radius:var(--r-xs);
+  padding:6px 10px;font-size:13px;font-family:inherit;
+  color:var(--text);background:var(--card);outline:none;min-height:32px;
+}
+.launch-alert-inner input[type="date"]:focus{border-color:var(--focus-border);box-shadow:var(--focus-ring)}
+.launch-alert-inner .save-btn{
+  padding:6px 14px;border-radius:var(--r-xs);
+  border:none;background:var(--red);color:#fff;
+  font-size:12px;font-weight:700;cursor:pointer;
+  font-family:inherit;min-height:32px;transition:all 0.2s var(--zen);
+}
+.launch-alert-inner .save-btn:hover{background:#DC2626}
+
+/* Config bar */
+.config-bar{
+  max-height:0;overflow:hidden;
+  transition:max-height 0.3s var(--zen);
+  border-bottom:1px solid var(--border);
+}
+.config-bar.open{max-height:80px}
+.config-inner{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 24px;
+  max-width:800px;margin:0 auto;
+}
+.config-label{font-size:13px;color:var(--t2);font-weight:600}
+.config-input{
+  border:1px solid var(--border);border-radius:var(--r-xs);
+  padding:8px 12px;font-size:14px;font-family:inherit;
+  background:var(--card);color:var(--text);
+  outline:none;min-height:36px;
+}
+.config-input:focus{border-color:var(--focus-border);box-shadow:var(--focus-ring)}
+.save-btn{
+  padding:8px 18px;border-radius:var(--r-xs);
+  border:none;background:var(--teal);color:#fff;
+  font-size:13px;font-weight:700;cursor:pointer;
+  font-family:inherit;min-height:36px;
+  transition:all 0.2s var(--zen);
+  letter-spacing:-0.1px;
+}
+.save-btn:hover{background:var(--teal-bright)}
+.save-btn:active{transform:scale(0.97)}
+
+/* Expand all */
+.toolbar{
+  display:flex;align-items:center;justify-content:flex-end;gap:8px;
+  max-width:800px;margin:0 auto;padding:0 0 8px;
+}
+.toolbar-btn{
+  display:flex;align-items:center;gap:5px;
+  padding:5px 12px;border-radius:100px;
+  border:1px solid var(--border);background:transparent;
+  color:var(--t3);font-size:11px;font-weight:600;
+  cursor:pointer;font-family:inherit;transition:all 0.15s var(--zen);
+  -webkit-tap-highlight-color:transparent;
+}
+.toolbar-btn:hover{background:var(--teal-hover);color:var(--teal);border-color:rgba(51,163,163,0.12)}
+.toolbar-btn:active{transform:scale(0.97)}
+.toolbar-btn svg{width:12px;height:12px}
+
+/* ===== FILTER BAR ===== */
+.filter-bar{
+  display:flex;gap:6px;padding:0 0 10px;
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  max-width:800px;margin:0 auto;
+}
+.filter-bar::-webkit-scrollbar{display:none}
+.filter-pill{
+  padding:6px 14px;border-radius:100px;
+  border:1px solid var(--border);
+  background:transparent;color:var(--t2);
+  font-size:12px;font-weight:600;
+  cursor:pointer;white-space:nowrap;
+  transition:all 0.15s var(--zen);
+  font-family:inherit;min-height:32px;
+  -webkit-tap-highlight-color:transparent;
+  display:inline-flex;align-items:center;
+}
+.filter-pill:hover{border-color:var(--border-strong);color:var(--text)}
+.filter-pill:active{transform:scale(0.97)}
+.filter-pill.on{background:var(--text);color:#fff;border-color:transparent;font-weight:700}
+.filter-pill .cnt{font-size:10px;opacity:0.55;margin-left:4px;font-variant-numeric:tabular-nums}
+
+/* ===== MAIN ===== */
+.main{max-width:800px;margin:0 auto;padding:20px 24px 120px}
+
+/* ===== TIMELINE ===== */
+.timeline{position:relative}
+.timeline::before{
+  content:'';position:absolute;left:16px;top:24px;bottom:24px;
+  width:2px;border-radius:1px;
+  background:linear-gradient(180deg, var(--teal), rgba(46,158,158,0.08));
+}
+
+/* ===== MILESTONE CARD ===== */
+.milestone{
+  position:relative;margin-bottom:16px;
+  padding-left:48px;
+  opacity:0;transform:translateY(8px);
+  animation:fadeSlideIn 0.35s var(--zen) forwards;
+}
+.milestone:nth-child(1){animation-delay:0s}
+.milestone:nth-child(2){animation-delay:0.04s}
+.milestone:nth-child(3){animation-delay:0.08s}
+.milestone:nth-child(4){animation-delay:0.12s}
+.milestone:nth-child(5){animation-delay:0.16s}
+.milestone:nth-child(6){animation-delay:0.2s}
+.milestone:nth-child(7){animation-delay:0.24s}
+@keyframes fadeSlideIn{to{opacity:1;transform:translateY(0)}}
+
+.milestone-dot{
+  position:absolute;left:8px;top:22px;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--card);border:2.5px solid var(--teal);
+  z-index:2;transition:all 0.35s var(--zen);
+  box-shadow:0 0 0 3px var(--bg);
+}
+.milestone-dot.complete{
+  background:var(--teal);border-color:var(--teal);
+  box-shadow:0 0 0 3px var(--bg), 0 0 10px rgba(46,158,158,0.25);
+}
+.milestone-dot.complete::after{
+  content:'';position:absolute;inset:3px;
+  border-radius:50%;
+  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/70% no-repeat;
+}
+
+.milestone-card{
+  background:var(--card);
+  border-radius:var(--r);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow-sm);
+  overflow:hidden;
+  transition:box-shadow 0.25s var(--zen), transform 0.25s var(--zen);
+  will-change:transform;
+}
+.milestone-card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px)}
+.milestone.expanded .milestone-card{box-shadow:var(--shadow-md);border-color:var(--border-strong)}
+
+.milestone-header{
+  padding:16px 18px 14px;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+.milestone-top-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.milestone-title{
+  font-size:15px;font-weight:700;letter-spacing:-0.3px;
+  flex:1;line-height:1.35;
+}
+.milestone-title[contenteditable]{outline:none;border-radius:4px;padding:2px 4px;margin:-2px -4px}
+.milestone-title[contenteditable]:focus{background:rgba(51,163,163,0.04);box-shadow:inset 0 0 0 1px var(--focus-border)}
+.milestone-actions{
+  display:flex;gap:4px;align-items:center;
+  flex-shrink:0;opacity:0;transition:opacity 0.15s;
+}
+.milestone-top-row:hover .milestone-actions{opacity:1}
+.chevron{
+  width:20px;height:20px;color:var(--t3);
+  transition:transform 0.3s var(--zen);
+  flex-shrink:0;margin-top:1px;
+}
+.milestone.expanded .chevron{transform:rotate(180deg)}
+
+.milestone-info{
+  display:flex;align-items:center;gap:10px;
+  margin-top:10px;flex-wrap:wrap;
+}
+.milestone-date{
+  font-size:12px;color:var(--t3);font-weight:600;
+  display:flex;align-items:center;gap:4px;
+}
+.milestone-date svg{width:12px;height:12px;opacity:0.4}
+.milestone-progress{
+  flex:1;display:flex;align-items:center;gap:8px;
+  min-width:100px;
+}
+.milestone-progress .progress-bar{
+  flex:1;height:5px;border-radius:3px;
+  background:var(--border);overflow:hidden;
+  position:relative;
+}
+.milestone-progress .progress-fill{
+  height:100%;border-radius:3px;
+  background:linear-gradient(90deg, var(--teal), var(--teal-bright));
+  transition:width 0.6s var(--zen);
+  position:relative;
+  will-change:width;
+}
+.milestone-progress .progress-fill.complete{
+  background:linear-gradient(90deg, var(--green), var(--become));
+}
+.milestone-progress .progress-text{font-size:11px;color:var(--t3);font-weight:700;min-width:30px;text-align:right;font-variant-numeric:tabular-nums}
+.milestone-effort{
+  font-size:11px;color:var(--t3);font-weight:600;
+  display:flex;align-items:center;gap:4px;
+}
+.milestone-effort svg{width:11px;height:11px;opacity:0.4}
+
+.milestone-desc{font-size:13px;color:var(--t2);line-height:1.5;margin-top:8px}
+.milestone-desc[contenteditable]{outline:none;border-radius:4px;padding:2px 4px;margin:-2px -4px}
+.milestone-desc[contenteditable]:focus{background:rgba(51,163,163,0.04);box-shadow:inset 0 0 0 1px var(--focus-border)}
+.milestone-desc-placeholder{
+  font-size:13px;color:var(--t3);font-style:italic;
+  margin-top:8px;cursor:pointer;opacity:0.4;
+  transition:opacity 0.15s;
+}
+.milestone-desc-placeholder:hover{opacity:0.7}
+.milestone-date-edit{
+  border:1px solid var(--border);border-radius:var(--r-xs);
+  padding:4px 8px;font-size:12px;font-family:inherit;
+  color:var(--text);background:var(--card);outline:none;
+  min-height:28px;width:130px;
+}
+.milestone-date-edit:focus{border-color:var(--focus-border);box-shadow:var(--focus-ring)}
+
+/* Status summary pills */
+.status-summary{
+  display:flex;gap:5px;margin-top:8px;flex-wrap:wrap;
+}
+.status-summary-pill{
+  font-size:10px;font-weight:700;
+  padding:2px 8px;border-radius:100px;
+  display:flex;align-items:center;gap:3px;
+  letter-spacing:0.1px;
+}
+.ssp-draft{background:rgba(26,20,16,0.04);color:var(--t3)}
+.ssp-in-progress{background:rgba(51,163,163,0.07);color:var(--teal)}
+.ssp-review{background:rgba(99,102,241,0.06);color:var(--align)}
+.ssp-approved{background:rgba(52,211,153,0.06);color:#059669}
+
+/* ===== TASK LIST ===== */
+.task-list{
+  max-height:0;overflow:hidden;
+  transition:max-height 0.4s var(--zen);
+  border-top:1px solid transparent;
+}
+.milestone.expanded .task-list{border-top-color:var(--border)}
+.task-list-inner{padding:4px 18px 16px}
+
+.task-group-label{
+  font-size:9px;font-weight:800;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--t3);
+  padding:14px 0 6px;
+}
+.task-group-label:first-child{padding-top:10px}
+
+.task{
+  display:flex;align-items:flex-start;gap:8px;
+  padding:9px 8px;margin:1px -8px;
+  border-radius:var(--r-xs);
+  transition:background 0.12s ease;
+}
+.task:hover{background:rgba(26,20,16,0.018)}
+
+.task-status-btn{
+  flex-shrink:0;width:26px;height:26px;
+  border-radius:50%;border:2px solid var(--border);
+  background:transparent;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.15s var(--zen);
+  min-height:26px;margin-top:1px;
+  -webkit-tap-highlight-color:transparent;
+}
+.task-status-btn:hover{border-color:var(--border-strong)}
+.task-status-btn:active{transform:scale(0.85)}
+.task-status-btn[data-status="draft"]{border-color:rgba(26,20,16,0.12)}
+.task-status-btn[data-status="draft"]:hover{border-color:var(--teal)}
+.task-status-btn[data-status="in-progress"]{border-color:var(--teal);background:var(--teal-soft)}
+.task-status-btn[data-status="in-progress"] svg{color:var(--teal)}
+.task-status-btn[data-status="review"]{border-color:var(--align);background:var(--align-soft)}
+.task-status-btn[data-status="review"] svg{color:var(--align)}
+.task-status-btn[data-status="approved"]{
+  border-color:var(--become);background:var(--become);
+  animation:statusPop 0.3s var(--spring);
+}
+.task-status-btn[data-status="approved"] svg{color:#fff}
+@keyframes statusPop{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
+.task-status-btn svg{width:11px;height:11px;color:var(--t3)}
+
+.task-body{flex:1;min-width:0}
+.task-title{font-size:14px;font-weight:500;line-height:1.4;color:var(--text);letter-spacing:-0.1px}
+.task-title[contenteditable]{outline:none;border-radius:4px;padding:1px 4px;margin:-1px -4px}
+.task-title[contenteditable]:focus{background:rgba(51,163,163,0.04);box-shadow:inset 0 0 0 1px var(--focus-border)}
+.task[data-status="approved"] .task-title{text-decoration:line-through;color:var(--t3)}
+
+.task-desc{font-size:12px;color:var(--t3);line-height:1.45;margin-top:2px}
+.task-desc[contenteditable]{outline:none;border-radius:4px;padding:1px 4px;margin:-1px -4px}
+.task-desc[contenteditable]:focus{background:rgba(51,163,163,0.04);box-shadow:inset 0 0 0 1px var(--focus-border)}
+.task-desc-placeholder{
+  font-size:12px;color:var(--t3);font-style:italic;
+  margin-top:2px;cursor:pointer;opacity:0;
+  transition:opacity 0.15s;
+}
+.task:hover .task-desc-placeholder{opacity:0.4}
+.task-desc-placeholder:hover{opacity:0.6 !important}
+
+.task-meta{display:flex;align-items:center;gap:5px;margin-top:6px;flex-wrap:wrap}
+.task-badge{
+  display:inline-flex;align-items:center;
+  padding:2px 8px;border-radius:100px;
+  font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:0.3px;
+  height:20px;
+}
+.badge-draft{background:rgba(26,20,16,0.04);color:var(--t3)}
+.badge-in-progress{background:rgba(51,163,163,0.07);color:var(--teal)}
+.badge-review{background:rgba(99,102,241,0.06);color:var(--align)}
+.badge-approved{background:rgba(52,211,153,0.06);color:#059669}
+.task-due{
+  font-size:11px;color:var(--t3);font-weight:500;
+  display:inline-flex;align-items:center;gap:3px;
+  height:20px;
+}
+.task-due svg{width:10px;height:10px;opacity:0.4}
+.task-due.overdue{color:var(--red);font-weight:700}
+.task-assignee{
+  font-size:11px;color:var(--t2);font-weight:500;
+  padding:0 8px;border-radius:100px;
+  background:rgba(26,20,16,0.025);
+  display:inline-flex;align-items:center;gap:3px;
+  height:20px;
+}
+.task-assignee svg{width:10px;height:10px;opacity:0.35}
+.task-comment-count{
+  font-size:11px;color:var(--t3);cursor:pointer;font-weight:500;
+  display:inline-flex;align-items:center;gap:3px;
+  padding:0 6px;border-radius:100px;
+  transition:all 0.15s;height:20px;
+}
+.task-comment-count svg{width:11px;height:11px}
+.task-comment-count:hover{color:var(--teal);background:var(--teal-soft)}
+
+/* Priority badge */
+.task-priority{
+  font-size:10px;font-weight:700;
+  padding:0 7px;border-radius:100px;
+  text-transform:uppercase;letter-spacing:0.2px;
+  cursor:pointer;transition:all 0.15s;
+  height:20px;display:inline-flex;align-items:center;
+}
+.priority-low{background:rgba(26,20,16,0.03);color:var(--t3)}
+.priority-medium{background:rgba(51,163,163,0.06);color:var(--teal)}
+.priority-high{background:rgba(249,115,22,0.07);color:var(--orange)}
+.priority-critical{background:rgba(239,68,68,0.07);color:var(--red)}
+
+/* Effort badge */
+.task-effort{
+  font-size:10px;font-weight:600;color:var(--t3);
+  display:inline-flex;align-items:center;gap:3px;
+  cursor:pointer;padding:0 6px;border-radius:100px;
+  transition:all 0.15s;height:20px;
+}
+.task-effort:hover{background:rgba(26,20,16,0.025)}
+.task-effort svg{width:10px;height:10px;opacity:0.35}
+
+/* Task actions */
+.task-actions{
+  display:flex;gap:2px;align-items:center;
+  flex-shrink:0;opacity:0;
+  transition:opacity 0.15s;
+  margin-top:1px;
+}
+.task:hover .task-actions{opacity:1}
+.task-action-btn{
+  width:28px;height:28px;border-radius:50%;
+  border:none;background:transparent;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--t3);transition:all 0.15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.task-action-btn:hover{background:rgba(26,20,16,0.04);color:var(--text)}
+.task-action-btn.del:hover{background:rgba(239,68,68,0.06);color:var(--red)}
+.task-action-btn svg{width:14px;height:14px}
+
+/* Status dropdown */
+.status-dropdown,.priority-dropdown{
+  position:fixed;z-index:200;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r-sm);box-shadow:var(--shadow-lg);
+  padding:4px;min-width:160px;
+  animation:dropIn 0.12s var(--zen);
+}
+@keyframes dropIn{from{opacity:0;transform:translateY(-4px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.status-option,.priority-option{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 12px;border-radius:var(--r-xs);
+  font-size:13px;font-weight:500;
+  cursor:pointer;border:none;background:transparent;
+  width:100%;font-family:inherit;color:var(--text);
+  min-height:36px;transition:background 0.08s;
+  -webkit-tap-highlight-color:transparent;
+}
+.status-option:hover,.priority-option:hover{background:rgba(26,20,16,0.03)}
+.status-option.current,.priority-option.current{background:var(--teal-hover);font-weight:700}
+.status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* ===== COMMENTS ===== */
+.comment-section{
+  max-height:0;overflow:hidden;
+  transition:max-height 0.3s var(--zen);
+}
+.comment-section.open{margin-top:8px}
+.comment-list{padding:8px 0}
+.comment{display:flex;gap:8px;padding:6px 0}
+.comment-avatar{
+  width:24px;height:24px;border-radius:50%;
+  background:var(--teal-soft);color:var(--teal);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:800;flex-shrink:0;
+  text-transform:uppercase;letter-spacing:0.5px;
+}
+.comment-body{flex:1;min-width:0}
+.comment-header{display:flex;align-items:center;gap:6px;margin-bottom:2px}
+.comment-author{font-size:12px;font-weight:700;color:var(--text)}
+.comment-time{font-size:10px;color:var(--t3);font-weight:500}
+.comment-del{
+  margin-left:auto;border:none;background:transparent;
+  color:var(--t3);cursor:pointer;font-size:11px;font-weight:500;
+  opacity:0;transition:opacity 0.15s;padding:2px 6px;border-radius:4px;
+}
+.comment:hover .comment-del{opacity:1}
+.comment-del:hover{color:var(--red);background:rgba(239,68,68,0.04)}
+.comment-text{font-size:13px;color:var(--t2);line-height:1.5}
+.comment-input-row{display:flex;gap:8px;align-items:flex-end;padding:8px 0 0}
+.comment-input{
+  flex:1;border:1px solid var(--border);
+  border-radius:var(--r-xs);padding:8px 12px;
+  font-size:13px;font-family:inherit;color:var(--text);
+  background:var(--bg);outline:none;
+  resize:none;min-height:36px;max-height:80px;
+}
+.comment-input:focus{border-color:var(--focus-border);box-shadow:var(--focus-ring)}
+.comment-send{
+  width:34px;height:34px;border-radius:50%;
+  border:none;background:var(--teal);color:#fff;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all 0.15s var(--zen);
+}
+.comment-send:hover{background:var(--teal-bright);transform:scale(1.04)}
+.comment-send:active{transform:scale(0.92)}
+.comment-send svg{width:13px;height:13px}
+
+/* ===== ADD BUTTONS ===== */
+.add-task-row{padding:4px 0 0}
+.add-task-btn, .add-milestone-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 12px;border-radius:var(--r-xs);
+  border:1.5px dashed var(--border);
+  background:transparent;color:var(--t3);
+  font-size:13px;font-weight:500;cursor:pointer;
+  font-family:inherit;width:100%;
+  transition:all 0.15s var(--zen);
+  min-height:38px;-webkit-tap-highlight-color:transparent;
+}
+.add-task-btn:hover, .add-milestone-btn:hover{
+  border-color:rgba(51,163,163,0.25);
+  color:var(--teal);background:var(--teal-hover);
+}
+.add-task-btn svg, .add-milestone-btn svg{width:14px;height:14px}
+.add-milestone-btn{
+  margin-top:16px;padding:14px 16px;
+  border-radius:var(--r);font-size:14px;font-weight:600;
+}
+
+/* Inline form */
+.inline-form{display:flex;gap:8px;padding:8px 0 0}
+.inline-form input{
+  flex:1;border:1px solid var(--border);
+  border-radius:var(--r-xs);padding:8px 12px;
+  font-size:13px;font-family:inherit;color:var(--text);
+  background:var(--card);outline:none;min-height:36px;
+}
+.inline-form input:focus{border-color:var(--focus-border);box-shadow:var(--focus-ring)}
+.inline-form button{
+  padding:8px 16px;border-radius:var(--r-xs);
+  border:none;font-size:13px;font-weight:700;
+  cursor:pointer;font-family:inherit;min-height:36px;transition:all 0.15s;
+}
+.inline-form .submit-btn{background:var(--teal);color:#fff}
+.inline-form .submit-btn:hover{background:var(--teal-bright)}
+.inline-form .cancel-btn{background:transparent;color:var(--t3);border:1px solid var(--border)}
+.inline-form .cancel-btn:hover{border-color:var(--border-strong);color:var(--t2)}
+
+/* Assignee/effort edit */
+.assignee-edit, .effort-edit{
+  border:1px solid var(--border);border-radius:var(--r-xs);
+  padding:3px 8px;font-size:11px;font-family:inherit;
+  color:var(--text);background:var(--card);outline:none;
+  height:22px;
+}
+.assignee-edit{width:110px}
+.effort-edit{width:56px}
+.assignee-edit:focus,.effort-edit:focus{border-color:var(--focus-border);box-shadow:var(--focus-ring)}
+
+/* Due date edit */
+.task-due-edit, .milestone-date-edit{
+  border:1px solid var(--border);border-radius:var(--r-xs);
+  padding:3px 8px;font-size:12px;font-family:inherit;
+  color:var(--text);background:var(--card);outline:none;
+  min-height:28px;width:130px;
+}
+.task-due-edit:focus, .milestone-date-edit:focus{
+  border-color:var(--focus-border);box-shadow:var(--focus-ring);
+}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:max(24px, var(--safe-bottom, 24px));left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--text);color:#fff;
+  padding:11px 22px;border-radius:100px;
+  font-size:13px;font-weight:600;letter-spacing:-0.1px;
+  box-shadow:var(--shadow-lg), 0 0 0 1px rgba(0,0,0,0.05);
+  z-index:9999;opacity:0;
+  transition:all 0.35s var(--zen);
+  pointer-events:none;
+  max-width:calc(100vw - 32px);
+}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;pointer-events:auto}
+
+/* Empty */
+.empty-state{text-align:center;padding:60px 24px;color:var(--t3)}
+.empty-state svg{width:48px;height:48px;margin-bottom:12px;opacity:0.2}
+.empty-state p{font-size:14px;line-height:1.6;max-width:280px;margin:0 auto}
+
+/* Loading */
+.loading{display:flex;align-items:center;justify-content:center;padding:48px;color:var(--t3);font-size:13px;font-weight:500;gap:10px}
+.spinner{width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--teal);border-radius:50%;animation:spin 0.7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  .hero-header{padding:0 16px}
+  .hero-top{padding:12px 0 0}
+  .hero-title{font-size:18px}
+  .progress-ring-wrap{gap:12px;padding:10px 0 12px}
+  .progress-ring-container{width:62px;height:62px}
+  .progress-ring-container svg{width:62px;height:62px}
+  .progress-ring-pct{font-size:16px}
+  .progress-stats{gap:6px}
+  .p-stat{padding:8px 10px;min-height:50px}
+  .p-stat-num{font-size:17px}
+  .p-stat-label{font-size:8px}
+  .main{padding:16px 16px 120px}
+  .ai-panel{padding:0 16px}
+  .launch-alert{padding:0 16px}
+  .burndown-wrap{padding:0 16px}
+  .milestone{padding-left:38px}
+  .timeline::before{left:11px}
+  .milestone-dot{left:3px;width:17px;height:17px}
+  .task-actions{opacity:1}
+  .milestone-actions{opacity:1}
+  .task-desc-placeholder{opacity:0.3 !important}
+  .drag-handle{opacity:0.4;width:16px}
+  .task{gap:6px;padding:8px 6px;margin:1px -6px}
+  .task-status-btn{width:28px;height:28px;min-height:28px}
+  .config-inner{padding:10px 16px;flex-wrap:wrap}
+}
+@media(max-width:480px){
+  .hero-header{padding:0 14px}
+  .hero-actions{gap:4px}
+  .icon-btn{width:34px;height:34px}
+  .milestone{padding-left:34px}
+  .timeline::before{left:9px}
+  .milestone-dot{left:1px;width:16px;height:16px}
+  .milestone-header{padding:14px 14px 12px}
+  .milestone-title{font-size:14px}
+  .task-list-inner{padding:4px 14px 14px}
+  .progress-stats{gap:4px}
+  .p-stat{padding:7px 8px;min-height:46px}
+  .p-stat-num{font-size:15px}
+  .p-stat-label{font-size:8px;letter-spacing:0.5px}
+  .ai-panel{padding:0 14px}
+  .launch-alert{padding:0 14px}
+  .burndown-wrap{padding:0 14px}
+  .main{padding:16px 14px 120px}
+  .task-meta{gap:4px}
+  .task-badge,.task-priority,.task-effort,.task-assignee,.task-comment-count,.task-due{font-size:10px;height:18px}
+}
+@media(max-width:375px){
+  .milestone-title{font-size:14px}
+  .task-title{font-size:13px}
+  .progress-ring-container{width:54px;height:54px}
+  .progress-ring-container svg{width:54px;height:54px}
+  .progress-ring-pct{font-size:14px}
+  .progress-ring-label{font-size:7px}
+  .hero-title{font-size:17px}
+  .filter-pill{font-size:11px;padding:5px 10px;min-height:28px}
+}
+
+/* ===== DARK MODE ===== */
+[data-theme="dark"]{
+  --bg:#0B0D13;
+  --bg-elevated:#12141C;
+  --card:#151820;
+  --card-hover:#1A1D27;
+  --border:rgba(255,255,255,0.06);
+  --border-strong:rgba(255,255,255,0.1);
+  --text:#E4E2DF;
+  --t2:rgba(228,226,223,0.6);
+  --t3:rgba(228,226,223,0.35);
+  --teal-soft:rgba(51,163,163,0.1);
+  --teal-hover:rgba(51,163,163,0.06);
+  --align-soft:rgba(99,102,241,0.1);
+  --become-soft:rgba(52,211,153,0.1);
+  --shadow-xs:0 1px 2px rgba(0,0,0,0.3);
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.25), 0 2px 8px rgba(0,0,0,0.2);
+  --shadow-md:0 2px 6px rgba(0,0,0,0.2), 0 6px 20px rgba(0,0,0,0.25);
+  --shadow-lg:0 4px 12px rgba(0,0,0,0.25), 0 12px 40px rgba(0,0,0,0.3);
+  --focus-ring:0 0 0 3px rgba(51,163,163,0.15);
+  --focus-border:rgba(51,163,163,0.45);
+}
+[data-theme="dark"] .hero-header{background:linear-gradient(180deg, rgba(46,158,158,0.04) 0%, var(--bg) 100%)}
+[data-theme="dark"] .ai-card{background:linear-gradient(135deg, rgba(46,158,158,0.04) 0%, rgba(99,102,241,0.03) 100%);border-color:rgba(46,158,158,0.08)}
+[data-theme="dark"] .task:hover{background:rgba(255,255,255,0.015)}
+[data-theme="dark"] .comment-input{background:var(--bg-elevated)}
+[data-theme="dark"] .config-input,[data-theme="dark"] .milestone-date-edit,[data-theme="dark"] .task-due-edit,[data-theme="dark"] .assignee-edit,[data-theme="dark"] .effort-edit{background:var(--bg-elevated);color:var(--text);border-color:var(--border)}
+[data-theme="dark"] ::selection{background:rgba(51,163,163,0.3)}
+[data-theme="dark"] .auth-gate{background:var(--bg)}
+[data-theme="dark"] .launch-alert-inner{background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.1)}
+[data-theme="dark"] .launch-alert-inner input[type="date"]{background:var(--bg-elevated);color:var(--text);border-color:var(--border)}
+[data-theme="dark"] .launch-alert-inner .save-btn{background:var(--red)}
+[data-theme="dark"] .inline-form input{background:var(--bg-elevated);color:var(--text);border-color:var(--border)}
+[data-theme="dark"] .filter-pill.on{background:var(--text);color:var(--bg)}
+[data-theme="dark"] .milestone-progress .progress-bar{background:rgba(255,255,255,0.04)}
+[data-theme="dark"] .progress-ring-bg{stroke:rgba(255,255,255,0.06)}
+[data-theme="dark"] .badge-draft{background:rgba(255,255,255,0.04)}
+[data-theme="dark"] .ssp-draft{background:rgba(255,255,255,0.04)}
+[data-theme="dark"] .priority-low{background:rgba(255,255,255,0.04)}
+[data-theme="dark"] .task-assignee{background:rgba(255,255,255,0.04)}
+[data-theme="dark"] .status-option:hover,[data-theme="dark"] .priority-option:hover{background:rgba(255,255,255,0.03)}
+[data-theme="dark"] .status-option.current,[data-theme="dark"] .priority-option.current{background:var(--teal-hover)}
+[data-theme="dark"] .task-action-btn:hover{background:rgba(255,255,255,0.04)}
+[data-theme="dark"] .task-effort:hover{background:rgba(255,255,255,0.04)}
+[data-theme="dark"] .add-task-btn:hover,[data-theme="dark"] .add-milestone-btn:hover{background:rgba(51,163,163,0.04)}
+[data-theme="dark"] .add-task-btn,[data-theme="dark"] .add-milestone-btn{border-color:rgba(255,255,255,0.05)}
+[data-theme="dark"] .toolbar-btn:hover{background:rgba(51,163,163,0.06)}
+[data-theme="dark"] .icon-btn:hover{background:rgba(51,163,163,0.08)}
+[data-theme="dark"] .comment-del:hover{background:rgba(239,68,68,0.08)}
+[data-theme="dark"] .toast{background:var(--text);color:var(--bg)}
+[data-theme="dark"] .burndown-card{background:var(--card)}
+[data-theme="dark"] .kb-close:hover{background:rgba(255,255,255,0.04)}
+[data-theme="dark"] .filter-pill:hover{border-color:rgba(255,255,255,0.1);color:var(--text)}
+[data-theme="dark"] .milestone-card{border-color:rgba(255,255,255,0.04)}
+[data-theme="dark"] .milestone.expanded .milestone-card{border-color:rgba(255,255,255,0.08)}
+[data-theme="dark"] .ai-icon{box-shadow:0 2px 8px rgba(46,158,158,0.3)}
+
+/* Dark mode toggle button */
+.theme-btn svg{width:16px;height:16px}
+.theme-btn .sun{display:none}
+.theme-btn .moon{display:block}
+[data-theme="dark"] .theme-btn .sun{display:block}
+[data-theme="dark"] .theme-btn .moon{display:none}
+
+/* ===== STATUS CHANGE FLASH ===== */
+@keyframes statusFlash{
+  0%{background:rgba(51,163,163,0.1)}
+  100%{background:transparent}
+}
+.task.flash{animation:statusFlash 0.5s ease-out}
+
+/* Milestone complete glow */
+@keyframes milestoneGlow{
+  0%{box-shadow:var(--shadow-sm), 0 0 0 0 rgba(52,211,153,0.25)}
+  40%{box-shadow:var(--shadow-md), 0 0 24px 6px rgba(52,211,153,0.12)}
+  100%{box-shadow:var(--shadow-sm), 0 0 0 0 rgba(52,211,153,0)}
+}
+.milestone-card.celebrate{animation:milestoneGlow 1.5s ease-out}
+
+/* Counting animation for pct */
+.ring-counting{transition:none !important}
+
+/* ===== COMMAND PALETTE ===== */
+.cmd-overlay{
+  position:fixed;inset:0;z-index:10000;
+  background:rgba(0,0,0,0.45);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  display:flex;align-items:flex-start;justify-content:center;
+  padding-top:min(18vh, 140px);
+  animation:fadeIn 0.1s ease;
+}
+[data-theme="dark"] .cmd-overlay{background:rgba(0,0,0,0.6)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.cmd-panel{
+  width:min(520px, calc(100vw - 32px));
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;box-shadow:var(--shadow-lg), 0 0 0 1px rgba(0,0,0,0.02);
+  overflow:hidden;
+  animation:cmdSlide 0.15s var(--zen);
+}
+@keyframes cmdSlide{from{opacity:0;transform:translateY(-6px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.cmd-input-wrap{
+  display:flex;align-items:center;gap:10px;
+  padding:14px 18px;border-bottom:1px solid var(--border);
+}
+.cmd-input-wrap svg{width:17px;height:17px;color:var(--t3);flex-shrink:0}
+.cmd-input{
+  flex:1;border:none;background:transparent;outline:none;
+  font-size:15px;font-family:inherit;color:var(--text);
+  font-weight:500;
+}
+.cmd-input::placeholder{color:var(--t3);font-weight:400}
+.cmd-results{max-height:340px;overflow-y:auto;padding:6px;scroll-behavior:smooth}
+.cmd-results::-webkit-scrollbar{width:3px}
+.cmd-results::-webkit-scrollbar-track{background:transparent}
+.cmd-results::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.cmd-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 12px;border-radius:var(--r-xs);
+  cursor:pointer;transition:background 0.08s;
+}
+.cmd-item:hover,.cmd-item.active{background:var(--teal-hover)}
+.cmd-item.active{outline:1px solid rgba(51,163,163,0.1);outline-offset:-1px}
+.cmd-item-icon{
+  width:28px;height:28px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;flex-shrink:0;
+  background:rgba(26,20,16,0.025);color:var(--t2);
+}
+[data-theme="dark"] .cmd-item-icon{background:rgba(255,255,255,0.04)}
+.cmd-item-body{flex:1;min-width:0}
+.cmd-item-title{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-0.1px}
+.cmd-item-sub{font-size:11px;color:var(--t3);font-weight:500;margin-top:1px}
+.cmd-item-badge{font-size:10px;color:var(--t3);font-weight:600;padding:2px 8px;border-radius:100px;background:rgba(26,20,16,0.03)}
+[data-theme="dark"] .cmd-item-badge{background:rgba(255,255,255,0.04)}
+.cmd-empty{padding:32px 24px;text-align:center;font-size:13px;color:var(--t3);font-weight:500}
+.cmd-footer{
+  display:flex;align-items:center;gap:12px;
+  padding:9px 16px;border-top:1px solid var(--border);
+  font-size:11px;color:var(--t3);font-weight:500;
+}
+.cmd-footer kbd{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:20px;height:18px;padding:0 5px;
+  border:1px solid var(--border);border-radius:4px;
+  font-size:10px;font-family:inherit;font-weight:600;background:rgba(26,20,16,0.015);
+}
+[data-theme="dark"] .cmd-footer kbd{background:rgba(255,255,255,0.03)}
+
+/* ===== KEYBOARD SHORTCUT OVERLAY ===== */
+.kb-overlay{
+  position:fixed;inset:0;z-index:10000;
+  background:rgba(0,0,0,0.45);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:center;
+  animation:fadeIn 0.1s ease;
+}
+[data-theme="dark"] .kb-overlay{background:rgba(0,0,0,0.6)}
+.kb-panel{
+  width:min(400px, calc(100vw - 32px));
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;box-shadow:var(--shadow-lg);
+  overflow:hidden;animation:cmdSlide 0.15s var(--zen);
+}
+.kb-header{
+  padding:18px 20px 14px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.kb-title{font-size:15px;font-weight:800;letter-spacing:-0.3px}
+.kb-close{
+  width:28px;height:28px;border-radius:50%;border:none;
+  background:transparent;cursor:pointer;display:flex;
+  align-items:center;justify-content:center;color:var(--t3);
+  transition:all 0.15s;font-family:inherit;
+}
+.kb-close:hover{background:rgba(26,20,16,0.04);color:var(--text)}
+.kb-close svg{width:15px;height:15px}
+.kb-body{padding:14px 20px 20px;max-height:60vh;overflow-y:auto}
+.kb-group{margin-bottom:18px}
+.kb-group:last-child{margin-bottom:0}
+.kb-group-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--t3);margin-bottom:8px}
+.kb-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:5px 0;
+}
+.kb-row-label{font-size:13px;color:var(--t2);font-weight:500}
+.kb-row-keys{display:flex;gap:3px}
+.kb-row-keys kbd{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:24px;height:22px;padding:0 6px;
+  border:1px solid var(--border);border-radius:6px;
+  font-size:11px;font-family:inherit;font-weight:700;
+  background:rgba(26,20,16,0.015);color:var(--t2);
+  box-shadow:0 1px 0 var(--border);
+}
+[data-theme="dark"] .kb-row-keys kbd{background:rgba(255,255,255,0.03);box-shadow:0 1px 0 rgba(255,255,255,0.04)}
+
+/* ===== BURNDOWN CHART ===== */
+.burndown-wrap{
+  max-width:800px;margin:0 auto;padding:0 24px;
+}
+.burndown-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);padding:16px 18px;margin-bottom:16px;
+  box-shadow:var(--shadow-xs);
+}
+.burndown-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:10px;
+}
+.burndown-title{font-size:13px;font-weight:700;letter-spacing:-0.2px}
+.burndown-subtitle{font-size:11px;color:var(--t3);font-weight:500;font-variant-numeric:tabular-nums}
+.burndown-svg{width:100%;height:120px;display:block;overflow:visible}
+.burndown-svg .grid-line{stroke:var(--border);stroke-width:0.5}
+.burndown-svg .ideal-line{stroke:var(--t3);stroke-width:1.5;stroke-dasharray:4 3;fill:none;opacity:0.35}
+.burndown-svg .actual-line{stroke:var(--teal);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.burndown-svg .actual-fill{fill:rgba(51,163,163,0.05);stroke:none}
+[data-theme="dark"] .burndown-svg .actual-fill{fill:rgba(51,163,163,0.06)}
+.burndown-svg .today-line{stroke:var(--amber);stroke-width:1;stroke-dasharray:3 2;opacity:0.5}
+.burndown-svg .launch-line{stroke:var(--red);stroke-width:1.5;stroke-dasharray:0;opacity:0.25}
+.burndown-svg .dot{fill:var(--teal);r:2.5}
+.burndown-svg .label{font-size:9px;fill:var(--t3);font-family:inherit;font-weight:500}
+.burndown-legend{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap}
+.burndown-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--t3);font-weight:600}
+.burndown-legend-item .swatch{width:12px;height:2.5px;border-radius:2px}
+
+/* ===== DRAG HANDLE ===== */
+.drag-handle{
+  width:16px;height:26px;display:flex;align-items:center;justify-content:center;
+  cursor:grab;color:var(--t3);opacity:0;transition:opacity 0.12s;
+  flex-shrink:0;-webkit-tap-highlight-color:transparent;
+  margin-top:1px;
+}
+.drag-handle:active{cursor:grabbing}
+.task:hover .drag-handle{opacity:0.35}
+.drag-handle:hover{opacity:0.7 !important;color:var(--teal)}
+.drag-handle svg{width:10px;height:10px}
+.sortable-ghost{opacity:0.25;border-radius:var(--r-xs)}
+.sortable-chosen{box-shadow:var(--shadow-md);background:var(--card);border-radius:var(--r-xs);z-index:10}
+
+/* ===== TOAST UNDO ===== */
+.toast-inner{display:flex;align-items:center;gap:10px}
+.toast-undo{
+  border:none;background:rgba(255,255,255,0.18);color:#fff;
+  padding:4px 12px;border-radius:100px;font-size:12px;font-weight:700;
+  cursor:pointer;font-family:inherit;transition:background 0.1s;
+  white-space:nowrap;
+}
+.toast-undo:hover{background:rgba(255,255,255,0.28)}
+[data-theme="dark"] .toast-undo{background:rgba(0,0,0,0.2)}
+[data-theme="dark"] .toast-undo:hover{background:rgba(0,0,0,0.3)}
+</style>
+<!-- CDN libs -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+</head>
+<body>
+
+<div class="auth-gate" id="authGate">
+  <div class="brand">Possibility</div>
+  <div class="title">Progress Tracker</div>
+  <div class="loading"><div class="spinner"></div>Loading...</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- SVG defs for gradients -->
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+  <defs>
+    <linearGradient id="tealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2E9E9E"/>
+      <stop offset="50%" stop-color="#33A3A3"/>
+      <stop offset="100%" stop-color="#34D399"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<header class="hero-header">
+  <div class="hero-top">
+    <div class="hero-left">
+      <div class="hero-brand">Possibility</div>
+      <div class="hero-title">Progress Tracker</div>
+    </div>
+    <div class="hero-actions">
+      <button class="icon-btn" id="aiToggleBtn" title="AI Insights">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a4 4 0 0 1 4 4c0 1.5-.8 2.8-2 3.5v1a5.002 5.002 0 0 1 4 4.9V17a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-1.6a5 5 0 0 1 4-4.9v-1A4 4 0 0 1 8 6a4 4 0 0 1 4-4z"/><path d="M9 21v1M15 21v1"/></svg>
+      </button>
+      <button class="icon-btn theme-btn" id="themeBtn" title="Toggle dark mode">
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <button class="icon-btn" id="settingsBtn" title="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+      <button class="icon-btn" id="logoutBtn" title="Log out">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Progress Ring + Stats -->
+  <div class="progress-ring-wrap">
+    <div class="progress-ring-container">
+      <svg viewBox="0 0 72 72">
+        <circle class="progress-ring-bg" cx="36" cy="36" r="30"/>
+        <circle class="progress-ring-fill" id="progressRing" cx="36" cy="36" r="30"
+          stroke-dasharray="188.5" stroke-dashoffset="188.5"/>
+      </svg>
+      <div class="progress-ring-text">
+        <div class="progress-ring-pct" id="ringPct">0%</div>
+        <div class="progress-ring-label">Complete</div>
+      </div>
+    </div>
+    <div class="progress-stats">
+      <div class="p-stat teal" id="statCountdown">
+        <div class="p-stat-num">--</div>
+        <div class="p-stat-label">Days Left</div>
+      </div>
+      <div class="p-stat green" id="statDone">
+        <div class="p-stat-num">0</div>
+        <div class="p-stat-label">Done</div>
+      </div>
+      <div class="p-stat amber" id="statActive">
+        <div class="p-stat-num">0</div>
+        <div class="p-stat-label">Active</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="config-bar" id="configBar">
+  <div class="config-inner">
+    <label class="config-label">Launch Date</label>
+    <input type="date" class="config-input" id="launchDateInput">
+    <button class="save-btn" id="saveLaunchDate">Update</button>
+  </div>
+</div>
+
+<!-- Launch date alert (shown when past due) -->
+<div class="launch-alert" id="launchAlert" style="display:none">
+  <div class="launch-alert-inner">
+    <span class="alert-icon">&#9888;&#65039;</span>
+    <span class="alert-text" id="launchAlertText">Launch date has passed. Update it to see accurate calculations.</span>
+    <input type="date" id="quickLaunchDate">
+    <button class="save-btn" id="quickSaveLaunch">Set Date</button>
+  </div>
+</div>
+
+<!-- AI Insights Panel -->
+<div class="ai-panel" id="aiPanel">
+  <div class="ai-card">
+    <div class="ai-header">
+      <div class="ai-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a4 4 0 0 1 4 4c0 1.5-.8 2.8-2 3.5v1a5.002 5.002 0 0 1 4 4.9V17a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-1.6a5 5 0 0 1 4-4.9v-1A4 4 0 0 1 8 6a4 4 0 0 1 4-4z"/></svg></div>
+      <div class="ai-title">AI Project Intelligence</div>
+      <div class="ai-subtitle" id="aiLastUpdated"></div>
+    </div>
+    <div class="ai-insights" id="aiInsights">
+      <div class="loading"><div class="spinner"></div>Analyzing project...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Burndown Chart -->
+<div class="burndown-wrap" id="burndownWrap" style="display:none">
+  <div class="burndown-card">
+    <div class="burndown-header">
+      <div class="burndown-title">Burndown</div>
+      <div class="burndown-subtitle" id="burndownSubtitle"></div>
+    </div>
+    <svg class="burndown-svg" id="burndownSvg" viewBox="0 0 480 120" preserveAspectRatio="none"></svg>
+    <div class="burndown-legend">
+      <div class="burndown-legend-item"><div class="swatch" style="background:var(--teal)"></div>Actual</div>
+      <div class="burndown-legend-item"><div class="swatch" style="background:var(--t3);opacity:0.4"></div>Ideal</div>
+      <div class="burndown-legend-item"><div class="swatch" style="background:var(--amber)"></div>Today</div>
+    </div>
+  </div>
+</div>
+
+<main class="main">
+  <div class="filter-bar" id="filterBar"></div>
+  <div class="toolbar">
+    <button class="toolbar-btn" id="expandAllBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      <span id="expandAllLabel">Expand All</span>
+    </button>
+  </div>
+  <div class="timeline" id="timeline">
+    <div class="loading"><div class="spinner"></div>Loading milestones...</div>
+  </div>
+</main>
+
+<script>
+(function(){
+  let currentUser = null;
+  let config = null;
+  let milestones = [];
+  let allTasks = [];
+  let tasksByMilestone = {};
+  let expandedMilestones = new Set();
+  let openStatusDropdown = null;
+  let openPriorityDropdown = null;
+  let openComments = new Set();
+  let commentsByTask = {};
+  let statusFilter = 'all';
+  let aiVisible = true;
+
+  // ===== AUTH =====
+  async function checkAuth() {
+    try {
+      const res = await fetch('/api/auth/me');
+      if (!res.ok) throw new Error();
+      currentUser = await res.json();
+      document.getElementById('authGate').style.display = 'none';
+      requestAnimationFrame(() => document.body.classList.add('loaded'));
+      init();
+    } catch { window.location.href = '/login'; }
+  }
+
+  // ===== API =====
+  async function api(url, opts = {}) {
+    const res = await fetch(url, {
+      ...opts,
+      headers: { 'Content-Type': 'application/json', ...opts.headers },
+      body: opts.body ? JSON.stringify(opts.body) : undefined
+    });
+    if (res.status === 401) { window.location.href = '/login'; return null; }
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Request failed');
+    return data;
+  }
+
+  let toastTimer = null;
+  function toast(msg, undoFn) {
+    const el = document.getElementById('toast');
+    if (toastTimer) clearTimeout(toastTimer);
+    if (undoFn) {
+      el.innerHTML = `<div class="toast-inner"><span>${msg}</span><button class="toast-undo" id="toastUndo">Undo</button></div>`;
+      document.getElementById('toastUndo').addEventListener('click', () => { el.classList.remove('show'); undoFn(); });
+    } else {
+      el.textContent = msg;
+    }
+    el.classList.add('show');
+    toastTimer = setTimeout(() => el.classList.remove('show'), undoFn ? 5000 : 2500);
+  }
+
+  // ===== INIT =====
+  async function init() {
+    await Promise.all([loadConfig(), loadMilestones()]);
+    await loadAllTasks();
+    renderFilters();
+    render();
+    setupEvents();
+    computeAI();
+  }
+
+  async function loadConfig() {
+    config = await api('/api/tracker-config');
+    if (!config) return;
+    updateHeaderStats();
+    document.getElementById('launchDateInput').value = config.launch_date;
+  }
+
+  async function loadMilestones() {
+    milestones = await api('/api/tracker-milestones') || [];
+    updateHeaderStats();
+  }
+
+  async function loadTasks(mid) {
+    const tasks = await api('/api/tracker-tasks?milestone_id=' + mid) || [];
+    tasksByMilestone[mid] = tasks;
+    return tasks;
+  }
+
+  async function loadAllTasks() {
+    // Load tasks for every milestone
+    const promises = milestones.map(m => loadTasks(m.id));
+    await Promise.all(promises);
+    allTasks = [];
+    Object.values(tasksByMilestone).forEach(ts => allTasks.push(...ts));
+  }
+
+  async function loadComments(tid) {
+    const comments = await api('/api/tracker-comments?task_id=' + tid) || [];
+    commentsByTask[tid] = comments;
+    return comments;
+  }
+
+  // ===== HEADER STATS =====
+  function updateHeaderStats() {
+    if (!config) return;
+    const ld = new Date(config.launch_date + 'T00:00:00');
+    const now = new Date(); now.setHours(0,0,0,0);
+    const diff = Math.ceil((ld - now) / 86400000);
+
+    const cdEl = document.getElementById('statCountdown');
+    cdEl.querySelector('.p-stat-num').textContent = Math.abs(diff);
+    cdEl.querySelector('.p-stat-label').textContent = diff > 0 ? 'Days Left' : diff === 0 ? 'Launch Day' : 'Days Past';
+    // Reset color classes then apply correct one
+    cdEl.classList.remove('teal','red','amber');
+    if (diff < 0) cdEl.classList.add('red');
+    else if (diff <= 7) cdEl.classList.add('red');
+    else if (diff <= 14) cdEl.classList.add('amber');
+    else cdEl.classList.add('teal');
+
+    // Show/hide launch alert banner
+    const alertEl = document.getElementById('launchAlert');
+    if (diff < 0) {
+      alertEl.style.display = '';
+      document.getElementById('launchAlertText').textContent = `Launch date was ${Math.abs(diff)} days ago. Update it to see accurate calculations.`;
+    } else {
+      alertEl.style.display = 'none';
+    }
+
+    let total = 0, approved = 0, active = 0;
+    milestones.forEach(m => {
+      total += m.task_count || 0;
+      approved += m.approved_count || 0;
+    });
+    active = total - approved;
+
+    const pct = total > 0 ? Math.round((approved / total) * 100) : 0;
+
+    // Update ring
+    const ring = document.getElementById('progressRing');
+    const circ = 2 * Math.PI * 30; // 188.5
+    ring.style.strokeDashoffset = circ - (circ * pct / 100);
+    document.getElementById('ringPct').textContent = pct + '%';
+
+    // Update stat cards
+    document.getElementById('statDone').querySelector('.p-stat-num').textContent = approved;
+    document.getElementById('statActive').querySelector('.p-stat-num').textContent = active;
+  }
+
+  // ===== AI INTELLIGENCE =====
+  async function computeAI() {
+    // Load all tasks first for full analysis
+    await loadAllTasks();
+
+    const insights = [];
+    const now = new Date(); now.setHours(0,0,0,0);
+    const ld = config ? new Date(config.launch_date + 'T00:00:00') : now;
+    const daysLeft = Math.ceil((ld - now) / 86400000);
+    const total = allTasks.length;
+    const done = allTasks.filter(t => t.status === 'approved').length;
+    const inProg = allTasks.filter(t => t.status === 'in-progress').length;
+    const inReview = allTasks.filter(t => t.status === 'review').length;
+    const drafts = allTasks.filter(t => t.status === 'draft').length;
+    const overdue = allTasks.filter(t => t.status !== 'approved' && isOverdue(t.due_date)).length;
+    const remaining = total - done;
+    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+    // 1. Overall status assessment
+    if (daysLeft < 0) {
+      // Launch date has passed
+      if (remaining === total) {
+        insights.push({ icon: 'risk', emoji: '\u26A0\uFE0F', title: 'Launch Date Has Passed', desc: `The launch date was ${Math.abs(daysLeft)} days ago and no tasks are complete yet. Update the launch date in Settings, or start marking tasks as complete.` });
+      } else if (remaining > 0) {
+        insights.push({ icon: 'risk', emoji: '\u26A0\uFE0F', title: 'Past Launch Date', desc: `Launch was ${Math.abs(daysLeft)} days ago. ${done}/${total} tasks complete (${pct}%). ${remaining} tasks still remain.` });
+      } else {
+        insights.push({ icon: 'velocity', emoji: '\u2705', title: 'All Tasks Complete', desc: `All ${total} tasks are done! The project launched ${Math.abs(daysLeft)} days ago.` });
+      }
+    } else if (daysLeft === 0) {
+      insights.push({ icon: 'streak', emoji: '\uD83D\uDE80', title: 'Launch Day!', desc: `Today is launch day. ${done}/${total} tasks (${pct}%) are complete.` });
+    } else {
+      // Future launch date: calculate velocity
+      // Use the earliest task date and today to determine elapsed working time
+      const allDates = allTasks.map(t => t.due_date).filter(Boolean).map(d => new Date(d + 'T00:00:00'));
+      const earliestDate = allDates.length ? new Date(Math.min(...allDates)) : now;
+      const totalSpan = Math.max(1, Math.ceil((ld - earliestDate) / 86400000));
+      const elapsed = Math.max(1, Math.ceil((now - earliestDate) / 86400000));
+      const expectedPct = Math.min(100, Math.round((elapsed / totalSpan) * 100));
+      const velocityDelta = pct - expectedPct;
+
+      if (done === 0 && total > 0) {
+        insights.push({ icon: 'velocity', emoji: '\uD83D\uDCCA', title: `${total} Tasks, ${daysLeft} Days`, desc: `${total} tasks across ${milestones.length} milestones. That's roughly ${(total / Math.max(1, daysLeft) * 7).toFixed(1)} tasks per week needed. Start completing tasks to unlock velocity insights.` });
+      } else if (velocityDelta >= 5) {
+        insights.push({ icon: 'velocity', emoji: '\u26A1', title: 'Ahead of Schedule', desc: `${pct}% complete with ${daysLeft} days remaining. You're ${Math.abs(velocityDelta)} points ahead of target pace.` });
+      } else if (velocityDelta <= -10) {
+        insights.push({ icon: 'risk', emoji: '\u26A0\uFE0F', title: 'Behind Schedule', desc: `${pct}% complete but expected ~${expectedPct}% by now. ${remaining} tasks still need attention.` });
+      } else {
+        insights.push({ icon: 'velocity', emoji: '\u2705', title: 'On Track', desc: `${pct}% complete with ${daysLeft} days left. Current pace is aligned with the launch timeline.` });
+      }
+    }
+
+    // 2. Bottleneck detection
+    if (inReview >= 3) {
+      insights.push({ icon: 'risk', emoji: '\uD83D\uDED1', title: 'Review Bottleneck', desc: `${inReview} tasks are waiting for review. Consider approving completed work to maintain momentum.` });
+    }
+
+    // 3. Overdue alert
+    if (overdue > 0) {
+      insights.push({ icon: 'risk', emoji: '\u23F0', title: `${overdue} Overdue Task${overdue > 1 ? 's' : ''}`, desc: `${overdue} task${overdue > 1 ? 's have' : ' has'} passed ${overdue > 1 ? 'their' : 'its'} due date without completion. Prioritize or reschedule.` });
+    }
+
+    // 4. Completion prediction (only when we have velocity data)
+    if (done > 0 && remaining > 0) {
+      // Use earliest updated_at from approved tasks to calculate real velocity
+      const approvedTasks = allTasks.filter(t => t.status === 'approved');
+      const approvedDates = approvedTasks.map(t => new Date(t.updated_at || t.created_at)).filter(d => !isNaN(d));
+      const earliestApproved = approvedDates.length ? new Date(Math.min(...approvedDates)) : now;
+      const daysSinceStart = Math.max(1, Math.ceil((now - earliestApproved) / 86400000));
+      const rate = done / daysSinceStart;
+      const daysNeeded = Math.ceil(remaining / rate);
+      const predictedDate = new Date(now);
+      predictedDate.setDate(predictedDate.getDate() + daysNeeded);
+      const onTime = daysLeft > 0 ? predictedDate <= ld : false;
+      if (daysLeft > 0) {
+        insights.push({
+          icon: 'prediction', emoji: '\uD83D\uDD2E',
+          title: 'Projected Completion',
+          desc: onTime
+            ? `At current velocity, all tasks should be done by ${fmtDateFull(predictedDate.toISOString().split('T')[0])}, ${Math.ceil((ld - predictedDate) / 86400000)} days before launch.`
+            : `At current pace, completion is projected for ${fmtDateFull(predictedDate.toISOString().split('T')[0])}, which is ${Math.ceil((predictedDate - ld) / 86400000)} days after launch. Increase velocity or reduce scope.`
+        });
+      }
+    }
+
+    // 5. Task breakdown insight (always useful)
+    if (total > 0) {
+      const parts = [];
+      if (drafts > 0) parts.push(`${drafts} draft`);
+      if (inProg > 0) parts.push(`${inProg} in progress`);
+      if (inReview > 0) parts.push(`${inReview} in review`);
+      if (done > 0) parts.push(`${done} approved`);
+      insights.push({ icon: 'effort', emoji: '\uD83D\uDCCB', title: 'Task Breakdown', desc: `${total} total: ${parts.join(', ')}.` });
+    }
+
+    // 6. Effort estimate
+    const tasksWithEffort = allTasks.filter(t => t.effort_hours && t.status !== 'approved');
+    const totalEffort = tasksWithEffort.reduce((s, t) => s + parseFloat(t.effort_hours || 0), 0);
+    if (totalEffort > 0) {
+      const doneEffort = allTasks.filter(t => t.effort_hours && t.status === 'approved').reduce((s, t) => s + parseFloat(t.effort_hours || 0), 0);
+      insights.push({ icon: 'effort', emoji: '\u23F1\uFE0F', title: `${totalEffort.toFixed(0)}h Remaining Effort`, desc: `${tasksWithEffort.length} tasks with effort estimates totaling ${totalEffort.toFixed(0)} hours remaining${doneEffort > 0 ? ` (${doneEffort.toFixed(0)}h completed)` : ''}. Add effort estimates to tasks for better projections.` });
+    } else if (total > 0) {
+      insights.push({ icon: 'effort', emoji: '\u23F1\uFE0F', title: 'No Effort Estimates', desc: 'Add hour estimates to tasks (click the clock icon) to unlock effort tracking and workload projections.' });
+    }
+
+    // 7. Critical priority
+    const critical = allTasks.filter(t => t.priority === 'critical' && t.status !== 'approved');
+    if (critical.length > 0) {
+      insights.push({ icon: 'risk', emoji: '\uD83D\uDD25', title: `${critical.length} Critical Task${critical.length > 1 ? 's' : ''}`, desc: `${critical.map(t => '"' + t.title + '"').slice(0,3).join(', ')}${critical.length > 3 ? '...' : ''} marked as critical priority.` });
+    }
+
+    // 8. Next milestone (find first incomplete one sorted by date)
+    const incompleteMilestones = milestones.filter(m => (m.approved_count || 0) < (m.task_count || 1));
+    const nextMilestone = incompleteMilestones[0]; // already sorted by sort_order
+    if (nextMilestone) {
+      const mDate = new Date(nextMilestone.target_date + 'T00:00:00');
+      const mDays = Math.ceil((mDate - now) / 86400000);
+      const mPct = nextMilestone.task_count > 0 ? Math.round((nextMilestone.approved_count / nextMilestone.task_count) * 100) : 0;
+      const mRemaining = (nextMilestone.task_count || 0) - (nextMilestone.approved_count || 0);
+      if (mDays >= 0) {
+        insights.push({ icon: 'streak', emoji: '\uD83C\uDFAF', title: `Next: ${nextMilestone.title}`, desc: `Due in ${mDays} day${mDays !== 1 ? 's' : ''} (${fmtDate(nextMilestone.target_date)}). ${mRemaining} of ${nextMilestone.task_count} tasks remaining (${mPct}% done).` });
+      } else {
+        insights.push({ icon: 'risk', emoji: '\uD83C\uDFAF', title: `Overdue: ${nextMilestone.title}`, desc: `Was due ${Math.abs(mDays)} days ago (${fmtDate(nextMilestone.target_date)}). ${mRemaining} of ${nextMilestone.task_count} tasks still remaining.` });
+      }
+    }
+
+    // Render insights
+    const el = document.getElementById('aiInsights');
+    if (!insights.length) {
+      el.innerHTML = '<div style="padding:8px 0;font-size:13px;color:var(--t3)">Not enough data for insights yet. Start completing tasks!</div>';
+    } else {
+      el.innerHTML = insights.map(i => `
+        <div class="ai-insight">
+          <div class="ai-insight-icon ${i.icon}">${i.emoji}</div>
+          <div class="ai-insight-body">
+            <div class="ai-insight-title">${i.title}</div>
+            <div class="ai-insight-desc">${i.desc}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+    document.getElementById('aiLastUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  }
+
+  // ===== COMPUTED =====
+  function fmtDate(d) {
+    if (!d) return '';
+    return new Date(d + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  }
+  function fmtDateFull(d) {
+    if (!d) return '';
+    return new Date(d + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+  function relTime(d) {
+    const s = Math.floor((new Date() - new Date(d)) / 1000);
+    if (s < 60) return 'just now';
+    if (s < 3600) return Math.floor(s/60) + 'm ago';
+    if (s < 86400) return Math.floor(s/3600) + 'h ago';
+    return Math.floor(s/86400) + 'd ago';
+  }
+  function initials(email) { return email ? email.split('@')[0].substring(0,2).toUpperCase() : '?'; }
+  function isOverdue(dateStr) {
+    if (!dateStr) return false;
+    const d = new Date(dateStr + 'T00:00:00');
+    const now = new Date(); now.setHours(0,0,0,0);
+    return d < now;
+  }
+  function esc(s) { if (!s) return ''; const e = document.createElement('span'); e.textContent = s; return e.innerHTML; }
+
+  // ===== STATUS =====
+  const statusIcons = {
+    'draft': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="4"/></svg>',
+    'in-progress': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>',
+    'review': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+    'approved': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+  };
+  const statusLabels = { 'draft':'Draft', 'in-progress':'In Progress', 'review':'Review', 'approved':'Approved' };
+  const statusColors = { 'draft':'rgba(26,20,16,0.25)', 'in-progress':'#2E9E9E', 'review':'#6366F1', 'approved':'#059669' };
+  const priorityLabels = { 'low':'Low', 'medium':'Medium', 'high':'High', 'critical':'Critical' };
+  const priorityColors = { 'low':'rgba(26,20,16,0.25)', 'medium':'#2E9E9E', 'high':'#F97316', 'critical':'#EF4444' };
+
+  // ===== FILTERS =====
+  function renderFilters() {
+    let total = 0;
+    milestones.forEach(m => total += m.task_count || 0);
+    // Count tasks by status across all loaded tasks
+    const fc = { draft:0, 'in-progress':0, review:0, approved:0, overdue:0 };
+    Object.values(tasksByMilestone).forEach(ts => ts.forEach(t => {
+      if (fc[t.status] !== undefined) fc[t.status]++;
+      if (t.status !== 'approved' && isOverdue(t.due_date)) fc.overdue++;
+    }));
+    const bar = document.getElementById('filterBar');
+    bar.innerHTML = `
+      <button class="filter-pill ${statusFilter==='all'?'on':''}" data-filter="all">All<span class="cnt">${total}</span></button>
+      <button class="filter-pill ${statusFilter==='in-progress'?'on':''}" data-filter="in-progress">In Progress${fc['in-progress']?'<span class="cnt">'+fc['in-progress']+'</span>':''}</button>
+      <button class="filter-pill ${statusFilter==='review'?'on':''}" data-filter="review">Review${fc.review?'<span class="cnt">'+fc.review+'</span>':''}</button>
+      <button class="filter-pill ${statusFilter==='draft'?'on':''}" data-filter="draft">Draft${fc.draft?'<span class="cnt">'+fc.draft+'</span>':''}</button>
+      <button class="filter-pill ${statusFilter==='approved'?'on':''}" data-filter="approved">Done${fc.approved?'<span class="cnt">'+fc.approved+'</span>':''}</button>
+      <button class="filter-pill ${statusFilter==='overdue'?'on':''}" data-filter="overdue">Overdue${fc.overdue?'<span class="cnt">'+fc.overdue+'</span>':''}</button>
+    `;
+    bar.querySelectorAll('.filter-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        statusFilter = btn.dataset.filter;
+        renderFilters();
+        render();
+      });
+    });
+  }
+
+  // ===== RENDER =====
+  function render() {
+    const tl = document.getElementById('timeline');
+    if (!milestones.length) {
+      tl.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><p>No milestones yet. Add one to get started.</p></div>';
+    } else {
+      tl.innerHTML = milestones.map(renderMilestone).join('');
+    }
+    tl.innerHTML += `<button class="add-milestone-btn" id="addMilestoneBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Milestone</button>`;
+    // Sync expand all label
+    const eal = document.getElementById('expandAllLabel');
+    if (eal) eal.textContent = expandedMilestones.size === milestones.length && milestones.length > 0 ? 'Collapse All' : 'Expand All';
+    bindEvents();
+  }
+
+  function renderMilestone(m) {
+    const exp = expandedMilestones.has(m.id);
+    const pct = m.task_count > 0 ? Math.round((m.approved_count / m.task_count) * 100) : 0;
+    const done = m.task_count > 0 && m.approved_count === m.task_count;
+    const tasks = tasksByMilestone[m.id] || [];
+
+    // Status summary counts
+    const sc = { draft:0, 'in-progress':0, review:0, approved:0 };
+    tasks.forEach(t => { if (sc[t.status] !== undefined) sc[t.status]++; });
+
+    // Effort sum for milestone
+    const effortSum = tasks.reduce((s, t) => s + parseFloat(t.effort_hours || 0), 0);
+    const effortRemaining = tasks.filter(t => t.status !== 'approved').reduce((s, t) => s + parseFloat(t.effort_hours || 0), 0);
+
+    return `
+      <div class="milestone ${exp ? 'expanded' : ''}" data-id="${m.id}">
+        <div class="milestone-dot ${done ? 'complete' : ''}"></div>
+        <div class="milestone-card">
+          <div class="milestone-header" data-id="${m.id}">
+            <div class="milestone-top-row">
+              <div class="milestone-title" contenteditable="false" data-id="${m.id}">${esc(m.title)}</div>
+              <div class="milestone-actions">
+                <button class="task-action-btn del" data-delete-milestone="${m.id}" title="Delete milestone">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                </button>
+              </div>
+              <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="milestone-info">
+              <span class="milestone-date" data-edit-mdate="${m.id}" style="cursor:pointer" title="Click to edit date">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                ${fmtDateFull(m.target_date)}
+              </span>
+              <div class="milestone-progress">
+                <div class="progress-bar"><div class="progress-fill ${done ? 'complete' : ''}" style="width:${pct}%"></div></div>
+                <div class="progress-text">${m.approved_count || 0}/${m.task_count || 0}</div>
+              </div>
+              ${effortSum > 0 ? `<span class="milestone-effort"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${effortRemaining > 0 ? effortRemaining.toFixed(0) + 'h left' : 'Done'}</span>` : ''}
+            </div>
+            ${exp && tasks.length ? renderStatusSummary(sc) : ''}
+            ${m.description
+              ? '<div class="milestone-desc" contenteditable="false" data-desc-id="' + m.id + '">' + esc(m.description) + '</div>'
+              : '<div class="milestone-desc-placeholder" data-add-desc="' + m.id + '">+ add description</div>'}
+          </div>
+          <div class="task-list" style="${exp ? 'max-height:9999px' : ''}">
+            <div class="task-list-inner" data-milestone="${m.id}">
+              ${exp ? renderTasks(m.id, tasks) : ''}
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function renderStatusSummary(sc) {
+    let html = '<div class="status-summary">';
+    if (sc['in-progress']) html += `<span class="status-summary-pill ssp-in-progress">${sc['in-progress']} active</span>`;
+    if (sc.review) html += `<span class="status-summary-pill ssp-review">${sc.review} review</span>`;
+    if (sc.draft) html += `<span class="status-summary-pill ssp-draft">${sc.draft} draft</span>`;
+    if (sc.approved) html += `<span class="status-summary-pill ssp-approved">${sc.approved} done</span>`;
+    html += '</div>';
+    return html;
+  }
+
+  function renderTasks(mid, tasks) {
+    let filtered = tasks;
+    if (statusFilter !== 'all') {
+      if (statusFilter === 'overdue') {
+        filtered = tasks.filter(t => t.status !== 'approved' && isOverdue(t.due_date));
+      } else {
+        filtered = tasks.filter(t => t.status === statusFilter);
+      }
+    }
+    if (!filtered.length && statusFilter !== 'all') {
+      return `<div style="padding:16px 0;font-size:13px;color:var(--t3);text-align:center">No ${statusFilter === 'overdue' ? 'overdue' : statusFilter} tasks</div>` +
+        `<div class="add-task-row" data-milestone="${mid}"><button class="add-task-btn" data-milestone="${mid}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add task</button></div>`;
+    }
+    let html = filtered.map(t => renderTask(t)).join('');
+    html += `<div class="add-task-row" data-milestone="${mid}"><button class="add-task-btn" data-milestone="${mid}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add task</button></div>`;
+    return html;
+  }
+
+  function renderTask(t) {
+    const cOpen = openComments.has(t.id);
+    const comments = commentsByTask[t.id] || [];
+    const overdue = t.status !== 'approved' && isOverdue(t.due_date);
+    const pri = t.priority || 'medium';
+    const effort = t.effort_hours ? parseFloat(t.effort_hours) : null;
+
+    return `
+      <div class="task" data-id="${t.id}" data-status="${t.status}" data-sort="${t.sort_order || 0}">
+        <div class="drag-handle" title="Drag to reorder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="6" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="18" r="1"/></svg></div>
+        <button class="task-status-btn" data-status="${t.status}" data-id="${t.id}" title="Click to change status">
+          ${statusIcons[t.status] || ''}
+        </button>
+        <div class="task-body">
+          <div class="task-title" contenteditable="false" data-id="${t.id}">${esc(t.title)}</div>
+          ${t.description
+            ? '<div class="task-desc" contenteditable="false" data-tdesc-id="' + t.id + '">' + esc(t.description) + '</div>'
+            : '<div class="task-desc-placeholder" data-add-tdesc="' + t.id + '">+ description</div>'}
+          <div class="task-meta">
+            <span class="task-badge badge-${t.status}">${statusLabels[t.status]}</span>
+            <span class="task-priority priority-${pri}" data-set-priority="${t.id}" title="Click to change priority">${priorityLabels[pri]}</span>
+            ${effort !== null ? `<span class="task-effort" data-edit-effort="${t.id}" title="Click to edit effort"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${effort}h</span>` : `<span class="task-effort" data-edit-effort="${t.id}" style="opacity:0.4" title="Add effort estimate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>+ hrs</span>`}
+            ${t.due_date ? '<span class="task-due ' + (overdue ? 'overdue' : '') + '" data-edit-tdate="' + t.id + '" style="cursor:pointer" title="Click to edit date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>' + fmtDate(t.due_date) + '</span>' : '<span class="task-due" data-edit-tdate="' + t.id + '" style="cursor:pointer;opacity:0.5">+ date</span>'}
+            ${t.assignee ? '<span class="task-assignee" data-assign="' + t.id + '" style="cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' + esc(t.assignee) + '</span>' : '<span class="task-assignee" style="cursor:pointer;opacity:0.5" data-assign="' + t.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>assign</span>'}
+            <span class="task-comment-count" data-task="${t.id}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              ${t.comment_count || 0}
+            </span>
+          </div>
+          <div class="comment-section ${cOpen ? 'open' : ''}" data-task="${t.id}" style="${cOpen ? 'max-height:9999px' : ''}">
+            ${cOpen ? renderComments(t.id, comments) : ''}
+          </div>
+        </div>
+        <div class="task-actions">
+          <button class="task-action-btn del" data-delete-task="${t.id}" title="Delete">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </button>
+        </div>
+      </div>`;
+  }
+
+  function renderComments(tid, comments) {
+    let html = '<div class="comment-list">';
+    if (!comments.length) html += '<div style="font-size:12px;color:var(--t3);padding:4px 0">No comments yet</div>';
+    else html += comments.map(c => `
+      <div class="comment" data-id="${c.id}">
+        <div class="comment-avatar">${initials(c.author_email)}</div>
+        <div class="comment-body">
+          <div class="comment-header">
+            <span class="comment-author">${esc(c.author_email.split('@')[0])}</span>
+            <span class="comment-time">${relTime(c.created_at)}</span>
+            ${c.author_id === currentUser.id ? '<button class="comment-del" data-del-comment="' + c.id + '">delete</button>' : ''}
+          </div>
+          <div class="comment-text">${esc(c.content)}</div>
+        </div>
+      </div>`).join('');
+    html += '</div>';
+    html += `<div class="comment-input-row"><input class="comment-input" placeholder="Add a comment..." data-task="${tid}"><button class="comment-send" data-send-comment="${tid}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>`;
+    return html;
+  }
+
+  // ===== EVENTS =====
+  function setupEvents() {
+    document.getElementById('settingsBtn').addEventListener('click', () => document.getElementById('configBar').classList.toggle('open'));
+    document.getElementById('saveLaunchDate').addEventListener('click', async () => {
+      const nd = document.getElementById('launchDateInput').value;
+      if (!nd) return;
+      try {
+        await api('/api/tracker-config', { method: 'PATCH', body: { launch_date: nd } });
+        config.launch_date = nd;
+        updateHeaderStats();
+        await loadMilestones();
+        for (const mid of expandedMilestones) await loadTasks(mid);
+        renderFilters(); render(); computeAI();
+        toast('Launch date updated. All dates recalculated.');
+        document.getElementById('configBar').classList.remove('open');
+      } catch (e) { toast('Error: ' + e.message); }
+    });
+    document.getElementById('logoutBtn').addEventListener('click', () => { window.location.href = '/api/auth/logout'; });
+    document.getElementById('aiToggleBtn').addEventListener('click', () => {
+      aiVisible = !aiVisible;
+      document.getElementById('aiPanel').classList.toggle('collapsed', !aiVisible);
+    });
+    // Quick launch date save (alert banner)
+    document.getElementById('quickSaveLaunch').addEventListener('click', async () => {
+      const nd = document.getElementById('quickLaunchDate').value;
+      if (!nd) return;
+      try {
+        await api('/api/tracker-config', { method: 'PATCH', body: { launch_date: nd } });
+        config.launch_date = nd;
+        document.getElementById('launchDateInput').value = nd;
+        updateHeaderStats();
+        await loadMilestones();
+        for (const mid of expandedMilestones) await loadTasks(mid);
+        renderFilters(); render(); computeAI();
+        toast('Launch date updated. All dates recalculated.');
+      } catch (e) { toast('Error: ' + e.message); }
+    });
+    // Expand all / collapse all
+    document.getElementById('expandAllBtn').addEventListener('click', async () => {
+      const allExpanded = expandedMilestones.size === milestones.length;
+      if (allExpanded) {
+        expandedMilestones.clear();
+        document.getElementById('expandAllLabel').textContent = 'Expand All';
+      } else {
+        for (const m of milestones) {
+          expandedMilestones.add(m.id);
+          if (!tasksByMilestone[m.id]) await loadTasks(m.id);
+        }
+        document.getElementById('expandAllLabel').textContent = 'Collapse All';
+      }
+      renderFilters(); render();
+    });
+    document.addEventListener('click', handleClick);
+  }
+
+  function bindEvents() {
+    // Editable titles (single click to edit)
+    document.querySelectorAll('.milestone-title[contenteditable="false"]').forEach(el => {
+      el.addEventListener('click', (e) => { e.stopPropagation(); el.contentEditable = 'true'; el.focus(); selectAll(el); });
+      el.addEventListener('blur', async () => { el.contentEditable = 'false'; const id = el.dataset.id; const v = el.textContent.trim(); if (!v) return; try { await api('/api/tracker-milestones', { method:'PATCH', body:{id, title:v} }); const m = milestones.find(x=>x.id===id); if(m) m.title=v; } catch(e) { toast('Error: '+e.message); } });
+      el.addEventListener('keydown', e => { if(e.key==='Enter'){e.preventDefault();el.blur()} if(e.key==='Escape')el.blur(); });
+    });
+    document.querySelectorAll('.task-title[contenteditable="false"]').forEach(el => {
+      el.addEventListener('click', (e) => { e.stopPropagation(); el.contentEditable = 'true'; el.focus(); selectAll(el); });
+      el.addEventListener('blur', async () => { el.contentEditable = 'false'; const id = el.dataset.id; const v = el.textContent.trim(); if (!v) return; try { await api('/api/tracker-tasks', {method:'PATCH',body:{id,title:v}}); } catch(e) { toast('Error: '+e.message); } });
+      el.addEventListener('keydown', e => { if(e.key==='Enter'){e.preventDefault();el.blur()} if(e.key==='Escape')el.blur(); });
+    });
+    document.querySelectorAll('.milestone-desc[contenteditable="false"]').forEach(el => {
+      el.addEventListener('click', (e) => { e.stopPropagation(); el.contentEditable = 'true'; el.focus(); });
+      el.addEventListener('blur', async () => { el.contentEditable = 'false'; const id = el.dataset.descId; const v = el.textContent.trim(); try { await api('/api/tracker-milestones', {method:'PATCH',body:{id,description:v}}); const m = milestones.find(x=>x.id===id); if(m) m.description=v; } catch(e) { toast('Error: '+e.message); } });
+      el.addEventListener('keydown', e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();el.blur()} if(e.key==='Escape')el.blur(); });
+    });
+    document.querySelectorAll('.task-desc[contenteditable="false"]').forEach(el => {
+      el.addEventListener('click', (e) => { e.stopPropagation(); el.contentEditable = 'true'; el.focus(); });
+      el.addEventListener('blur', async () => { el.contentEditable = 'false'; const id = el.dataset.tdescId; const v = el.textContent.trim(); try { await api('/api/tracker-tasks', {method:'PATCH',body:{id,description:v}}); for(const ts of Object.values(tasksByMilestone)){const t=ts.find(x=>x.id===id);if(t){t.description=v;break;}} } catch(e) { toast('Error: '+e.message); } });
+      el.addEventListener('keydown', e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();el.blur()} if(e.key==='Escape')el.blur(); });
+    });
+    document.querySelectorAll('.comment-input').forEach(el => {
+      el.addEventListener('keydown', e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();submitComment(el.dataset.task,el.value)} });
+    });
+  }
+
+  function selectAll(el) {
+    const r = document.createRange(); r.selectNodeContents(el);
+    const s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+
+  async function handleClick(e) {
+    const t = e.target;
+    // Close dropdowns on outside click
+    if (openStatusDropdown && !t.closest('.status-dropdown') && !t.closest('.task-status-btn')) { openStatusDropdown.remove(); openStatusDropdown = null; }
+    if (openPriorityDropdown && !t.closest('.priority-dropdown') && !t.closest('[data-set-priority]')) { openPriorityDropdown.remove(); openPriorityDropdown = null; }
+
+    // Delete milestone
+    const dm = t.closest('[data-delete-milestone]');
+    if (dm) { const id=dm.dataset.deleteMilestone; const m=milestones.find(x=>x.id===id); if(!confirm('Delete "' + (m?m.title:'') + '" and all tasks?')) return; try { await api('/api/tracker-milestones?id='+id,{method:'DELETE'}); delete tasksByMilestone[id]; expandedMilestones.delete(id); await loadMilestones(); renderFilters(); render(); computeAI(); toast('Milestone deleted'); } catch(e) { toast('Error: '+e.message); } return; }
+
+    // Milestone date edit
+    const md = t.closest('[data-edit-mdate]');
+    if (md) { const id=md.dataset.editMdate; const m=milestones.find(x=>x.id===id); const inp=document.createElement('input'); inp.type='date'; inp.className='milestone-date-edit'; inp.value=m?m.target_date:''; md.replaceWith(inp); inp.focus(); inp.addEventListener('change', async()=>{ const v=inp.value; if(v&&config){ const days=Math.round((new Date(config.launch_date+'T00:00:00')-new Date(v+'T00:00:00'))/86400000); try { await api('/api/tracker-milestones',{method:'PATCH',body:{id,days_before_launch:days}}); if(m){m.target_date=v;m.days_before_launch=days;} render(); } catch(e){toast('Error: '+e.message)} } else render(); }); inp.addEventListener('blur',()=>setTimeout(render,200)); return; }
+
+    // Add milestone desc
+    const ad = t.closest('[data-add-desc]');
+    if (ad) { const id=ad.dataset.addDesc; const div=document.createElement('div'); div.className='milestone-desc'; div.contentEditable='true'; div.dataset.descId=id; ad.replaceWith(div); div.focus(); div.addEventListener('blur', async()=>{ div.contentEditable='false'; const v=div.textContent.trim(); if(v){ try { await api('/api/tracker-milestones',{method:'PATCH',body:{id,description:v}}); const m=milestones.find(x=>x.id===id); if(m) m.description=v; } catch(e){toast('Error: '+e.message)} } render(); }); div.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();div.blur()}if(e.key==='Escape')div.blur();}); return; }
+
+    // Task date edit
+    const td = t.closest('[data-edit-tdate]');
+    if (td) { const tid=td.dataset.editTdate; let cur=''; for(const ts of Object.values(tasksByMilestone)){const x=ts.find(v=>v.id===tid);if(x){cur=x.due_date||'';break;}} const inp=document.createElement('input'); inp.type='date'; inp.className='task-due-edit'; inp.value=cur; td.replaceWith(inp); inp.focus(); inp.addEventListener('change', async()=>{ const v=inp.value; if(v&&config){ const days=Math.round((new Date(config.launch_date+'T00:00:00')-new Date(v+'T00:00:00'))/86400000); try { await api('/api/tracker-tasks',{method:'PATCH',body:{id:tid,days_before_launch:days}}); for(const ts of Object.values(tasksByMilestone)){const x=ts.find(v2=>v2.id===tid);if(x){x.due_date=v;x.days_before_launch=days;break;}} } catch(e){toast('Error: '+e.message)} } reRenderMilestone(inp); }); inp.addEventListener('blur',()=>setTimeout(()=>reRenderMilestone(inp),200)); return; }
+
+    // Add task desc
+    const atd = t.closest('[data-add-tdesc]');
+    if (atd) { const tid=atd.dataset.addTdesc; const div=document.createElement('div'); div.className='task-desc'; div.contentEditable='true'; div.dataset.tdescId=tid; atd.replaceWith(div); div.focus(); div.addEventListener('blur', async()=>{ div.contentEditable='false'; const v=div.textContent.trim(); if(v){ try { await api('/api/tracker-tasks',{method:'PATCH',body:{id:tid,description:v}}); for(const ts of Object.values(tasksByMilestone)){const x=ts.find(v2=>v2.id===tid);if(x){x.description=v;break;}} } catch(e){toast('Error: '+e.message)} } reRenderMilestone(div); }); div.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();div.blur()}if(e.key==='Escape')div.blur();}); return; }
+
+    // Priority edit
+    const pe = t.closest('[data-set-priority]');
+    if (pe) { showPriorityDropdown(pe, pe.dataset.setPriority); return; }
+
+    // Priority option
+    const po = t.closest('.priority-option');
+    if (po) { await changePriority(po.dataset.task, po.dataset.priority); if(openPriorityDropdown){openPriorityDropdown.remove();openPriorityDropdown=null;} return; }
+
+    // Effort edit
+    const ee = t.closest('[data-edit-effort]');
+    if (ee) { const tid=ee.dataset.editEffort; let cur=''; for(const ts of Object.values(tasksByMilestone)){const x=ts.find(v=>v.id===tid);if(x){cur=x.effort_hours||'';break;}} const inp=document.createElement('input'); inp.type='number'; inp.className='effort-edit'; inp.placeholder='hrs'; inp.value=cur; inp.step='0.5'; inp.min='0'; ee.replaceWith(inp); inp.focus(); inp.select(); inp.addEventListener('blur', async()=>{ const v=parseFloat(inp.value); if(!isNaN(v)&&v>=0){ try { await api('/api/tracker-tasks',{method:'PATCH',body:{id:tid,effort_hours:v}}); for(const ts of Object.values(tasksByMilestone)){const x=ts.find(v2=>v2.id===tid);if(x){x.effort_hours=v;break;}} } catch(e){toast('Error: '+e.message)} } reRenderMilestone(inp); computeAI(); }); inp.addEventListener('keydown',e=>{if(e.key==='Enter')inp.blur();if(e.key==='Escape'){inp.value='';inp.blur();}}); return; }
+
+    // Expand/collapse milestone
+    const hdr = t.closest('.milestone-header');
+    if (hdr && !t.closest('[contenteditable="true"]') && !t.closest('[data-delete-milestone]') && !t.closest('[data-edit-mdate]') && !t.closest('[data-add-desc]') && !t.closest('.milestone-date-edit')) {
+      const id = hdr.dataset.id;
+      if (expandedMilestones.has(id)) expandedMilestones.delete(id);
+      else { expandedMilestones.add(id); if (!tasksByMilestone[id]) await loadTasks(id); }
+      render(); return;
+    }
+
+    // Status btn: single tap cycles draft > in-progress > review > approved > draft
+    const sb = t.closest('.task-status-btn');
+    if (sb) { const nextMap = {'draft':'in-progress','in-progress':'review','review':'approved','approved':'draft'}; const next = nextMap[sb.dataset.status] || 'draft'; await changeStatus(sb.dataset.id, next); return; }
+
+    // Status option (from dropdown, kept for compatibility)
+    const so = t.closest('.status-option');
+    if (so) { await changeStatus(so.dataset.task, so.dataset.status); if(openStatusDropdown){openStatusDropdown.remove();openStatusDropdown=null;} return; }
+
+    // Comments toggle
+    const cc = t.closest('.task-comment-count');
+    if (cc) { const tid=cc.dataset.task; if(openComments.has(tid)) openComments.delete(tid); else { openComments.add(tid); if(!commentsByTask[tid]) await loadComments(tid); } reRenderMilestone(cc); return; }
+
+    // Assign
+    const ae = t.closest('[data-assign]');
+    if (ae) { const tid=ae.dataset.assign; const cur=ae.textContent.trim(); const inp=document.createElement('input'); inp.className='assignee-edit'; inp.placeholder='Name'; inp.value=(cur&&cur!=='assign')?cur:''; ae.replaceWith(inp); inp.focus(); inp.select(); inp.addEventListener('blur', async()=>{ const v=inp.value.trim(); if(v){ try { await api('/api/tracker-tasks',{method:'PATCH',body:{id:tid,assignee:v}}); for(const ts of Object.values(tasksByMilestone)){const x=ts.find(v2=>v2.id===tid);if(x){x.assignee=v;break;}} } catch(e){toast('Error: '+e.message)} } reRenderMilestone(inp); }); inp.addEventListener('keydown',e=>{if(e.key==='Enter')inp.blur();if(e.key==='Escape'){inp.value='';inp.blur();}}); return; }
+
+    // Delete task
+    const dt = t.closest('[data-delete-task]');
+    if (dt) { const tid=dt.dataset.deleteTask; if(!confirm('Delete this task?')) return; try { await api('/api/tracker-tasks?id='+tid,{method:'DELETE'}); for(const [mid,ts] of Object.entries(tasksByMilestone)){ const i=ts.findIndex(x=>x.id===tid); if(i!==-1){ts.splice(i,1); await loadMilestones(); renderFilters(); render(); computeAI(); toast('Task deleted'); break;} } } catch(e){toast('Error: '+e.message)} return; }
+
+    // Add task
+    const at = t.closest('.add-task-btn');
+    if (at) { const mid=at.dataset.milestone; const row=at.closest('.add-task-row'); row.innerHTML=`<div class="inline-form"><input type="text" placeholder="Task title..." id="newTask-${mid}" autofocus><button class="submit-btn" data-submit-task="${mid}">Add</button><button class="cancel-btn" data-cancel-task="${mid}">Cancel</button></div>`; document.getElementById('newTask-'+mid).focus(); return; }
+
+    // Submit task
+    const st = t.closest('[data-submit-task]');
+    if (st) { const mid=st.dataset.submitTask; const inp=document.getElementById('newTask-'+mid); const v=inp.value.trim(); if(!v) return; try { const ts=tasksByMilestone[mid]||[]; const so2=ts.length?Math.max(...ts.map(x=>x.sort_order))+1:1; const nt=await api('/api/tracker-tasks',{method:'POST',body:{milestone_id:mid,title:v,days_before_launch:0,sort_order:so2}}); ts.push({...nt,comment_count:0}); tasksByMilestone[mid]=ts; await loadMilestones(); renderFilters(); render(); computeAI(); toast('Task added'); } catch(e){toast('Error: '+e.message)} return; }
+
+    // Cancel task
+    const ct = t.closest('[data-cancel-task]');
+    if (ct) { reRenderMilestone(ct); return; }
+
+    // Send comment
+    const sc2 = t.closest('[data-send-comment]');
+    if (sc2) { const tid=sc2.dataset.sendComment; const inp=document.querySelector('.comment-input[data-task="'+tid+'"]'); submitComment(tid,inp.value); return; }
+
+    // Delete comment
+    const dc = t.closest('[data-del-comment]');
+    if (dc) { const cid=dc.dataset.delComment; try { await api('/api/tracker-comments?id='+cid,{method:'DELETE'}); for(const [tid,cs] of Object.entries(commentsByTask)){ const i=cs.findIndex(x=>x.id===cid); if(i!==-1){cs.splice(i,1); for(const ts of Object.values(tasksByMilestone)){const x=ts.find(v=>v.id===tid);if(x)x.comment_count=Math.max(0,(x.comment_count||1)-1);} reRenderMilestone(dc); break;} } } catch(e){toast('Error: '+e.message)} return; }
+
+    // Add milestone
+    const am = t.closest('#addMilestoneBtn');
+    if (am) { am.outerHTML=`<div class="inline-form" style="margin-top:20px"><input type="text" placeholder="Milestone title..." id="newMilestoneInput" autofocus><button class="submit-btn" id="submitMilestone">Add</button><button class="cancel-btn" id="cancelMilestone">Cancel</button></div>`; document.getElementById('newMilestoneInput').focus(); return; }
+    if (t.closest('#submitMilestone')) { const inp=document.getElementById('newMilestoneInput'); const v=inp.value.trim(); if(!v) return; try { const so2=milestones.length?Math.max(...milestones.map(m=>m.sort_order))+1:1; await api('/api/tracker-milestones',{method:'POST',body:{title:v,days_before_launch:0,sort_order:so2}}); await loadMilestones(); renderFilters(); render(); computeAI(); toast('Milestone added'); } catch(e){toast('Error: '+e.message)} return; }
+    if (t.closest('#cancelMilestone')) { render(); return; }
+  }
+
+  function reRenderMilestone(el) {
+    const me = el.closest && el.closest('.milestone');
+    if (me) {
+      const mid = me.dataset.id;
+      const ts = tasksByMilestone[mid] || [];
+      const inner = me.querySelector('.task-list-inner');
+      if (inner) { inner.innerHTML = renderTasks(mid, ts); bindEvents(); }
+    }
+  }
+
+  function showStatusDropdown(btn, taskId, cur) {
+    if (openStatusDropdown) { openStatusDropdown.remove(); openStatusDropdown = null; }
+    const dd = document.createElement('div');
+    dd.className = 'status-dropdown';
+    dd.innerHTML = Object.entries(statusLabels).map(([k,v]) =>
+      `<button class="status-option ${k===cur?'current':''}" data-task="${taskId}" data-status="${k}"><span class="status-dot" style="background:${statusColors[k]}"></span>${v}</button>`
+    ).join('');
+    const r = btn.getBoundingClientRect();
+    dd.style.top = (r.bottom+4)+'px'; dd.style.left = r.left+'px';
+    document.body.appendChild(dd);
+    openStatusDropdown = dd;
+  }
+
+  function showPriorityDropdown(el, taskId) {
+    if (openPriorityDropdown) { openPriorityDropdown.remove(); openPriorityDropdown = null; }
+    let curPri = 'medium';
+    for(const ts of Object.values(tasksByMilestone)){const x=ts.find(v=>v.id===taskId);if(x){curPri=x.priority||'medium';break;}}
+    const dd = document.createElement('div');
+    dd.className = 'priority-dropdown';
+    dd.innerHTML = Object.entries(priorityLabels).map(([k,v]) =>
+      `<button class="priority-option ${k===curPri?'current':''}" data-task="${taskId}" data-priority="${k}"><span class="status-dot" style="background:${priorityColors[k]}"></span>${v}</button>`
+    ).join('');
+    const r = el.getBoundingClientRect();
+    dd.style.top = (r.bottom+4)+'px'; dd.style.left = r.left+'px';
+    document.body.appendChild(dd);
+    openPriorityDropdown = dd;
+  }
+
+  async function changeStatus(tid, status) {
+    // Store previous status for undo
+    let prevStatus = null;
+    let parentMid = null;
+    for (const [mid, ts] of Object.entries(tasksByMilestone)) { const x=ts.find(v=>v.id===tid); if(x){prevStatus=x.status;parentMid=mid;break;} }
+    try {
+      await api('/api/tracker-tasks', {method:'PATCH',body:{id:tid,status}});
+      for (const ts of Object.values(tasksByMilestone)) { const x=ts.find(v=>v.id===tid); if(x){x.status=status;break;} }
+      await loadMilestones(); updateHeaderStats(); renderFilters(); render(); computeAI(); renderBurndown();
+
+      // Flash animation on task row
+      const taskEl = document.querySelector('.task[data-id="'+tid+'"]');
+      if (taskEl) { taskEl.classList.add('flash'); setTimeout(() => taskEl.classList.remove('flash'), 700); }
+
+      // Animate percentage counter
+      animateRingPct();
+
+      // Check if milestone just completed -> confetti!
+      if (status === 'approved' && parentMid) {
+        const m = milestones.find(x => x.id === parentMid);
+        if (m && m.task_count > 0 && m.approved_count === m.task_count) {
+          celebrateMilestone(parentMid);
+        }
+      }
+
+      // Toast with undo
+      if (prevStatus && prevStatus !== status) {
+        toast(`Status: ${statusLabels[status]}`, () => changeStatus(tid, prevStatus));
+      }
+    } catch(e) { toast('Error: '+e.message); }
+  }
+
+  function celebrateMilestone(mid) {
+    // Confetti burst
+    const card = document.querySelector('.milestone[data-id="'+mid+'"] .milestone-card');
+    if (card) {
+      card.classList.add('celebrate');
+      setTimeout(() => card.classList.remove('celebrate'), 1500);
+      const rect = card.getBoundingClientRect();
+      const x = (rect.left + rect.width / 2) / window.innerWidth;
+      const y = (rect.top + rect.height / 3) / window.innerHeight;
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 80, spread: 70, origin: { x, y }, colors: ['#2E9E9E','#34D399','#6366F1','#33A3A3','#22C55E'], gravity: 0.8, scalar: 0.9 });
+        setTimeout(() => confetti({ particleCount: 40, spread: 90, origin: { x: x-0.1, y: y+0.05 }, colors: ['#2E9E9E','#34D399'] }), 200);
+      }
+    }
+    toast('Milestone complete!');
+  }
+
+  function animateRingPct() {
+    const el = document.getElementById('ringPct');
+    const target = parseInt(el.textContent);
+    const current = el.dataset.prev !== undefined ? parseInt(el.dataset.prev) : target;
+    if (isNaN(target) || isNaN(current) || current === target) { el.dataset.prev = target; return; }
+    let val = current;
+    const step = target > current ? 1 : -1;
+    const interval = setInterval(() => {
+      val += step;
+      el.textContent = val + '%';
+      if (val === target) { clearInterval(interval); el.dataset.prev = target; }
+    }, 20);
+  }
+
+  async function changePriority(tid, priority) {
+    try {
+      await api('/api/tracker-tasks', {method:'PATCH',body:{id:tid,priority}});
+      for (const ts of Object.values(tasksByMilestone)) { const x=ts.find(v=>v.id===tid); if(x){x.priority=priority;break;} }
+      render(); computeAI();
+    } catch(e) { toast('Error: '+e.message); }
+  }
+
+  async function submitComment(tid, content) {
+    if (!content || !content.trim()) return;
+    try {
+      const c = await api('/api/tracker-comments', {method:'POST',body:{task_id:tid,content:content.trim()}});
+      if (!commentsByTask[tid]) commentsByTask[tid] = [];
+      commentsByTask[tid].push(c);
+      for (const ts of Object.values(tasksByMilestone)) { const x=ts.find(v=>v.id===tid); if(x){x.comment_count=(x.comment_count||0)+1;break;} }
+      const taskEl = document.querySelector('.task[data-id="'+tid+'"]');
+      if (taskEl) reRenderMilestone(taskEl);
+      setTimeout(() => { const inp = document.querySelector('.comment-input[data-task="'+tid+'"]'); if(inp) inp.focus(); }, 50);
+    } catch(e) { toast('Error: '+e.message); }
+  }
+
+  // ===== DARK MODE =====
+  function initTheme() {
+    const saved = localStorage.getItem('tracker-theme');
+    if (saved === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    document.getElementById('themeBtn').addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      if (isDark) { document.documentElement.removeAttribute('data-theme'); localStorage.setItem('tracker-theme', 'light'); }
+      else { document.documentElement.setAttribute('data-theme', 'dark'); localStorage.setItem('tracker-theme', 'dark'); }
+    });
+  }
+  initTheme();
+
+  // ===== KEYBOARD SHORTCUTS =====
+  let kbOverlay = null;
+  let cmdOpen = false;
+  let focusedTaskIdx = -1;
+
+  const shortcuts = [
+    { group: 'Navigation', items: [
+      { keys: ['J'], label: 'Next task' },
+      { keys: ['K'], label: 'Previous task' },
+      { keys: ['Enter'], label: 'Expand/collapse milestone' },
+      { keys: ['E'], label: 'Expand all' },
+    ]},
+    { group: 'Actions', items: [
+      { keys: ['C'], label: 'Create new task' },
+      { keys: ['S'], label: 'Cycle status forward' },
+      { keys: ['1-4'], label: 'Set status (draft/progress/review/done)' },
+      { keys: ['D'], label: 'Toggle dark mode' },
+    ]},
+    { group: 'Global', items: [
+      { keys: ['\u2318', 'K'], label: 'Command palette' },
+      { keys: ['?'], label: 'Keyboard shortcuts' },
+      { keys: ['Esc'], label: 'Close any overlay' },
+    ]},
+  ];
+
+  function showKBOverlay() {
+    if (kbOverlay) return;
+    kbOverlay = document.createElement('div');
+    kbOverlay.className = 'kb-overlay';
+    kbOverlay.innerHTML = `<div class="kb-panel">
+      <div class="kb-header"><div class="kb-title">Keyboard Shortcuts</div><button class="kb-close" id="kbClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+      <div class="kb-body">${shortcuts.map(g => `<div class="kb-group"><div class="kb-group-title">${g.group}</div>${g.items.map(i => `<div class="kb-row"><span class="kb-row-label">${i.label}</span><span class="kb-row-keys">${i.keys.map(k => `<kbd>${k}</kbd>`).join('')}</span></div>`).join('')}</div>`).join('')}</div>
+    </div>`;
+    document.body.appendChild(kbOverlay);
+    kbOverlay.addEventListener('click', e => { if (e.target === kbOverlay || e.target.closest('#kbClose')) closeKBOverlay(); });
+  }
+
+  function closeKBOverlay() {
+    if (kbOverlay) { kbOverlay.remove(); kbOverlay = null; }
+  }
+
+  function getAllVisibleTasks() {
+    return Array.from(document.querySelectorAll('.task[data-id]'));
+  }
+
+  function focusTask(idx) {
+    const tasks = getAllVisibleTasks();
+    tasks.forEach(t => t.style.outline = '');
+    if (idx < 0 || idx >= tasks.length) return;
+    focusedTaskIdx = idx;
+    const t = tasks[idx];
+    t.style.outline = '2px solid var(--teal)';
+    t.style.outlineOffset = '-2px';
+    t.style.borderRadius = 'var(--r-xs)';
+    t.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+
+  document.addEventListener('keydown', e => {
+    // Don't handle shortcuts when typing in inputs
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+      if (e.key === 'Escape') e.target.blur();
+      return;
+    }
+    // Command palette
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); toggleCmdPalette(); return; }
+    if (cmdOpen) return; // let cmd palette handle its own keys
+    if (kbOverlay) { if (e.key === 'Escape') closeKBOverlay(); return; }
+
+    const tasks = getAllVisibleTasks();
+    switch(e.key) {
+      case '?': e.preventDefault(); showKBOverlay(); break;
+      case 'j': case 'ArrowDown':
+        if (tasks.length) { e.preventDefault(); focusTask(Math.min(focusedTaskIdx + 1, tasks.length - 1)); } break;
+      case 'k': case 'ArrowUp':
+        if (tasks.length) { e.preventDefault(); focusTask(Math.max(focusedTaskIdx - 1, 0)); } break;
+      case 's': {
+        if (focusedTaskIdx >= 0 && focusedTaskIdx < tasks.length) {
+          const tid = tasks[focusedTaskIdx].dataset.id;
+          const btn = tasks[focusedTaskIdx].querySelector('.task-status-btn');
+          if (btn) { const nextMap = {'draft':'in-progress','in-progress':'review','review':'approved','approved':'draft'}; changeStatus(tid, nextMap[btn.dataset.status] || 'draft'); }
+        } break;
+      }
+      case '1': case '2': case '3': case '4': {
+        const statuses = ['draft','in-progress','review','approved'];
+        const si = parseInt(e.key) - 1;
+        if (focusedTaskIdx >= 0 && focusedTaskIdx < tasks.length) {
+          changeStatus(tasks[focusedTaskIdx].dataset.id, statuses[si]);
+        } break;
+      }
+      case 'c': {
+        // Find first expanded milestone and trigger add task
+        const addBtn = document.querySelector('.milestone.expanded .add-task-btn');
+        if (addBtn) addBtn.click();
+        break;
+      }
+      case 'e': {
+        document.getElementById('expandAllBtn').click(); break;
+      }
+      case 'd': {
+        document.getElementById('themeBtn').click(); break;
+      }
+      case 'Escape':
+        focusedTaskIdx = -1;
+        tasks.forEach(t => t.style.outline = '');
+        break;
+    }
+  });
+
+  // ===== COMMAND PALETTE =====
+  let cmdOverlay = null;
+
+  function toggleCmdPalette() {
+    if (cmdOpen) { closeCmdPalette(); return; }
+    cmdOpen = true;
+    cmdOverlay = document.createElement('div');
+    cmdOverlay.className = 'cmd-overlay';
+
+    const items = buildCmdItems();
+    cmdOverlay.innerHTML = `<div class="cmd-panel">
+      <div class="cmd-input-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="cmd-input" id="cmdInput" placeholder="Search tasks, milestones, actions..." autofocus></div>
+      <div class="cmd-results" id="cmdResults"></div>
+      <div class="cmd-footer"><kbd>\u2191\u2193</kbd> navigate <kbd>Enter</kbd> select <kbd>Esc</kbd> close</div>
+    </div>`;
+    document.body.appendChild(cmdOverlay);
+
+    const input = document.getElementById('cmdInput');
+    const results = document.getElementById('cmdResults');
+    let activeIdx = 0;
+
+    function renderResults(query) {
+      const filtered = query ? items.filter(i => i.title.toLowerCase().includes(query) || (i.sub||'').toLowerCase().includes(query)) : items;
+      activeIdx = 0;
+      if (!filtered.length) { results.innerHTML = '<div class="cmd-empty">No results</div>'; return; }
+      results.innerHTML = filtered.map((item, i) => `<div class="cmd-item ${i===0?'active':''}" data-idx="${i}" data-action="${item.action}" data-id="${item.id||''}">
+        <div class="cmd-item-icon">${item.icon}</div>
+        <div class="cmd-item-body"><div class="cmd-item-title">${item.title}</div>${item.sub ? '<div class="cmd-item-sub">'+item.sub+'</div>' : ''}</div>
+        ${item.badge ? '<span class="cmd-item-badge">'+item.badge+'</span>' : ''}
+      </div>`).join('');
+    }
+
+    renderResults('');
+
+    input.addEventListener('input', () => renderResults(input.value.toLowerCase().trim()));
+
+    input.addEventListener('keydown', e => {
+      const items2 = results.querySelectorAll('.cmd-item');
+      if (e.key === 'ArrowDown') { e.preventDefault(); activeIdx = Math.min(activeIdx+1, items2.length-1); items2.forEach((el,i) => el.classList.toggle('active', i===activeIdx)); items2[activeIdx]?.scrollIntoView({block:'nearest'}); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); activeIdx = Math.max(activeIdx-1, 0); items2.forEach((el,i) => el.classList.toggle('active', i===activeIdx)); items2[activeIdx]?.scrollIntoView({block:'nearest'}); }
+      else if (e.key === 'Enter') { e.preventDefault(); const active = items2[activeIdx]; if (active) executeCmdItem(active); }
+      else if (e.key === 'Escape') { closeCmdPalette(); }
+    });
+
+    results.addEventListener('click', e => {
+      const item = e.target.closest('.cmd-item');
+      if (item) executeCmdItem(item);
+    });
+    cmdOverlay.addEventListener('click', e => { if (e.target === cmdOverlay) closeCmdPalette(); });
+  }
+
+  function closeCmdPalette() {
+    if (cmdOverlay) { cmdOverlay.remove(); cmdOverlay = null; }
+    cmdOpen = false;
+  }
+
+  function buildCmdItems() {
+    const items = [];
+    // Tasks
+    allTasks.forEach(t => {
+      const m = milestones.find(x => Object.entries(tasksByMilestone).some(([mid, ts]) => ts.includes(t) && mid === x.id));
+      items.push({ icon: statusIcons[t.status] || '\u25CB', title: t.title, sub: m ? m.title : '', badge: statusLabels[t.status], action: 'focus-task', id: t.id });
+    });
+    // Milestones
+    milestones.forEach(m => {
+      const pct = m.task_count > 0 ? Math.round((m.approved_count / m.task_count) * 100) : 0;
+      items.push({ icon: '\uD83C\uDFAF', title: m.title, sub: fmtDateFull(m.target_date), badge: pct + '%', action: 'focus-milestone', id: m.id });
+    });
+    // Actions
+    items.push({ icon: '\u2795', title: 'Create new task', sub: 'Add a task to the first expanded milestone', action: 'new-task' });
+    items.push({ icon: '\u2795', title: 'Create new milestone', sub: '', action: 'new-milestone' });
+    items.push({ icon: '\uD83C\uDF19', title: 'Toggle dark mode', sub: '', action: 'toggle-theme' });
+    items.push({ icon: '\u2699\uFE0F', title: 'Open settings', sub: 'Change launch date', action: 'open-settings' });
+    items.push({ icon: '\u2328\uFE0F', title: 'Keyboard shortcuts', sub: '', action: 'show-kb' });
+    return items;
+  }
+
+  function executeCmdItem(el) {
+    const action = el.dataset.action;
+    const id = el.dataset.id;
+    closeCmdPalette();
+    switch(action) {
+      case 'focus-task': {
+        // Find which milestone contains this task, expand it, then highlight
+        for (const [mid, ts] of Object.entries(tasksByMilestone)) {
+          if (ts.find(t => t.id === id)) {
+            if (!expandedMilestones.has(mid)) { expandedMilestones.add(mid); render(); }
+            setTimeout(() => {
+              const taskEl = document.querySelector('.task[data-id="'+id+'"]');
+              if (taskEl) { taskEl.scrollIntoView({ block:'center', behavior:'smooth' }); taskEl.classList.add('flash'); setTimeout(() => taskEl.classList.remove('flash'), 700); }
+            }, 100);
+            break;
+          }
+        }
+        break;
+      }
+      case 'focus-milestone': {
+        if (!expandedMilestones.has(id)) { expandedMilestones.add(id); if (!tasksByMilestone[id]) loadTasks(id).then(() => render()); else render(); }
+        setTimeout(() => {
+          const mel = document.querySelector('.milestone[data-id="'+id+'"]');
+          if (mel) mel.scrollIntoView({ block:'start', behavior:'smooth' });
+        }, 100);
+        break;
+      }
+      case 'new-task': {
+        const addBtn = document.querySelector('.milestone.expanded .add-task-btn');
+        if (addBtn) addBtn.click(); else toast('Expand a milestone first');
+        break;
+      }
+      case 'new-milestone': {
+        const addBtn = document.getElementById('addMilestoneBtn');
+        if (addBtn) addBtn.click();
+        break;
+      }
+      case 'toggle-theme': document.getElementById('themeBtn').click(); break;
+      case 'open-settings': document.getElementById('configBar').classList.toggle('open'); break;
+      case 'show-kb': showKBOverlay(); break;
+    }
+  }
+
+  // ===== BURNDOWN CHART =====
+  function renderBurndown() {
+    if (!config || !allTasks.length) { document.getElementById('burndownWrap').style.display = 'none'; return; }
+
+    const now = new Date(); now.setHours(0,0,0,0);
+    const ld = new Date(config.launch_date + 'T00:00:00');
+    const total = allTasks.length;
+    if (total === 0) return;
+
+    // Find the project start (earliest due_date or created_at)
+    const allDates = allTasks.map(t => t.due_date || t.created_at?.split('T')[0]).filter(Boolean).map(d => new Date(d.split('T')[0] + 'T00:00:00'));
+    if (!allDates.length) return;
+    const projectStart = new Date(Math.min(...allDates));
+    const projectEnd = ld > now ? ld : now;
+    const totalDays = Math.max(1, Math.ceil((projectEnd - projectStart) / 86400000));
+
+    // Build actual burndown data points (daily remaining count)
+    // Group completed tasks by their completion date (approximated by updated_at)
+    const completedByDay = {};
+    allTasks.filter(t => t.status === 'approved').forEach(t => {
+      const d = (t.updated_at || t.created_at || '').split('T')[0];
+      if (d) completedByDay[d] = (completedByDay[d] || 0) + 1;
+    });
+
+    // Build cumulative completion over time
+    const points = [];
+    let cumDone = 0;
+    for (let i = 0; i <= totalDays; i++) {
+      const day = new Date(projectStart);
+      day.setDate(day.getDate() + i);
+      const dayStr = day.toISOString().split('T')[0];
+      cumDone += (completedByDay[dayStr] || 0);
+      if (day <= now) points.push({ day: i, remaining: total - cumDone });
+    }
+    if (!points.length) points.push({ day: 0, remaining: total });
+
+    // SVG dimensions
+    const w = 480, h = 120, pad = { top: 8, right: 12, bottom: 20, left: 30 };
+    const chartW = w - pad.left - pad.right;
+    const chartH = h - pad.top - pad.bottom;
+
+    // Scales
+    const xScale = d => pad.left + (d / totalDays) * chartW;
+    const yScale = r => pad.top + (1 - r / total) * chartH;
+
+    // Today position
+    const todayDay = Math.ceil((now - projectStart) / 86400000);
+
+    let svg = '';
+    // Grid lines
+    for (let i = 0; i <= 4; i++) {
+      const y = pad.top + (i / 4) * chartH;
+      svg += `<line class="grid-line" x1="${pad.left}" y1="${y}" x2="${w-pad.right}" y2="${y}"/>`;
+      svg += `<text class="label" x="${pad.left-4}" y="${y+3}" text-anchor="end">${Math.round(total * (1 - i/4))}</text>`;
+    }
+
+    // X-axis labels
+    const labelCount = Math.min(5, totalDays);
+    for (let i = 0; i <= labelCount; i++) {
+      const day = Math.round((i / labelCount) * totalDays);
+      const date = new Date(projectStart); date.setDate(date.getDate() + day);
+      const label = date.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+      svg += `<text class="label" x="${xScale(day)}" y="${h-2}" text-anchor="middle">${label}</text>`;
+    }
+
+    // Ideal line (straight from total to 0)
+    svg += `<line class="ideal-line" x1="${xScale(0)}" y1="${yScale(total)}" x2="${xScale(totalDays)}" y2="${yScale(0)}"/>`;
+
+    // Today line
+    if (todayDay > 0 && todayDay < totalDays) {
+      svg += `<line class="today-line" x1="${xScale(todayDay)}" y1="${pad.top}" x2="${xScale(todayDay)}" y2="${h-pad.bottom}"/>`;
+    }
+
+    // Actual line + fill
+    if (points.length > 1) {
+      const linePts = points.map(p => `${xScale(p.day)},${yScale(p.remaining)}`).join(' ');
+      const fillPts = linePts + ` ${xScale(points[points.length-1].day)},${yScale(0)} ${xScale(points[0].day)},${yScale(0)}`;
+      svg += `<polygon class="actual-fill" points="${fillPts}"/>`;
+      svg += `<polyline class="actual-line" points="${linePts}"/>`;
+      // Dots
+      points.forEach(p => { svg += `<circle class="dot" cx="${xScale(p.day)}" cy="${yScale(p.remaining)}"/>`; });
+    }
+
+    document.getElementById('burndownSvg').innerHTML = svg;
+    document.getElementById('burndownSubtitle').textContent = `${points[points.length-1]?.remaining || total} tasks remaining`;
+    document.getElementById('burndownWrap').style.display = '';
+  }
+
+  // ===== DRAG AND DROP =====
+  function initSortable() {
+    document.querySelectorAll('.task-list-inner[data-milestone]').forEach(container => {
+      if (container._sortable) container._sortable.destroy();
+      container._sortable = new Sortable(container, {
+        handle: '.drag-handle',
+        animation: 180,
+        ghostClass: 'sortable-ghost',
+        chosenClass: 'sortable-chosen',
+        draggable: '.task',
+        filter: '.add-task-row,.inline-form',
+        onEnd: async (evt) => {
+          const mid = container.dataset.milestone;
+          const tasks = tasksByMilestone[mid];
+          if (!tasks) return;
+          // Rebuild sort order from DOM order
+          const taskEls = container.querySelectorAll('.task[data-id]');
+          const newOrder = [];
+          taskEls.forEach((el, i) => {
+            const t = tasks.find(x => x.id === el.dataset.id);
+            if (t) { t.sort_order = i; newOrder.push({ id: t.id, sort_order: i }); }
+          });
+          // Persist new order
+          for (const item of newOrder) {
+            try { await api('/api/tracker-tasks', { method: 'PATCH', body: { id: item.id, sort_order: item.sort_order } }); } catch(e) { /* silent */ }
+          }
+        }
+      });
+    });
+  }
+
+  // Hook into render to re-init sortable
+  const origRender = render;
+  render = function() {
+    origRender();
+    setTimeout(initSortable, 50);
+  };
+
+  // Also render burndown after data loads
+  const origComputeAI = computeAI;
+  computeAI = async function() {
+    await origComputeAI();
+    renderBurndown();
+  };
+
+  checkAuth();
+})();
+</script>
+</body>
+</html>

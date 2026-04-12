@@ -1,0 +1,2798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+<meta name="view-transition" content="same-origin">
+<title>The Possibility - Product Spec Variance Analysis</title>
+<meta name="description" content="Research-backed variance analysis comparing the product spec against strategic research findings.">
+<meta property="og:title" content="The Possibility | Variance Analysis">
+<meta property="og:description" content="Research-backed variance analysis comparing the product spec against strategic research findings.">
+<meta property="og:image" content="https://possibility-strategy-site.vercel.app/app-icon.png">
+<meta property="og:type" content="website">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+<link rel="icon" type="image/png" href="app-icon.png">
+<link rel="apple-touch-icon" href="app-icon.png">
+<link rel="preload" as="style" href="design-system.css">
+<link rel="preload" as="image" href="jonatan-pie-VlH2eHyE_50-unsplash.jpg">
+<link rel="stylesheet" href="design-system.css">
+<style>
+/* ===== AMBIENT ANIMATIONS ===== */
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(32px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes grainShift {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  30% { transform: translate(3%, -15%); }
+  50% { transform: translate(12%, 9%); }
+  70% { transform: translate(9%, 4%); }
+  90% { transform: translate(-1%, 7%); }
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+@keyframes countUp {
+  0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ===== VARIANCE NUMBER WATERMARK ===== */
+.var-number {
+  position: absolute;
+  top: -20px;
+  right: 40px;
+  font-size: clamp(120px, 18vw, 220px);
+  font-weight: 200;
+  letter-spacing: -8px;
+  line-height: 1;
+  color: rgba(26,20,16,0.025);
+  pointer-events: none;
+  z-index: 0;
+  user-select: none;
+}
+
+/* ===== TLDR BANNER ===== */
+.tldr {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 24px;
+  margin-bottom: 40px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(51,163,163,0.04) 0%, rgba(99,102,241,0.02) 100%);
+  border: 0.5px solid rgba(51,163,163,0.08);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.5;
+}
+.tldr-tag {
+  flex-shrink: 0;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--teal);
+  padding: 5px 12px;
+  border-radius: 6px;
+  background: rgba(51,163,163,0.06);
+}
+
+/* ===== STAGGER DELAYS ===== */
+.reveal.d1 { transition-delay: 0.1s; }
+.reveal.d2 { transition-delay: 0.2s; }
+.reveal.d3 { transition-delay: 0.3s; }
+.reveal.d4 { transition-delay: 0.4s; }
+
+/* ===== AMBIENT MESH ===== */
+.ambient-mesh {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.ambient-mesh::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -25%;
+  width: 150%;
+  height: 200%;
+  background:
+    radial-gradient(ellipse 500px 400px at 20% 30%, rgba(51,163,163,0.025) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 350px at 75% 65%, rgba(99,102,241,0.02) 0%, transparent 70%),
+    radial-gradient(ellipse 350px 300px at 50% 90%, rgba(52,211,153,0.015) 0%, transparent 70%);
+  animation: pulseGlow 20s ease-in-out infinite;
+}
+
+/* ===== SECTION DIVIDER LINE ===== */
+.section-divider {
+  width: 48px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--teal), rgba(99,102,241,0.4));
+  border-radius: 1px;
+  margin: 0 0 24px 0;
+  opacity: 0.5;
+}
+
+/* ===== SMOOTH SCROLL ===== */
+html { scroll-behavior: smooth; }
+
+/* ===== HERO SHIMMER TEXT ===== */
+.hero h1 .shimmer-word {
+  background: linear-gradient(
+    90deg,
+    rgba(255,252,250,0.95) 0%,
+    rgba(255,252,250,0.95) 40%,
+    rgba(51,163,163,0.8) 50%,
+    rgba(255,252,250,0.95) 60%,
+    rgba(255,252,250,0.95) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 6s ease-in-out infinite;
+}
+
+/* ===== CARD SHINE ON HOVER ===== */
+.scenario-card .shine {
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
+  z-index: 1;
+  pointer-events: none;
+  transition: none;
+}
+.scenario-card:hover .shine {
+  left: 150%;
+  transition: left 0.8s cubic-bezier(0.22,1,0.36,1);
+}
+
+/* ===== DELTA GLOW RING ===== */
+.delta-glow {
+  position: relative;
+  display: inline-block;
+}
+.delta-glow::before {
+  content: '';
+  position: absolute;
+  inset: -20px -40px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(52,211,153,0.15), rgba(51,163,163,0.1), rgba(99,102,241,0.08));
+  background-size: 300% 300%;
+  animation: gradientShift 6s ease infinite;
+  filter: blur(20px);
+  z-index: -1;
+  opacity: 0.6;
+}
+
+/* ===== PULL QUOTE MARKS ===== */
+.pull-quote {
+  position: relative;
+}
+.pull-quote::before {
+  content: '\201C';
+  position: absolute;
+  top: -8px;
+  left: -4px;
+  font-size: 48px;
+  font-weight: 300;
+  line-height: 1;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* ===== PARALLAX PHOTO ===== */
+@media (hover: hover) and (min-width: 769px) {
+  .photo-full img {
+    transition: transform 0.1s linear;
+    will-change: transform;
+  }
+}
+
+/* ===== ANIMATED GRADIENT BORDER (key-finding) ===== */
+@keyframes borderGlow {
+  0% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.4; }
+}
+.key-finding {
+  position: relative;
+}
+.key-finding::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: -1px; right: -1px; bottom: -1px;
+  border-radius: 17px;
+  background: linear-gradient(135deg, rgba(232,117,138,0.2), rgba(232,117,138,0.05), rgba(232,117,138,0.15));
+  background-size: 200% 200%;
+  animation: gradientShift 5s ease infinite, borderGlow 4s ease-in-out infinite;
+  z-index: -1;
+}
+.key-finding.positive::before {
+  background: linear-gradient(135deg, rgba(52,211,153,0.2), rgba(52,211,153,0.05), rgba(52,211,153,0.15));
+  background-size: 200% 200%;
+}
+
+/* ===== VERDICT PULSE ===== */
+.verdict.variance {
+  animation: verdictPulse 3s ease-in-out infinite;
+}
+@keyframes verdictPulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(232,117,138,0.08); }
+  50% { box-shadow: 0 0 20px rgba(232,117,138,0.2), 0 0 40px rgba(232,117,138,0.05); }
+}
+
+/* ===== HERO FLOATING ORBS ===== */
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(60px);
+  z-index: 0;
+}
+.hero-orb.orb-1 {
+  width: 400px; height: 400px;
+  background: rgba(51,163,163,0.08);
+  top: 10%; left: 5%;
+  animation: pulseGlow 15s ease-in-out infinite;
+}
+.hero-orb.orb-2 {
+  width: 300px; height: 300px;
+  background: rgba(99,102,241,0.06);
+  top: 40%; right: 10%;
+  animation: pulseGlow 12s ease-in-out 3s infinite;
+}
+.hero-orb.orb-3 {
+  width: 200px; height: 200px;
+  background: rgba(52,211,153,0.05);
+  bottom: 20%; left: 40%;
+  animation: pulseGlow 10s ease-in-out 6s infinite;
+}
+
+/* ===== CARD 3D TILT ===== */
+@media (hover: hover) and (min-width: 769px) {
+  .scenario-card {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+  }
+  .scenario-card:hover {
+    transform: translateY(-6px) rotateX(1deg) rotateY(-0.5deg);
+  }
+}
+
+/* ===== ENHANCED BOTTOM LINE ===== */
+.bl-item::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%; transform: translateX(-50%);
+  width: 60%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(52,211,153,0.15), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.bl-item:hover::before { opacity: 1; }
+
+/* ===== AURORA DARK SECTION ===== */
+@keyframes auroraWave {
+  0% { transform: translateX(-30%) rotate(-5deg); }
+  50% { transform: translateX(30%) rotate(5deg); }
+  100% { transform: translateX(-30%) rotate(-5deg); }
+}
+.dark-section .aurora {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+.dark-section .aurora::before,
+.dark-section .aurora::after {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 50%;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.035;
+}
+.dark-section .aurora::before {
+  top: -20%;
+  left: -50%;
+  background: linear-gradient(90deg, rgba(51,163,163,0.5), rgba(99,102,241,0.3), rgba(52,211,153,0.4));
+  animation: auroraWave 20s ease-in-out infinite;
+}
+.dark-section .aurora::after {
+  bottom: -20%;
+  right: -50%;
+  background: linear-gradient(90deg, rgba(232,117,138,0.3), rgba(99,102,241,0.4), rgba(51,163,163,0.3));
+  animation: auroraWave 25s ease-in-out 5s infinite;
+}
+
+/* ===== ENHANCED CONVERSION BARS ===== */
+.conv-fill.highlight::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 40px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15));
+  border-radius: 0 8px 8px 0;
+}
+.conv-fill { position: relative; }
+
+/* ===== ENHANCED CLOSING ===== */
+.closing-gradient-bar {
+  width: 80px;
+  height: 3px;
+  margin: 32px auto 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--teal), var(--align), var(--become));
+  background-size: 200% 100%;
+  animation: shimmer 4s ease-in-out infinite;
+}
+
+/* ===== HERO STAT HOVER GLOW ===== */
+.hero-stat {
+  position: relative;
+  overflow: hidden;
+}
+.hero-stat::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 0; height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(51,163,163,0.06) 0%, transparent 70%);
+  transition: width 0.6s ease, height 0.6s ease, top 0.6s ease, left 0.6s ease;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+.hero-stat:hover::before {
+  width: 200px; height: 200px;
+}
+.hero-stat .val, .hero-stat .lbl { position: relative; z-index: 1; }
+
+/* ===== MAIN CONTENT ===== */
+.main { margin-left: var(--sidebar-w); overflow-x: clip; -webkit-overflow-scrolling: touch; }
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  min-height: 70vh; min-height: 70dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  background: var(--dark);
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  opacity: 0.25;
+}
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 700px 500px at 25% 75%, rgba(51,163,163,0.1) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 400px at 70% 45%, rgba(99,102,241,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 300px at 50% 20%, rgba(52,211,153,0.04) 0%, transparent 70%),
+    linear-gradient(180deg, rgba(8,10,15,0.25) 0%, rgba(8,10,15,0.08) 35%, rgba(8,10,15,0.65) 70%, rgba(8,10,15,0.96) 100%);
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 64px 72px;
+  max-width: 900px;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  background: rgba(255,252,250,0.06);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border: 0.5px solid rgba(255,252,250,0.12);
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255,252,250,0.5);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  box-shadow: 0 0 20px rgba(51,163,163,0.08), 0 0 0 0.5px rgba(51,163,163,0.1) inset;
+}
+.hero-badge .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 12px rgba(51,163,163,0.6);
+  animation: breathe 3s ease-in-out infinite;
+}
+.hero h1 {
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 200;
+  line-height: 1.1;
+  letter-spacing: -2px;
+  color: rgba(255,252,250,0.95);
+  margin-bottom: 20px;
+}
+.hero-sub {
+  font-size: 17px;
+  font-weight: 400;
+  color: rgba(255,252,250,0.4);
+  max-width: 560px;
+  line-height: 1.65;
+}
+
+/* ===== HERO STAT STRIP ===== */
+.hero-stats {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 48px;
+  padding: 80px 48px 0;
+  background: var(--bg);
+}
+.hero-stat {
+  text-align: center;
+  padding: 20px 24px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: 0.5px solid rgba(26,20,16,0.04);
+  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s ease;
+}
+.hero-stat:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(31,38,135,0.06);
+}
+.hero-stat .val {
+  font-size: 36px;
+  font-weight: 200;
+  color: var(--text);
+  letter-spacing: -1px;
+  line-height: 1.2;
+  animation: countUp 0.8s cubic-bezier(0.22,1,0.36,1) both;
+}
+.hero-stat:nth-child(1) .val { animation-delay: 0.1s; }
+.hero-stat:nth-child(2) .val { animation-delay: 0.2s; }
+.hero-stat:nth-child(3) .val { animation-delay: 0.3s; }
+.hero-stat:nth-child(4) .val { animation-delay: 0.4s; }
+.hero-stat:nth-child(5) .val { animation-delay: 0.5s; }
+.hero-stat .val.good { color: var(--become); text-shadow: 0 0 24px rgba(52,211,153,0.25); }
+.hero-stat .val.bad { color: var(--release); text-shadow: 0 0 24px rgba(232,117,138,0.25); }
+.hero-stat .val.neutral { color: var(--align); text-shadow: 0 0 24px rgba(99,102,241,0.25); }
+.hero-stat .lbl {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-top: 6px;
+}
+
+/* ===== SECTIONS ===== */
+section { padding: 110px 56px; position: relative; overflow-x: hidden; }
+section + section { border-top: none; }
+section + section::before {
+  content: ''; position: absolute; top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: min(300px, 50%); height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(51,163,163,0.2), rgba(99,102,241,0.1), transparent);
+}
+section + section::after {
+  content: ''; position: absolute; top: -60px; left: 50%;
+  transform: translateX(-50%);
+  width: 400px; height: 120px;
+  background:
+    radial-gradient(ellipse 200px 60px at 40% 50%, rgba(51,163,163,0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 200px 60px at 60% 50%, rgba(99,102,241,0.03) 0%, transparent 70%);
+  pointer-events: none;
+  filter: blur(4px);
+}
+
+/* ===== VARIANCE TABLE ===== */
+.var-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 32px 0;
+  font-size: 13.5px;
+}
+.var-table th {
+  text-align: left;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(26,20,16,0.08);
+}
+.var-table td {
+  padding: 16px;
+  border-bottom: 1px solid rgba(26,20,16,0.05);
+  vertical-align: top;
+  line-height: 1.65;
+  color: var(--text-2);
+}
+.var-table tr:last-child td { border-bottom: none; }
+.var-table tbody tr { transition: background 0.2s ease; }
+.var-table tbody tr:hover { background: rgba(51,163,163,0.02); }
+.var-table .topic {
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  width: 140px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ===== VERDICT BADGES ===== */
+.verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 100px;
+}
+.verdict.aligned {
+  background: rgba(52,211,153,0.08);
+  color: var(--become);
+  box-shadow: 0 0 12px rgba(52,211,153,0.08);
+}
+.verdict.variance {
+  background: rgba(232,117,138,0.08);
+  color: var(--release);
+  box-shadow: 0 0 12px rgba(232,117,138,0.08);
+}
+.verdict.partial {
+  background: rgba(99,102,241,0.08);
+  color: var(--align);
+  box-shadow: 0 0 12px rgba(99,102,241,0.08);
+}
+
+/* ===== SCENARIO CARDS ===== */
+.scenario-card {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(24px) saturate(1.2); -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  border: 0.5px solid rgba(26,20,16,0.06);
+  border-radius: 24px;
+  padding: 36px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow:
+    0 8px 32px rgba(31,38,135,0.06),
+    0 1px 2px rgba(31,38,135,0.04),
+    0 0 0 0.5px rgba(255,255,255,0.4) inset;
+}
+.scenario-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(ellipse 300px 200px at 10% 10%, rgba(51,163,163,0.03) 0%, transparent 70%),
+    radial-gradient(ellipse 200px 200px at 90% 90%, rgba(99,102,241,0.02) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+.scenario-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 50%; border-radius: inherit;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, transparent 100%);
+  pointer-events: none; z-index: 0;
+}
+.scenario-card:hover {
+  box-shadow:
+    0 20px 60px rgba(31,38,135,0.1),
+    0 0 48px rgba(51,163,163,0.08),
+    0 1px 2px rgba(31,38,135,0.04),
+    0 0 0 0.5px rgba(255,255,255,0.5) inset;
+  transform: translateY(-6px);
+}
+.scenario-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.scenario-label.a { color: var(--release); }
+.scenario-label.b { color: var(--become); }
+.scenario-label.c { color: var(--align); }
+.scenario-title {
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: -0.3px;
+  margin-bottom: 14px;
+  line-height: 1.3;
+}
+.scenario-body {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.75;
+}
+.scenario-body strong { color: var(--text); font-weight: 600; }
+.scenario-outcome {
+  margin-top: 20px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: rgba(26,20,16,0.025);
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+.scenario-outcome.risk { background: rgba(232,117,138,0.04); }
+.scenario-outcome.upside { background: rgba(52,211,153,0.04); }
+
+/* ===== SOURCE LINKS ===== */
+.src-link {
+  display: inline-block;
+  font-size: 10px;
+  color: var(--teal);
+  text-decoration: none;
+  padding: 5px 12px;
+  background: var(--teal-soft);
+  border-radius: 6px;
+  margin: 2px 2px 2px 0;
+  transition: all 0.25s cubic-bezier(0.22,1,0.36,1);
+  border: 0.5px solid transparent;
+}
+.src-link:hover {
+  background: var(--teal-glow);
+  border-color: rgba(51,163,163,0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(51,163,163,0.1);
+}
+.src-row { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 4px; }
+
+/* ===== DATA HIGHLIGHT ===== */
+.data-point {
+  display: inline-block;
+  font-weight: 700;
+  color: var(--text);
+}
+.data-point.good { color: var(--become); }
+.data-point.bad { color: var(--release); }
+.data-point.neutral { color: var(--align); }
+
+/* ===== COMPARISON BARS ===== */
+.conv-bars { margin: 28px 0; }
+.conv-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 56px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.conv-label { font-size: 12px; color: var(--text-2); font-weight: 500; }
+.conv-track {
+  height: 32px;
+  background: rgba(26,20,16,0.03);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.conv-fill {
+  height: 100%;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  width: 0;
+  transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+}
+.conv-fill.teal { background: linear-gradient(90deg, var(--teal), #2DD4BF); box-shadow: 0 2px 12px rgba(51,163,163,0.2); }
+.conv-fill.muted { background: linear-gradient(90deg, rgba(26,20,16,0.06), rgba(26,20,16,0.14)); color: var(--text-3); }
+.conv-fill.highlight { background: linear-gradient(90deg, var(--become), #2DD4BF); box-shadow: 0 2px 16px rgba(52,211,153,0.25); }
+.conv-val { font-size: 13px; font-weight: 600; text-align: right; }
+
+/* ===== DONUT / RING CHART ===== */
+.ring-chart {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 28px;
+  border-radius: 20px;
+  background: rgba(26,20,16,0.025);
+  margin: 24px 0;
+}
+.ring-svg { flex-shrink: 0; }
+.ring-legend { font-size: 13px; color: var(--text-2); line-height: 1.7; }
+.ring-legend strong { color: var(--text); }
+
+/* ===== SPLIT STAT ===== */
+.split-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 24px 0;
+}
+.split-stat {
+  text-align: center;
+  padding: 28px 20px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.5);
+  backdrop-filter: blur(20px) saturate(1.1); -webkit-backdrop-filter: blur(20px) saturate(1.1);
+  border: 0.5px solid rgba(26,20,16,0.06);
+  box-shadow:
+    0 4px 16px rgba(31,38,135,0.05),
+    0 0 0 0.5px rgba(255,255,255,0.3) inset;
+  transition: transform 0.5s cubic-bezier(0.22,1,0.36,1), box-shadow 0.5s ease;
+  position: relative;
+  overflow: hidden;
+}
+.split-stat::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 60%;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, transparent 100%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+.split-stat:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow:
+    0 16px 48px rgba(31,38,135,0.1),
+    0 0 40px rgba(51,163,163,0.08),
+    0 0 0 0.5px rgba(255,255,255,0.5) inset;
+}
+.split-stat .ss-val {
+  font-size: 40px;
+  font-weight: 200;
+  letter-spacing: -1px;
+  line-height: 1.2;
+  position: relative;
+  z-index: 1;
+}
+.split-stat .ss-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-top: 8px;
+}
+.split-stat .ss-sub {
+  font-size: 12px;
+  color: var(--text-3);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* ===== PRICING COMPARE ===== */
+.price-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 28px 0;
+}
+.price-card {
+  padding: 28px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.45);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border: 0.5px solid rgba(26,20,16,0.06);
+  box-shadow: 0 4px 16px rgba(31,38,135,0.04), 0 0 0 0.5px rgba(255,255,255,0.3) inset;
+  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+.price-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.35) 0%, transparent 100%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+.price-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(31,38,135,0.08), 0 0 0 0.5px rgba(255,255,255,0.4) inset;
+}
+.price-card .price-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 8px;
+}
+.price-card .price-val {
+  font-size: 36px;
+  font-weight: 200;
+  letter-spacing: -1px;
+  margin-bottom: 4px;
+}
+.price-card .price-sub {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+/* ===== TIMELINE ===== */
+.timeline { margin: 32px 0; }
+.tl-row {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(26,20,16,0.04);
+}
+.tl-row:last-child { border-bottom: none; }
+.tl-day {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  padding-top: 2px;
+}
+.tl-content { font-size: 14px; color: var(--text-2); line-height: 1.7; }
+.tl-content strong { color: var(--text); }
+.tl-phase {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+.tl-phase.release { background: rgba(232,117,138,0.08); color: var(--release); }
+.tl-phase.align { background: rgba(99,102,241,0.08); color: var(--align); }
+.tl-phase.become { background: rgba(52,211,153,0.08); color: var(--become); }
+.tl-phase.paywall { background: rgba(26,20,16,0.06); color: var(--text-3); }
+
+/* ===== PHASE BAR INFOGRAPHIC ===== */
+.phase-bar-wrap { margin: 28px 0; }
+.phase-bar-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 8px;
+}
+.phase-bar {
+  display: flex;
+  height: 40px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.phase-bar .seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.9);
+}
+.phase-bar .seg.release { background: var(--release); }
+.phase-bar .seg.align { background: var(--align); }
+.phase-bar .seg.become { background: var(--become); }
+.phase-bar .seg.paywall {
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(26,20,16,0.08),
+    rgba(26,20,16,0.08) 4px,
+    rgba(26,20,16,0.03) 4px,
+    rgba(26,20,16,0.03) 8px
+  );
+  color: var(--text-3);
+  font-size: 9px;
+}
+
+/* ===== TRUST METER ===== */
+.trust-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 56px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.trust-label { font-size: 12px; font-weight: 500; color: var(--text-2); white-space: nowrap; overflow: hidden; }
+.trust-track {
+  height: 10px;
+  background: rgba(26,20,16,0.04);
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+.trust-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+  width: 0;
+}
+.trust-fill.bad { background: linear-gradient(90deg, var(--release), rgba(232,117,138,0.5)); box-shadow: 0 1px 8px rgba(232,117,138,0.2); }
+.trust-fill.ok { background: linear-gradient(90deg, var(--align), rgba(99,102,241,0.5)); box-shadow: 0 1px 8px rgba(99,102,241,0.2); }
+.trust-fill.good { background: linear-gradient(90deg, var(--become), rgba(52,211,153,0.5)); box-shadow: 0 1px 8px rgba(52,211,153,0.2); }
+.trust-val { font-size: 12px; font-weight: 600; text-align: right; }
+
+/* ===== CALLOUTS ===== */
+.callout {
+  padding: 24px 28px;
+  border-radius: var(--r);
+  margin: 28px 0;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--text-2);
+}
+.callout.teal {
+  background: linear-gradient(135deg, var(--teal-soft), rgba(51,163,163,0.03));
+  border: 0.5px solid rgba(51,163,163,0.08);
+}
+.callout.warn {
+  background: linear-gradient(135deg, rgba(232,117,138,0.05), rgba(232,117,138,0.02));
+  border: 0.5px solid rgba(232,117,138,0.08);
+}
+.callout strong { color: var(--text); }
+
+/* ===== PHOTO BREAK ===== */
+.photo-full {
+  position: relative;
+  height: 45vh; height: 45dvh;
+  min-height: 280px;
+  max-height: 460px;
+  overflow: hidden;
+}
+.photo-full img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.photo-full .scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 600px 400px at 30% 60%, rgba(51,163,163,0.1) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 300px at 70% 40%, rgba(99,102,241,0.05) 0%, transparent 70%),
+    linear-gradient(180deg, rgba(8,10,15,0.05) 0%, rgba(8,10,15,0.1) 20%, rgba(8,10,15,0.65) 100%);
+}
+.photo-full .caption {
+  position: absolute;
+  bottom: 40px;
+  left: 56px;
+  right: 56px;
+  color: var(--text-light);
+  font-size: clamp(18px, 2.5vw, 28px);
+  font-weight: 300;
+  line-height: 1.3;
+  letter-spacing: -0.3px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+
+/* ===== DARK SECTION ===== */
+.dark-section {
+  background: var(--dark);
+  color: rgba(255,252,250,0.85);
+}
+.dark-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 800px 600px at 15% 20%, rgba(51,163,163,0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 700px 500px at 85% 80%, rgba(99,102,241,0.04) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 400px at 50% 50%, rgba(232,117,138,0.02) 0%, transparent 70%);
+  pointer-events: none;
+  animation: pulseGlow 12s ease-in-out infinite;
+}
+.dark-section .grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.015;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  pointer-events: none;
+  animation: grainShift 8s steps(10) infinite;
+}
+
+/* ===== KEY FINDING BANNER ===== */
+.key-finding {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px 28px;
+  border-radius: 16px;
+  margin-bottom: 36px;
+  background: linear-gradient(135deg, rgba(232,117,138,0.04) 0%, rgba(232,117,138,0.01) 100%);
+  border: 0.5px solid rgba(232,117,138,0.1);
+}
+.key-finding.positive {
+  background: linear-gradient(135deg, rgba(52,211,153,0.04) 0%, rgba(52,211,153,0.01) 100%);
+  border-color: rgba(52,211,153,0.1);
+}
+.key-finding-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--release), rgba(232,117,138,0.7));
+  margin-top: 2px;
+  box-shadow: 0 4px 16px rgba(232,117,138,0.3);
+}
+.key-finding.positive .key-finding-icon {
+  background: linear-gradient(135deg, var(--become), rgba(52,211,153,0.7));
+  box-shadow: 0 4px 16px rgba(52,211,153,0.3);
+}
+.key-finding-text {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.55;
+}
+.key-finding-text span {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-3);
+  margin-top: 4px;
+}
+
+/* ===== COMPETITOR LOGO ===== */
+.comp-logo {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  object-fit: cover;
+  vertical-align: middle;
+  margin-right: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  flex-shrink: 0;
+}
+.comp-tl-company { display: flex; align-items: center; gap: 6px; }
+.comp-tl-company .comp-logo { width: 20px; height: 20px; border-radius: 5px; margin-right: 0; }
+.trust-label { display: flex; align-items: center; gap: 6px; }
+.trust-label .comp-logo { width: 18px; height: 18px; border-radius: 4px; margin-right: 0; }
+.var-table .comp-logo { width: 20px; height: 20px; border-radius: 5px; }
+
+/* ===== COMPETITOR TIMELINE ===== */
+.comp-timeline {
+  margin: 32px 0;
+  position: relative;
+  padding-left: 28px;
+}
+.comp-timeline::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--release), rgba(232,117,138,0.2));
+  border-radius: 1px;
+}
+.comp-tl-item {
+  position: relative;
+  padding: 0 0 28px 0;
+}
+.comp-tl-item:last-child { padding-bottom: 0; }
+.comp-tl-item::before {
+  content: '';
+  position: absolute;
+  left: -24px;
+  top: 8px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--release);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 2px rgba(232,117,138,0.2), 0 0 12px rgba(232,117,138,0.15);
+}
+.comp-tl-company {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--release);
+  margin-bottom: 4px;
+}
+.comp-tl-action {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.comp-tl-result {
+  font-size: 13px;
+  color: var(--text-3);
+  line-height: 1.5;
+}
+
+/* ===== BOTTOM LINE STRIP ===== */
+.bottom-line {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  margin: 32px 0;
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(26,20,16,0.06);
+}
+.bl-item {
+  padding: 28px 20px;
+  text-align: center;
+  background: var(--bg);
+  position: relative;
+  transition: background 0.3s ease;
+}
+.bl-item:hover {
+  background: rgba(52,211,153,0.02);
+}
+.bl-item .bl-val {
+  font-size: 28px;
+  font-weight: 200;
+  letter-spacing: -1px;
+  line-height: 1.2;
+  text-shadow: 0 0 20px rgba(52,211,153,0.15);
+}
+.bl-item .bl-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-top: 6px;
+}
+
+/* ===== EXPECTED METRIC ROW ===== */
+.metric-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+.metric-cell {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.metric-cell.spec-bg { background: rgba(232,117,138,0.04); transition: background 0.3s ease; }
+.metric-cell.spec-bg:hover { background: rgba(232,117,138,0.07); }
+.metric-cell.research-bg { background: rgba(52,211,153,0.04); transition: background 0.3s ease; }
+.metric-cell.research-bg:hover { background: rgba(52,211,153,0.07); }
+.metric-big {
+  font-size: 32px;
+  font-weight: 200;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.metric-cell.spec-bg .metric-big { color: var(--release); }
+.metric-cell.research-bg .metric-big { color: var(--become); }
+.metric-detail {
+  font-size: 11px;
+  line-height: 1.4;
+}
+.metric-detail strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* ===== CLOSING ===== */
+.closing {
+  padding: 100px 56px;
+  text-align: center;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  padding: 28px 56px;
+  text-align: center;
+  font-size: 10px;
+  color: var(--text-3);
+  border-top: 1px solid rgba(26,20,16,0.06);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .main { margin-left: 0; }
+  section { padding: 72px 32px; }
+  .hero-content { padding: 0 32px 56px; }
+  .price-grid { grid-template-columns: 1fr; }
+  .var-table { font-size: 12.5px; }
+  .hero-stats { gap: 32px; padding-top: 72px; }
+  .split-stats { grid-template-columns: 1fr; }
+  .ring-chart { flex-direction: column; text-align: center; }
+  .bottom-line { grid-template-columns: 1fr 1fr; }
+  .metric-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  section { padding: 72px 24px; }
+  .hero { min-height: 60vh; min-height: 60dvh; }
+  .hero-content { padding: 0 24px 48px; }
+  .closing { padding: 72px 24px; }
+  footer { padding: 24px; }
+  .scenario-card { padding: 24px; }
+  .var-number { font-size: 100px; right: 16px; top: -10px; opacity: 0.6; }
+  .tldr { font-size: 14px; padding: 16px 20px; gap: 10px; flex-direction: column; align-items: flex-start; }
+  .var-table .topic { white-space: normal; width: auto; }
+  .conv-row { grid-template-columns: 80px 1fr 48px; }
+  .trust-row { grid-template-columns: 100px 1fr 48px; }
+  .photo-full .caption { left: 24px; right: 24px; bottom: 24px; }
+  .tl-row { grid-template-columns: 1fr; gap: 6px; }
+  .bottom-line { grid-template-columns: 1fr 1fr; }
+  .bl-item .bl-val { font-size: 22px; }
+  .comp-timeline { padding-left: 24px; }
+  .metric-big { font-size: 26px; }
+  .hero-stats { flex-wrap: wrap; gap: 16px 32px; padding: 56px 24px 0; }
+  .hero-stat .val { font-size: 28px; }
+  .phase-bar .seg { font-size: 8px; }
+  /* Key finding banner mobile */
+  .key-finding { padding: 20px; gap: 12px; }
+  .key-finding-icon { width: 36px; height: 36px; font-size: 14px; border-radius: 10px; }
+  .key-finding-text { font-size: 14px; }
+  /* Comp timeline tighter */
+  .comp-tl-item { padding-bottom: 20px; }
+  .comp-tl-action { font-size: 13px; }
+  .comp-tl-result { font-size: 12px; }
+  /* Scenario body text */
+  .scenario-body { font-size: 13.5px; }
+  .scenario-body p { font-size: 13.5px; }
+  /* Inline h3/h4 within sections */
+  section h3[style] { font-size: 16px !important; }
+  section h4[style] { font-size: 13px !important; }
+  /* Dark section metric headers stack */
+  .dark-section [style*="grid-template-columns: 1fr 1fr"][style*="margin-bottom: 2px"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  /* Dark section user reviews */
+  .dark-section [style*="display: grid"][style*="gap: 12px"] {
+    gap: 10px !important;
+  }
+  /* Dark section quote cards */
+  .dark-section [style*="padding: 20px 24px"][style*="border-radius: 16px"] {
+    padding: 16px 18px !important;
+    border-radius: 14px !important;
+  }
+  .dark-section [style*="font-size: 14px"][style*="font-style: italic"] {
+    font-size: 13px !important;
+    line-height: 1.55 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  section { padding: 56px 20px; }
+  .hero { min-height: 55vh; min-height: 55dvh; }
+  .hero-content { padding: 0 20px 36px; }
+  .hero h1 { letter-spacing: -1px; font-size: clamp(28px, 8vw, 40px); }
+  .hero-sub { font-size: 14px; line-height: 1.6; }
+  .hero-badge { font-size: 9px; padding: 6px 14px; }
+  .var-number { font-size: 72px; right: 8px; top: 0; letter-spacing: -4px; }
+  .tldr { font-size: 13px; padding: 14px 16px; margin-bottom: 28px; line-height: 1.5; }
+  .tldr-tag { font-size: 8px; padding: 4px 10px; }
+  .section-divider { width: 36px; margin-bottom: 18px; }
+  .closing { padding: 56px 20px; }
+  footer { padding: 20px; }
+  .scenario-card { padding: 20px; border-radius: 16px; }
+  .scenario-title { font-size: 17px; line-height: 1.3; }
+  .scenario-label { font-size: 9px; letter-spacing: 1.5px; margin-bottom: 8px; }
+  .scenario-body { font-size: 13px; line-height: 1.7; }
+  .scenario-body p { font-size: 13px; }
+  .scenario-outcome { padding: 14px 16px; font-size: 12.5px; border-radius: 10px; }
+  .section-title { font-size: clamp(22px, 6.5vw, 28px) !important; letter-spacing: -0.8px !important; line-height: 1.2 !important; }
+  .section-desc { font-size: 13.5px !important; margin-bottom: 24px !important; line-height: 1.65 !important; }
+  .section-label { font-size: 9px; padding: 4px 12px; letter-spacing: 1.5px; }
+  .var-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .var-table td { padding: 12px; font-size: 12px; }
+  .var-table th { padding: 10px 12px; font-size: 8px; }
+  .conv-row { grid-template-columns: 64px 1fr 36px; gap: 6px; margin-bottom: 6px; }
+  .conv-label { font-size: 10px; }
+  .conv-track { height: 28px; }
+  .conv-fill { font-size: 10px; padding-right: 8px; }
+  .conv-val { font-size: 11px; }
+  .trust-row { grid-template-columns: 84px 1fr 36px; gap: 6px; }
+  .trust-label { font-size: 10px; }
+  .trust-label .comp-logo { width: 14px; height: 14px; border-radius: 3px; }
+  .trust-val { font-size: 11px; }
+  .photo-full { height: 30vh; min-height: 180px; max-height: 280px; }
+  .photo-full .caption { left: 20px; right: 20px; bottom: 16px; font-size: 15px; line-height: 1.35; }
+  .price-grid { gap: 12px; }
+  .price-card { padding: 18px; border-radius: 16px; }
+  .price-card .price-val { font-size: 28px; }
+  .price-card .price-label { font-size: 9px; letter-spacing: 1.5px; }
+  .price-card .price-sub { font-size: 11px; }
+  .callout { padding: 18px; font-size: 12.5px; line-height: 1.65; border-radius: 12px; }
+  .src-link { padding: 8px 12px !important; min-height: 44px; display: inline-flex !important; align-items: center; font-size: 10px !important; }
+  .src-row { gap: 6px; margin-top: 14px; }
+  .split-stats { gap: 10px; margin: 18px 0; }
+  .split-stat { padding: 22px 16px; border-radius: 16px; }
+  .split-stat .ss-val { font-size: 28px; letter-spacing: -0.5px; }
+  .split-stat .ss-label { font-size: 10px; letter-spacing: 0.8px; }
+  .split-stat .ss-sub { font-size: 11px; }
+  .hero-stats { padding: 40px 20px 0; gap: 10px 14px; }
+  .hero-stat { padding: 14px 16px; border-radius: 12px; min-width: 0; flex: 1 1 calc(33% - 14px); }
+  .hero-stat .val { font-size: 22px; letter-spacing: 0; }
+  .hero-stat .lbl { font-size: 8px; letter-spacing: 1px; margin-top: 4px; }
+  /* Key finding mobile */
+  .key-finding { padding: 16px; gap: 10px; border-radius: 12px; margin-bottom: 28px; flex-direction: column; }
+  .key-finding-icon { width: 32px; height: 32px; font-size: 13px; border-radius: 8px; }
+  .key-finding-text { font-size: 13px; line-height: 1.5; }
+  .key-finding-text span { font-size: 11px; margin-top: 6px; }
+  /* Comp timeline mobile */
+  .comp-timeline { padding-left: 20px; margin: 20px 0; }
+  .comp-timeline::before { left: 4px; }
+  .comp-tl-item::before { left: -18px; width: 8px; height: 8px; }
+  .comp-tl-item { padding-bottom: 18px; }
+  .comp-tl-company { font-size: 9px; letter-spacing: 1px; }
+  .comp-tl-action { font-size: 12.5px; }
+  .comp-tl-result { font-size: 11.5px; line-height: 1.5; }
+  /* Bottom line strip */
+  .bottom-line { border-radius: 16px; gap: 1px; }
+  .bl-item { padding: 20px 14px; }
+  .bl-item .bl-val { font-size: 20px; }
+  .bl-item .bl-label { font-size: 9px; letter-spacing: 0.8px; }
+  /* Dark section metrics */
+  .metric-row { border-radius: 12px; margin: 14px 0; }
+  .metric-cell { padding: 16px 18px; gap: 12px; }
+  .metric-big { font-size: 24px !important; }
+  .metric-detail { font-size: 10px; }
+  .metric-detail strong { font-size: 11px; }
+  /* Dark section header labels */
+  .dark-section [style*="grid-template-columns: 1fr 1fr"][style*="margin-bottom: 2px"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .dark-section [style*="padding: 12px 20px"] {
+    padding: 10px 14px !important;
+  }
+  .dark-section [style*="font-size: 9px"][style*="letter-spacing: 2px"] {
+    font-size: 8px !important;
+    letter-spacing: 1.5px !important;
+  }
+  /* Dark section delta callout */
+  .dark-section [style*="font-size: clamp(44px"] {
+    font-size: clamp(36px, 10vw, 52px) !important;
+    letter-spacing: -2px !important;
+  }
+  .dark-section [style*="padding: 64px 0 16px"] {
+    padding: 44px 0 12px !important;
+  }
+  /* Dark section quote cards */
+  .dark-section [style*="padding: 20px 24px"][style*="border-radius: 16px"] {
+    padding: 14px 16px !important;
+    border-radius: 12px !important;
+  }
+  .dark-section [style*="font-size: 14px"][style*="font-style: italic"] {
+    font-size: 12.5px !important;
+    line-height: 1.5 !important;
+  }
+  .dark-section [style*="font-size: 11px"][style*="color: rgba(255,252,250,0.3)"] {
+    font-size: 10px !important;
+  }
+  /* Dark section disclaimer text */
+  .dark-section [style*="font-size: 11px"][style*="color: rgba(255,252,250,0.2)"] {
+    font-size: 10px !important;
+    line-height: 1.5 !important;
+  }
+  /* Inline paragraph text */
+  section p[style*="font-size: 14px"] { font-size: 13px !important; line-height: 1.7 !important; }
+  section p[style*="font-size: 13px"] { font-size: 12.5px !important; }
+  section h3[style] { font-size: 15px !important; margin-top: 28px !important; margin-bottom: 10px !important; }
+  section h4[style] { font-size: 12.5px !important; }
+  /* Data points inline */
+  .data-point { font-size: inherit; }
+  /* Verdict badges in table */
+  .verdict { font-size: 9px; padding: 3px 8px; }
+  /* Disable stagger on mobile for snappier feel */
+  .reveal.d1, .reveal.d2, .reveal.d3, .reveal.d4 { transition-delay: 0s; }
+}
+
+@media (max-width: 375px) {
+  section { padding: 44px 16px; }
+  .hero { min-height: 50vh; min-height: 50dvh; }
+  .hero-content { padding: 0 16px 28px; }
+  .hero h1 { font-size: 28px; }
+  .hero-sub { font-size: 13px; }
+  .closing { padding: 44px 16px; }
+  footer { padding: 16px; }
+  .scenario-card { padding: 16px; border-radius: 14px; }
+  .scenario-title { font-size: 16px; }
+  .scenario-body { font-size: 12.5px; }
+  .scenario-outcome { font-size: 12px; padding: 12px 14px; }
+  .section-title { font-size: 22px !important; letter-spacing: -0.6px !important; }
+  .section-desc { font-size: 12.5px !important; line-height: 1.6 !important; }
+  .var-number { font-size: 60px; right: 4px; letter-spacing: -3px; }
+  .tldr { font-size: 12.5px; padding: 12px 14px; margin-bottom: 24px; }
+  .price-card .price-val { font-size: 24px; }
+  .price-card { padding: 16px; }
+  .split-stat .ss-val { font-size: 24px; }
+  .split-stat { padding: 18px 12px; border-radius: 14px; }
+  .split-stat .ss-sub { font-size: 10px; }
+  .hero-stats { padding: 36px 16px 0; gap: 8px 10px; }
+  .hero-stat { padding: 12px 10px; border-radius: 10px; }
+  .hero-stat .val { font-size: 20px; }
+  .hero-stat .lbl { font-size: 8px; letter-spacing: 0.8px; }
+  .conv-row { grid-template-columns: 56px 1fr 32px; }
+  .conv-label { font-size: 9px; }
+  .conv-track { height: 24px; }
+  .conv-fill { font-size: 9px; }
+  .conv-val { font-size: 10px; }
+  .trust-row { grid-template-columns: 72px 1fr 32px; }
+  .trust-label { font-size: 9px; }
+  .trust-label .comp-logo { width: 12px; height: 12px; border-radius: 3px; }
+  .trust-track { height: 8px; }
+  .callout { padding: 14px; font-size: 12px; }
+  .src-link { font-size: 9px !important; padding: 6px 10px !important; }
+  .bottom-line { grid-template-columns: 1fr 1fr; border-radius: 14px; }
+  .bl-item { padding: 16px 10px; }
+  .bl-item .bl-val { font-size: 18px; }
+  .bl-item .bl-label { font-size: 8px; }
+  .key-finding { padding: 14px; margin-bottom: 24px; }
+  .key-finding-text { font-size: 12.5px; }
+  .comp-timeline { padding-left: 18px; }
+  .comp-tl-action { font-size: 12px; }
+  .comp-tl-result { font-size: 11px; }
+  .metric-cell { padding: 14px 16px; gap: 10px; }
+  .metric-big { font-size: 20px !important; }
+  .metric-detail { font-size: 9px; }
+  .metric-detail strong { font-size: 10px; }
+  .photo-full .caption { font-size: 14px; bottom: 14px; left: 16px; right: 16px; }
+  .photo-full { height: 26vh; min-height: 160px; max-height: 240px; }
+  /* Dark delta shrink */
+  .dark-section [style*="font-size: clamp(44px"],
+  .dark-section [style*="font-size: clamp(36px"] {
+    font-size: 32px !important;
+    letter-spacing: -1.5px !important;
+  }
+  section h3[style] { font-size: 14px !important; }
+  section h4[style] { font-size: 12px !important; }
+}
+
+@media (max-width: 320px) {
+  section { padding: 36px 12px; }
+  .hero { min-height: 45vh; min-height: 45dvh; }
+  .hero-content { padding: 0 12px 20px; }
+  .hero h1 { font-size: 24px; letter-spacing: -0.5px; }
+  .hero-sub { font-size: 12px; }
+  .closing { padding: 36px 12px; }
+  footer { padding: 12px; font-size: 9px; }
+  .section-title { font-size: 20px !important; }
+  .section-desc { font-size: 12px !important; }
+  .scenario-card { padding: 14px; border-radius: 12px; }
+  .scenario-title { font-size: 15px; }
+  .scenario-body { font-size: 12px; }
+  .split-stat .ss-val { font-size: 22px; }
+  .split-stat { padding: 16px 10px; }
+  .var-number { font-size: 48px; right: 2px; }
+  .tldr { font-size: 12px; padding: 10px 12px; }
+  .hero-stats { padding: 28px 12px 0; gap: 6px 8px; }
+  .hero-stat { padding: 10px 8px; }
+  .hero-stat .val { font-size: 18px; }
+  .hero-stat .lbl { font-size: 7px; }
+  .price-card .price-val { font-size: 20px; }
+  .conv-row { grid-template-columns: 48px 1fr 28px; }
+  .conv-label { font-size: 8px; }
+  .conv-val { font-size: 9px; }
+  .trust-row { grid-template-columns: 60px 1fr 28px; }
+  .trust-label { font-size: 8px; }
+  .trust-label .comp-logo { width: 10px; height: 10px; border-radius: 2px; }
+  .bottom-line { grid-template-columns: 1fr 1fr; }
+  .bl-item .bl-val { font-size: 16px; }
+  .bl-item .bl-label { font-size: 7px; }
+  .key-finding { padding: 12px; }
+  .key-finding-text { font-size: 12px; }
+  .key-finding-icon { width: 28px; height: 28px; font-size: 11px; }
+  .metric-big { font-size: 18px !important; }
+  .metric-cell { padding: 12px 14px; }
+  .callout { padding: 12px; font-size: 11.5px; }
+  .photo-full { height: 22vh; min-height: 140px; max-height: 200px; }
+  .photo-full .caption { font-size: 13px; bottom: 12px; left: 12px; right: 12px; }
+  section h3[style] { font-size: 13px !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- Mobile Menu -->
+<button class="mob-burger" id="mobBurger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobOverlay">
+  <span></span><span></span><span></span>
+</button>
+<div class="mob-overlay" id="mobOverlay" role="dialog" aria-label="Navigation menu" aria-modal="true">
+  <div class="mob-menu">
+    <div class="mob-menu-cross">
+      <a href="index.html">Portal Home <span>&rarr;</span></a>
+      <a href="jim-strategy-briefing.html">Strategic Briefing <span>&rarr;</span></a>
+      <a href="the-thesis.html">The Thesis <span>&rarr;</span></a>
+      <a href="jim-marketing-playbook.html">Marketing Playbook <span>&rarr;</span></a>
+    </div>
+    <div class="mob-menu-section">
+      <div class="mob-menu-label">Analysis</div>
+      <a href="#overview">Overview</a>
+      <a href="#alignment">Where It Aligns</a>
+    </div>
+    <div class="mob-menu-section">
+      <div class="mob-menu-label">Variances</div>
+      <a href="#locked-content">Locked Content</a>
+      <a href="#trial-length">Trial Length</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#morning-anchor">Morning Anchor</a>
+    </div>
+    <div class="mob-menu-section">
+      <div class="mob-menu-label">Outcomes</div>
+      <a href="#scenarios">Expected Scenario</a>
+      <a href="#paths">Three Paths</a>
+    </div>
+  </div>
+</div>
+
+<!-- Scroll Progress -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Sidebar Navigation -->
+<nav class="sidebar" aria-label="Page navigation">
+  <a href="index.html" class="sidebar-brand" style="text-decoration:none; display:block;">Agency OS</a>
+  <div class="sidebar-title">Variance Analysis</div>
+
+  <div class="nav-cross-group">
+    <a href="index.html" class="nav-cross-link">
+      <span class="nc-icon"><img loading="lazy" src="possibility-logo.svg" alt="" style="width:16px;height:16px;"></span>
+      Portal Home
+      <span class="nc-arrow">&rarr;</span>
+    </a>
+    <a href="jim-strategy-briefing.html" class="nav-cross-link">
+      <span class="nc-icon" style="font-size:14px;">&#9678;</span>
+      Strategic Briefing
+      <span class="nc-arrow">&rarr;</span>
+    </a>
+    <a href="the-thesis.html" class="nav-cross-link">
+      <span class="nc-icon" style="font-size:14px;">&#9670;</span>
+      The Thesis
+      <span class="nc-arrow">&rarr;</span>
+    </a>
+    <a href="jim-marketing-playbook.html" class="nav-cross-link">
+      <span class="nc-icon"><img loading="lazy" src="icon-mountain.svg" alt="" style="width:16px;height:16px;"></span>
+      Marketing Playbook
+      <span class="nc-arrow">&rarr;</span>
+    </a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Analysis</div>
+    <a href="#overview" class="nav-link active">Overview</a>
+    <a href="#alignment" class="nav-link">Where It Aligns</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Variances</div>
+    <a href="#locked-content" class="nav-link">Locked Content</a>
+    <a href="#trial-length" class="nav-link">Trial Length</a>
+    <a href="#pricing" class="nav-link">Pricing</a>
+    <a href="#morning-anchor" class="nav-link">Morning Anchor</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Outcomes</div>
+    <a href="#scenarios" class="nav-link">Expected Scenario</a>
+    <a href="#paths" class="nav-link">Three Paths</a>
+  </div>
+
+  <div class="sidebar-footer">
+    Prepared March 2026<br>
+    Based on product spec, strategic briefing, thesis, and marketing playbook research.
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="main">
+
+<!-- ============================== -->
+<!-- HERO                            -->
+<!-- ============================== -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <img src="jonatan-pie-VlH2eHyE_50-unsplash.jpg" alt="" loading="eager">
+  </div>
+  <div class="hero-orb orb-1"></div>
+  <div class="hero-orb orb-2"></div>
+  <div class="hero-orb orb-3"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Variance Analysis
+    </div>
+    <h1>Product Spec <span class="shimmer-word">vs.</span> Research</h1>
+    <p class="hero-sub">A neutral, data-driven comparison of the product specification against the strategic research. Every claim is sourced. Every variance is documented.</p>
+  </div>
+</section>
+
+<!-- Hero Stats -->
+<div class="hero-stats reveal">
+  <div class="hero-stat">
+    <div class="val good">5</div>
+    <div class="lbl">Aligned</div>
+  </div>
+  <div class="hero-stat">
+    <div class="val neutral">1</div>
+    <div class="lbl">Partial</div>
+  </div>
+  <div class="hero-stat">
+    <div class="val bad">4</div>
+    <div class="lbl">Variances</div>
+  </div>
+  <div class="hero-stat">
+    <div class="val">80+</div>
+    <div class="lbl">Sources Cited</div>
+  </div>
+  <div class="hero-stat">
+    <div class="val">30K+</div>
+    <div class="lbl">Apps Analyzed</div>
+  </div>
+</div>
+
+
+<!-- ============================== -->
+<!-- OVERVIEW                        -->
+<!-- ============================== -->
+<section id="overview" class="section-light" style="padding-top: 80px;">
+  <div class="wrap">
+    <span class="section-label">Overview</span>
+    <div class="section-divider"></div>
+    <h2 class="section-title">What this document does</h2>
+    <p class="section-desc">The product spec outlines the day-by-day app experience. The strategic research (briefing, thesis, and playbook) outlines what market data says works. This page maps where they agree, where they diverge, and what the research suggests each divergence means for conversion, retention, and revenue.</p>
+
+    <div class="callout teal">
+      <strong>Note:</strong> This is not a judgment on the content quality. The daily program content (meditations, install phrases, emotional arcs) is strong and differentiated. The variances identified here are structural and commercial: trial length, pricing, paywall timing, and content visibility strategy.
+    </div>
+
+    <h3 style="font-size: 18px; font-weight: 500; margin: 40px 0 20px; letter-spacing: -0.3px;">At a Glance</h3>
+    <div style="overflow-x: auto;">
+    <table class="var-table">
+      <thead>
+        <tr>
+          <th>Topic</th>
+          <th>Product Spec</th>
+          <th>Research Position</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="topic">Three Pillars</td>
+          <td>Release &rarr; Align &rarr; Become as sequential journey</td>
+          <td>Core to all strategy documents; validated by Waking Up's structured-path model</td>
+          <td><span class="verdict aligned">Aligned</span></td>
+        </tr>
+        <tr>
+          <td class="topic">Single Voice</td>
+          <td>Jim guides every day, every meditation</td>
+          <td>Waking Up: $12M/yr bootstrapped, 92% retention on single instructor bond</td>
+          <td><span class="verdict aligned">Aligned</span></td>
+        </tr>
+        <tr>
+          <td class="topic">Structured Arc</td>
+          <td>14-day sequential program with daily progression</td>
+          <td>"A structured 14-day journey with a clear beginning, middle, and end"</td>
+          <td><span class="verdict aligned">Aligned</span></td>
+        </tr>
+        <tr>
+          <td class="topic">Jim AI</td>
+          <td>2 free questions during trial, then subscription</td>
+          <td>Jim AI positioned as the core differentiator across all documents</td>
+          <td><span class="verdict aligned">Aligned</span></td>
+        </tr>
+        <tr>
+          <td class="topic">Book Funnel</td>
+          <td>Enhanced trial for book buyers (videos, meditations, badge)</td>
+          <td>"Every book sold becomes a warm lead" with QR codes and chapter links</td>
+          <td><span class="verdict aligned">Aligned</span></td>
+        </tr>
+        <tr>
+          <td class="topic">Post-Reset Tracks</td>
+          <td>Pain, Anxiety, Sleep tracks (4-week curricula)</td>
+          <td>Research treats these as personalization inputs, not standalone curricula</td>
+          <td><span class="verdict partial">Partial</span></td>
+        </tr>
+        <tr>
+          <td class="topic">Trial Length</td>
+          <td>7-day free trial (paywall after Day 7)</td>
+          <td>14-day trial: 45.7% conversion vs. 27% for 7-day</td>
+          <td><span class="verdict variance">Variance</span></td>
+        </tr>
+        <tr>
+          <td class="topic">Pricing</td>
+          <td>$14.99/mo, $150/yr with 25% coupon</td>
+          <td>$19.99/mo, $149.99/yr, trust-first positioning, no coupon</td>
+          <td><span class="verdict variance">Variance</span></td>
+        </tr>
+        <tr>
+          <td class="topic">Locked Content</td>
+          <td>"Clearly visible but not accessible" for paid content</td>
+          <td>"Never interrupt a session"; convert from desire, not frustration</td>
+          <td><span class="verdict variance">Variance</span></td>
+        </tr>
+        <tr>
+          <td class="topic">Morning Anchor</td>
+          <td>No time-of-day structure specified</td>
+          <td>"Designed to rewire how someone starts their morning"</td>
+          <td><span class="verdict variance">Variance</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================== -->
+<!-- WHERE IT ALIGNS                 -->
+<!-- ============================== -->
+<section id="alignment">
+  <div class="ambient-mesh"></div>
+  <div class="wrap" style="position: relative; z-index: 1;">
+    <span class="section-label">Alignment</span>
+    <div class="section-divider"></div>
+    <h2 class="section-title">Where the spec and research agree</h2>
+    <p class="section-desc">These areas are validated by market data and competitor analysis. The product spec gets them right.</p>
+
+    <div class="scenario-card reveal d1">
+      <div class="scenario-label" style="color: var(--become);">Validated</div>
+      <div class="scenario-title">Release &rarr; Align &rarr; Become as a sequential journey</div>
+      <div class="scenario-body">
+        <p>The spec structures the 14 days as a progression through all three pillars. The strategic briefing positions this as the primary differentiator: <em>"Competitors treat trials as time windows. Calm drops users into 50,000+ minutes. Headspace runs an arbitrary clock. We give users a structured 14-day journey with a clear beginning, middle, and end."</em></p>
+        <p style="margin-top: 12px;">The thesis reinforces: <em>"The trial is not a teaser. It is the complete program."</em></p>
+        <div class="src-row">
+          <a href="https://www.revenuecat.com/state-of-subscription-apps-2025/" class="src-link" target="_blank" rel="noopener">RevenueCat: State of Subscription Apps 2025</a>
+          <a href="https://www.strivecloud.io/blog/user-retention-examples" class="src-link" target="_blank" rel="noopener">StriveCloud: Retention Benchmarks</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario-card reveal d2">
+      <div class="scenario-label" style="color: var(--become);">Validated</div>
+      <div class="scenario-title">Single-voice coaching model</div>
+      <div class="scenario-body">
+        <p>Jim guiding every day is supported by the strongest retention data in the category.</p>
+
+        <div class="split-stats">
+          <div class="split-stat">
+            <div class="ss-val" style="color: var(--become);">$12M/yr</div>
+            <div class="ss-label">Waking Up Revenue</div>
+            <div class="ss-sub">Bootstrapped, no VC</div>
+          </div>
+          <div class="split-stat">
+            <div class="ss-val" style="color: var(--become);">92%</div>
+            <div class="ss-label">Retention Rate</div>
+            <div class="ss-sub">Built on single instructor bond</div>
+          </div>
+        </div>
+
+        <p>The briefing notes: <em>"No other app can replicate Jim's nine signature sessions blending clinical hypnotherapy with guided meditation."</em> Jim's clinical background adds a dimension Sam Harris lacks: therapeutic technique, not just philosophy.</p>
+        <div class="src-row">
+          <a href="https://craftech.io/success-stories/waking-up/" class="src-link" target="_blank" rel="noopener">CrafTech: Waking Up Case Study</a>
+          <a href="https://ie.trustpilot.com/review/wakingup.com" class="src-link" target="_blank" rel="noopener">Trustpilot: Waking Up (3.2/5)</a>
+          <a href="https://help.wakingup.com/article/110-how-do-i-request-a-scholarship" class="src-link" target="_blank" rel="noopener">Waking Up: Scholarship Program</a>
+          <a href="https://www.clearerthinking.org/post/can-you-experience-enlightenment-through-sam-harris-waking-up-meditation-app" class="src-link" target="_blank" rel="noopener">Clearer Thinking: Effectiveness Study</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario-card reveal d3">
+      <div class="scenario-label" style="color: var(--become);">Validated</div>
+      <div class="scenario-title">Jim AI as the core differentiator</div>
+      <div class="scenario-body">
+        <p>The spec includes 2 free Jim AI questions during trial, then unlimited with subscription. All three strategy documents position Jim AI as the competitive moat.</p>
+
+        <div class="split-stats">
+          <div class="split-stat">
+            <div class="ss-val" style="color: var(--text-3);">7M+</div>
+            <div class="ss-label">Ebb Conversations</div>
+            <div class="ss-sub">Headspace's chatbot. Zero personalization.</div>
+          </div>
+          <div class="split-stat">
+            <div class="ss-val" style="color: var(--become);">86%</div>
+            <div class="ss-label">Want Personalization</div>
+            <div class="ss-sub">Consumers who say it drives loyalty</div>
+          </div>
+        </div>
+
+        <p>The briefing positions Jim AI as the inverse of Ebb: <em>"Jim AI replaces recommendation engine with actual coaching. Amazon Personalize suggests content; Jim AI understands emotional state."</em></p>
+        <div class="src-row">
+          <a href="https://marketingltb.com/blog/statistics/personalization-statistics/" class="src-link" target="_blank" rel="noopener">Marketing LTB: Personalization Statistics, 2025</a>
+          <a href="https://www.fastcompany.com/91206737/headspace-mental-health-generative-ai-chatbot-ebb-exclusive" class="src-link" target="_blank" rel="noopener">Fast Company: Headspace Ebb Analysis</a>
+          <a href="https://aws.amazon.com/blogs/machine-learning/personalizing-wellness-recommendations-at-calm-with-amazon-personalize/" class="src-link" target="_blank" rel="noopener">AWS: Calm's Amazon Personalize</a>
+          <a href="https://media.market.us/global-ai-in-mental-health-market-news/" class="src-link" target="_blank" rel="noopener">Market.us: AI Mental Health ($14.9B by 2033)</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario-card reveal d4">
+      <div class="scenario-label" style="color: var(--become);">Validated</div>
+      <div class="scenario-title">Book-to-app pipeline</div>
+      <div class="scenario-body">
+        <p>The spec gives book buyers an enhanced trial with Jim videos, book-linked meditations, and a "Possibility" badge. The research positions this as a moat no competitor has: <em>"The book becomes the front door. Every copy of the Simon & Schuster book becomes a pre-qualified app install."</em></p>
+        <p style="margin-top: 12px;">The marketing playbook maps the full funnel: QR code &rarr; landing page (~30% capture) &rarr; email nurture (3 emails) &rarr; download &rarr; onboarding.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================== -->
+<!-- PHOTO BREAK                     -->
+<!-- ============================== -->
+<div class="photo-full">
+  <img src="silas-baisch-LDiZP1yLQxg-unsplash.jpg" alt="" loading="lazy" style="object-position: center 40%;">
+  <div class="scrim"></div>
+  <div class="caption">The content is strong. The structure around it is where the questions live.</div>
+</div>
+
+
+<!-- ============================== -->
+<!-- VARIANCE 1: LOCKED CONTENT      -->
+<!-- (Worst outcome risk first)      -->
+<!-- ============================== -->
+<section id="locked-content">
+  <div class="ambient-mesh"></div>
+  <div class="var-number">01</div>
+  <div class="wrap" style="position: relative; z-index: 1;">
+    <span class="section-label">Variance 01 &middot; Highest Risk</span>
+    <div class="section-divider"></div>
+    <h2 class="section-title">Visible-but-locked content</h2>
+    <p class="section-desc">The spec says paid content should be "ALL CLEARLY VISIBLE BUT NOT ACCESSIBLE." The research warns against this specific pattern. Of all the variances, this one carries the greatest risk to brand trust and legal exposure.</p>
+
+    <div class="tldr reveal">
+      <span class="tldr-tag">TL;DR</span>
+      Every wellness app that locked visible content now has an F rating on BBB or sub-2.0 on Trustpilot. Zero exceptions.
+    </div>
+
+    <div class="key-finding reveal d1">
+      <div class="key-finding-icon">!</div>
+      <div class="key-finding-text">
+        Every wellness app that adopted visible-but-locked content now has an F rating on BBB, sub-2.0 on Trustpilot, or both. Zero exceptions in the category.
+        <span>Sources: BBB, Trustpilot, PissedConsumer across Calm, Headspace, Open, Endel</span>
+      </div>
+    </div>
+
+    <h3 style="font-size: 17px; font-weight: 600; margin-bottom: 12px;">What the spec says</h3>
+    <p style="font-size: 14px; color: var(--text-2); line-height: 1.75; margin-bottom: 28px;">Phase III (Become, Days 11-14) should be visible to free users but locked behind the paywall. The intent is to show users what they're missing.</p>
+
+    <h3 style="font-size: 17px; font-weight: 600; margin-bottom: 12px;">What happened to every app that did this</h3>
+
+    <div class="comp-timeline reveal">
+      <div class="comp-tl-item">
+        <div class="comp-tl-company"><img loading="lazy" class="comp-logo" src="competitor-logos/Calm_(company)_logo.svg.png" alt="">Calm</div>
+        <div class="comp-tl-action">Reduced free content from 90% to 5%</div>
+        <div class="comp-tl-result">Trustpilot: 1.7/5 &middot; BBB: F rating &middot; 25% of complaints: "bait and switch" &middot; Class action: $2,500/user VPPA exposure</div>
+      </div>
+      <div class="comp-tl-item">
+        <div class="comp-tl-company"><img loading="lazy" class="comp-logo" src="competitor-logos/Mental-Health-Directory-Images-12.png" alt="">Headspace</div>
+        <div class="comp-tl-action">Locked 100% of content behind paywall</div>
+        <div class="comp-tl-result">Trustpilot: 1.4/5 (751 reviews, 40% one-star) &middot; BBB: F rating &middot; Hundreds laid off &middot; Pivoted to B2B to survive</div>
+      </div>
+      <div class="comp-tl-item">
+        <div class="comp-tl-company"><img loading="lazy" class="comp-logo" src="competitor-logos/images.png" alt="">Open</div>
+        <div class="comp-tl-action">Launched with visible-but-locked at $20/mo</div>
+        <div class="comp-tl-result">Trustpilot: 1.7/5 &middot; Users cite locked visible content as primary frustration</div>
+      </div>
+      <div class="comp-tl-item">
+        <div class="comp-tl-company"><img loading="lazy" class="comp-logo" src="competitor-logos/endel.svg" alt="">Endel</div>
+        <div class="comp-tl-action">Confusing tier structure with locked features</div>
+        <div class="comp-tl-result">Trustpilot: Negative aggregate &middot; Primary complaint: "didn't know it was a subscription"</div>
+      </div>
+    </div>
+
+    <h3 style="font-size: 17px; font-weight: 600; margin: 32px 0 12px;">What the FTC says about this pattern</h3>
+
+    <div class="scenario-card reveal">
+      <div class="scenario-title" style="font-size: 18px;">Active regulatory crackdown</div>
+      <div class="scenario-body">
+        <p>The FTC's 2024 study of 642 apps found <span class="data-point bad">76% use at least one dark pattern</span> and <span class="data-point bad">81% make it impossible to turn off auto-renewal during signup</span>. The FTC's Click-to-Cancel final rule and California's Automatic Renewal Law amendments (effective July 2025) are tightening enforcement.</p>
+        <p style="margin-top: 12px;">The briefing documents <span class="data-point bad">$7.5M in ARL settlements</span> from predatory subscription practices.</p>
+        <div class="src-row" style="margin-top: 12px;">
+          <a href="https://techcrunch.com/2024/07/10/ftc-study-finds-dark-patterns-used-by-a-majority-of-subscription-apps-and-websites/" class="src-link" target="_blank" rel="noopener">TechCrunch: FTC Dark Patterns Study (642 apps)</a>
+          <a href="https://www.ftc.gov/news-events/news/press-releases/2021/10/ftc-ramp-enforcement-against-illegal-dark-patterns-trick-or-trap-consumers-subscriptions" class="src-link" target="_blank" rel="noopener">FTC: Dark Pattern Enforcement (Oct 2021)</a>
+          <a href="https://www.ftc.gov/news-events/news/press-releases/2024/10/federal-trade-commission-announces-final-click-cancel-rule-making-it-easier-consumers-end-recurring" class="src-link" target="_blank" rel="noopener">FTC: Click-to-Cancel Final Rule</a>
+          <a href="https://www.cooley.com/news/insight/2025/2025-06-04-california-automatic-renewal-law-amendments-take-effect-on-july-1-2025" class="src-link" target="_blank" rel="noopener">Cooley: CA ARL Amendments (July 2025)</a>
+          <a href="https://www.beneschlaw.com/resources/a-dozen-new-lawsuits-and-two-dollar75m-settlements-signal-a-new-era-for-automatic-renewal-compliance.html" class="src-link" target="_blank" rel="noopener">Benesch: $7.5M ARL Settlements</a>
+          <a href="https://www.coulsonpc.com/coulson-pc-blog/dark-patterns-ftc-click-to-cancel-rule" class="src-link" target="_blank" rel="noopener">Coulson PC: FTC Click-to-Cancel Analysis</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario-card reveal">
+      <div class="scenario-title" style="font-size: 18px;">The bait-and-switch pattern: what happened to competitors</div>
+      <div class="scenario-body">
+        <p>Every major wellness app that adopted visible-but-locked content followed the same trajectory. The data tells the story:</p>
+
+        <h4 style="font-size: 14px; font-weight: 700; margin: 20px 0 10px; color: var(--text);">Calm: The cautionary tale</h4>
+        <p>Calm launched with <strong>90% of content free</strong>. After venture funding, they reduced the free tier to <strong>5% of content</strong>. Users who had built habits around free content suddenly saw lock icons on sessions they used daily.</p>
+
+        <div class="split-stats" style="margin: 16px 0;">
+          <div class="split-stat">
+            <div class="ss-val" style="color: var(--release);">90% &rarr; 5%</div>
+            <div class="ss-label">Free Content Reduction</div>
+            <div class="ss-sub">Locked content that was previously accessible</div>
+          </div>
+          <div class="split-stat">
+            <div class="ss-val" style="color: var(--release);">F</div>
+            <div class="ss-label">BBB Rating</div>
+            <div class="ss-sub">25% of complaints cite "bait and switch"</div>
+          </div>
+        </div>
+
+        <p style="margin-top: 12px;">Calm's win-back campaign offered 40-60% off subscriptions, generating a <span class="data-point">4x revenue lift</span> in the short term. But the discounting created a cycle: users learned to cancel and wait for the discount email. The Calm subreddit became a guide for gaming their pricing. Class action litigation followed, with potential damages of <span class="data-point bad">$2,500 per user</span> under VPPA claims.</p>
+
+        <h4 style="font-size: 14px; font-weight: 700; margin: 20px 0 10px; color: var(--text);">Headspace: The lockdown</h4>
+        <p>Headspace went further. They locked <strong>100% of content</strong> behind the paywall after their free trial. The result:</p>
+
+        <div class="split-stats" style="margin: 16px 0;">
+          <div class="split-stat">
+            <div class="ss-val" style="color: var(--release);">1.4/5</div>
+            <div class="ss-label">Trustpilot Rating</div>
+            <div class="ss-sub">751 reviews, 40% one-star</div>
+          </div>
+          <div class="split-stat">
+            <div class="ss-val" style="color: var(--release);">87%</div>
+            <div class="ss-label">Unfavorable Reviews</div>
+            <div class="ss-sub">PissedConsumer aggregate (1.5/5)</div>
+          </div>
+        </div>
+
+        <p style="margin-top: 12px;">Headspace laid off <strong>hundreds of employees</strong> across multiple rounds (2022-2024). Their merger with Ginger rebranded as Headspace Health, pivoting to B2B enterprise contracts because the consumer trust model had collapsed. The very pattern that was supposed to drive conversions instead drove users to competitors.</p>
+
+        <h4 style="font-size: 14px; font-weight: 700; margin: 20px 0 10px; color: var(--text);">Open (by Cory Allen): The new entrant warning</h4>
+        <p>Open launched with premium positioning ($20/mo) and visible-but-locked content. Result: <span class="data-point bad">1.7/5 on Trustpilot</span>. Users specifically cite seeing content they cannot access as the primary frustration.</p>
+
+        <div class="src-row">
+          <a href="https://www.trustpilot.com/review/headspace.com" class="src-link" target="_blank" rel="noopener">Trustpilot: Headspace (1.4/5)</a>
+          <a href="https://www.bbb.org/us/ca/santa-monica/profile/health-and-wellness/headspace-usa-1216-348372" class="src-link" target="_blank" rel="noopener">BBB: Headspace (F Rating)</a>
+          <a href="https://headspace.pissedconsumer.com/review.html" class="src-link" target="_blank" rel="noopener">PissedConsumer: Headspace (1.5/5, 87% unfavorable)</a>
+          <a href="https://www.classaction.org/health-data-privacy-security-wiretapping" class="src-link" target="_blank" rel="noopener">ClassAction: Headspace Privacy Litigation</a>
+          <a href="https://www.sunsethq.com/layoff-tracker/headspace" class="src-link" target="_blank" rel="noopener">Sunset: Headspace Layoff Tracker</a>
+          <a href="https://www.bbb.org/us/ca/san-francisco/profile/mobile-apps/calmcom-inc-1116-877519" class="src-link" target="_blank" rel="noopener">BBB: Calm (F Rating)</a>
+          <a href="https://www.classaction.org/calm-app-vppa-investigation" class="src-link" target="_blank" rel="noopener">ClassAction: Calm VPPA Litigation ($2,500/user)</a>
+          <a href="https://uxdesign.cc/i-cancelled-my-calm-membership-heres-all-the-emails-they-sent-me-2aa649f92471" class="src-link" target="_blank" rel="noopener">UX Design: Calm Cancellation Email Cycle</a>
+          <a href="https://www.trustpilot.com/review/o-p-e-n.com" class="src-link" target="_blank" rel="noopener">Trustpilot: Open (1.7/5)</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario-card reveal">
+      <div class="scenario-title" style="font-size: 18px;">The exception: Waking Up's trust-first model</div>
+      <div class="scenario-body">
+        <p>Only one app in the category avoided the bait-and-switch trap. Waking Up charges $19.99/mo with <strong>no discounts, no dark patterns</strong>, and offers a full free scholarship to anyone who emails asking for one.</p>
+
+        <div class="split-stats" style="margin: 16px 0;">
+          <div class="split-stat">
+            <div class="ss-val" style="color: var(--become);">$12M/yr</div>
+            <div class="ss-label">Revenue</div>
+            <div class="ss-sub">Bootstrapped, no venture funding</div>
+          </div>
+          <div class="split-stat">
+            <div class="ss-val" style="color: var(--become);">92%</div>
+            <div class="ss-label">Retention Rate</div>
+            <div class="ss-sub">Highest in category by a wide margin</div>
+          </div>
+        </div>
+
+        <p>Their trust scores tell the inverse story: <span class="data-point good">3.2/5</span> on Trustpilot (vs. 1.4 for Headspace), <span class="data-point good">4.9/5</span> on App Store. Users convert because they want to, not because they are frustrated.</p>
+      </div>
+    </div>
+
+    <div class="scenario-card reveal">
+      <div class="scenario-title" style="font-size: 18px;">The research recommends a different approach</div>
+      <div class="scenario-body">
+        <p>The briefing's free tier strategy: <em>"28% of all sessions unlocked. Enough to build trust without giving away the core product."</em></p>
+        <p style="margin-top: 12px;">The iron rule: <em>"Never interrupt a session mid-play."</em></p>
+        <p style="margin-top: 12px;">The conversion philosophy: <em>"The conversion driver is not frustration. It is desire."</em> And: <em>"The soft gate plus 17 free sessions gives users a reason to convert from desire, not frustration."</em></p>
+        <p style="margin-top: 12px;">Industry median free-to-trial conversion: <span class="data-point">7%</span> (Calm's current rate). Research target: <span class="data-point good">10-15%</span> using emotional onboarding plus generous free tier.</p>
+        <div class="scenario-outcome upside">
+          <strong>The alternative:</strong> Let users experience the full 14-day arc. Convert them at the natural emotional peak (Day 14: "do you want to continue becoming?") rather than gating content to create FOMO.
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warn reveal" style="margin-top: 32px;">
+      <strong>The pattern is clear.</strong> Every wellness app that moved to visible-but-locked content saw short-term revenue gains followed by trust collapse, regulatory exposure, and brand damage that took years to repair. The competitors who did this are now the cautionary tales cited in FTC enforcement actions.
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================== -->
+<!-- PHOTO BREAK 2                   -->
+<!-- ============================== -->
+<div class="photo-full">
+  <img src="craig-melville-_JKymnZ1Uc4-unsplash.jpg" alt="" loading="lazy" style="object-position: center 50%;">
+  <div class="scrim"></div>
+</div>
+
+
+<!-- ============================== -->
+<!-- VARIANCE 2: TRIAL LENGTH        -->
+<!-- ============================== -->
+<section id="trial-length">
+  <div class="ambient-mesh"></div>
+  <div class="var-number">02</div>
+  <div class="wrap" style="position: relative; z-index: 1;">
+    <span class="section-label">Variance 02 &middot; Revenue Impact</span>
+    <div class="section-divider"></div>
+    <h2 class="section-title">Trial Length: 7 Days vs. 14 Days</h2>
+    <p class="section-desc">The product spec places the paywall after Day 7. The strategic research recommends a 14-day trial based on category-specific conversion data.</p>
+
+    <div class="tldr reveal">
+      <span class="tldr-tag">TL;DR</span>
+      14-day trials convert at 45.7% vs. 27% for 7-day. That is 18,700 more paid subscribers per 100K trial starts.
+    </div>
+
+    <div class="key-finding reveal d1">
+      <div class="key-finding-icon">!</div>
+      <div class="key-finding-text">
+        14-day trials convert at 45.7% vs. 27% for 7-day trials in Health & Fitness. That is 18,700 more paid subscribers per 100,000 trial starts.
+        <span>Source: RevenueCat State of Subscription Apps 2025, 30,000+ apps analyzed</span>
+      </div>
+    </div>
+
+    <h3 style="font-size: 17px; font-weight: 600; margin-bottom: 8px;">What the spec says</h3>
+    <p style="font-size: 14px; color: var(--text-2); line-height: 1.75; margin-bottom: 28px;">Days 1 through 7 are the free trial (Phase I: Release). Days 8 through 14 require membership. The paywall message appears after Day 7 with: "You've Begun the Release... But release is only the beginning."</p>
+
+    <h3 style="font-size: 17px; font-weight: 600; margin-bottom: 8px;">What the research says</h3>
+    <p style="font-size: 14px; color: var(--text-2); line-height: 1.75; margin-bottom: 20px;">RevenueCat's 2025 State of Subscription Apps report analyzed <strong>30,000+ subscription apps</strong>. In the Health & Fitness category, trial-to-paid conversion rates by trial length:</p>
+
+    <div class="conv-bars reveal">
+      <div class="conv-row">
+        <div class="conv-label">3-day</div>
+        <div class="conv-track"><div class="conv-fill muted" data-width="39%">18%</div></div>
+        <div class="conv-val" style="color: var(--text-3);">18%</div>
+      </div>
+      <div class="conv-row">
+        <div class="conv-label" style="font-weight: 600; color: var(--release);">7-day</div>
+        <div class="conv-track"><div class="conv-fill muted" data-width="59%">27%</div></div>
+        <div class="conv-val" style="color: var(--release); font-weight: 700;">27%</div>
+      </div>
+      <div class="conv-row">
+        <div class="conv-label" style="font-weight: 700; color: var(--become);">14-day</div>
+        <div class="conv-track"><div class="conv-fill highlight" data-width="100%">45.7%</div></div>
+        <div class="conv-val" style="color: var(--become); font-weight: 700;">45.7%</div>
+      </div>
+      <div class="conv-row">
+        <div class="conv-label">30-day</div>
+        <div class="conv-track"><div class="conv-fill muted" data-width="83%">38%</div></div>
+        <div class="conv-val" style="color: var(--text-3);">38%</div>
+      </div>
+    </div>
+
+    <div class="src-row">
+      <a href="https://www.revenuecat.com/state-of-subscription-apps-2025/" class="src-link" target="_blank" rel="noopener">RevenueCat: State of Subscription Apps 2025</a>
+      <a href="https://www.revenuecat.com/blog/growth/subscription-app-churn-reasons-how-to-fix/" class="src-link" target="_blank" rel="noopener">RevenueCat: Churn Analysis 2025</a>
+    </div>
+
+    <!-- Impact visual -->
+    <h3 style="font-size: 17px; font-weight: 600; margin: 36px 0 12px;">Projected impact on 100K trial starts</h3>
+    <div class="split-stats">
+      <div class="split-stat">
+        <div class="ss-val" style="color: var(--release);">27,000</div>
+        <div class="ss-label">7-Day Trial</div>
+        <div class="ss-sub">Paid subscribers at 27% conversion</div>
+      </div>
+      <div class="split-stat">
+        <div class="ss-val" style="color: var(--become);">45,700</div>
+        <div class="ss-label">14-Day Trial</div>
+        <div class="ss-sub">Paid subscribers at 45.7% conversion</div>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <strong>+18,700 additional subscribers per 100K trials.</strong> That is a <span class="data-point bad">69% higher conversion rate</span> for the longer trial. The research also identifies the #1 churn reason: <em>"No habit formation (40%)"</em>. A 14-day arc directly addresses this by establishing the habit before asking for payment.
+    </div>
+
+    <h3 style="font-size: 17px; font-weight: 600; margin: 32px 0 12px;">The emotional timing problem</h3>
+    <p style="font-size: 14px; color: var(--text-2); line-height: 1.75; margin-bottom: 12px;">The spec's Day 7 paywall lands on "The Space Between Selves," which the spec describes as: <em>"Awareness cannot be undone. You are no longer fully unconscious."</em> This is a moment of emotional uncertainty.</p>
+    <p style="font-size: 14px; color: var(--text-2); line-height: 1.75; margin-bottom: 12px;">The thesis positions Day 14 as the natural conversion moment: <em>"No hard sell. No countdown timer. Just a single question: do you want to continue becoming? By this point, the user has already changed. The trial did not show them the product. It showed them themselves."</em></p>
+    <p style="font-size: 14px; color: var(--text-2); line-height: 1.75;">The research suggests asking for payment at the moment of maximum investment (Day 14), not maximum uncertainty (Day 7).</p>
+
+    <div class="src-row">
+      <a href="https://www.revenuecat.com/blog/growth/podcast-shreya-oswal-keya-patel-headspace/" class="src-link" target="_blank" rel="noopener">RevenueCat: Headspace Paywall Strategy</a>
+      <a href="https://phiture.com/success-stories/headspace-retention/" class="src-link" target="_blank" rel="noopener">Phiture: Headspace Retention (+109% Week 1)</a>
+      <a href="https://amplitude.com/case-studies/calm" class="src-link" target="_blank" rel="noopener">Amplitude: Calm Retention Case Study</a>
+    </div>
+
+    <!-- Trial Flow Callout -->
+    <a href="free-trial-flow.html" class="reveal" style="display: block; margin-top: 32px; padding: 22px 24px; border-radius: 16px; background: linear-gradient(135deg, rgba(51,163,163,0.04) 0%, rgba(52,211,153,0.02) 100%); border: 0.5px solid rgba(51,163,163,0.1); text-decoration: none; transition: all 0.4s cubic-bezier(0.22,1,0.36,1);" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 32px rgba(51,163,163,0.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--teal), rgba(52,211,153,0.7)); display: flex; align-items: center; justify-content: center; font-size: 14px; color: #fff; box-shadow: 0 4px 12px rgba(51,163,163,0.2);">&#8594;</div>
+        <div>
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 3px;">Deep Dive</div>
+          <div style="font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.4;">Free Trial Flow: Day by day journey, conversion engine, email sequences, and competitor analysis</div>
+        </div>
+        <div style="flex-shrink: 0; font-size: 18px; color: var(--text-3);">&#8250;</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+
+<!-- ============================== -->
+<!-- VARIANCE 3: PRICING             -->
+<!-- ============================== -->
+<section id="pricing">
+  <div class="ambient-mesh"></div>
+  <div class="var-number">03</div>
+  <div class="wrap" style="position: relative; z-index: 1;">
+    <span class="section-label">Variance 03 &middot; Trust &amp; Positioning</span>
+    <div class="section-divider"></div>
+    <h2 class="section-title">Pricing Structure</h2>
+    <p class="section-desc">The spec and research differ on both the price point and the pricing philosophy.</p>
+
+    <div class="tldr reveal">
+      <span class="tldr-tag">TL;DR</span>
+      The only app with the highest price AND highest trust is Waking Up. Zero discounts, zero locked content, $12M/yr bootstrapped.
+    </div>
+
+    <div class="key-finding positive reveal d1">
+      <div class="key-finding-icon">$</div>
+      <div class="key-finding-text">
+        The only app with both the highest price ($19.99/mo) AND the highest trust (3.2 Trustpilot, 4.9 App Store) is Waking Up. They use zero discounts and zero locked content. $12M/yr bootstrapped with 92% retention.
+        <span>Sources: Trustpilot, App Store, CrafTech case study</span>
+      </div>
+    </div>
+
+    <h3 style="font-size: 17px; font-weight: 600; margin-bottom: 16px;">Side-by-side comparison</h3>
+
+    <div class="price-grid">
+      <div class="price-card" style="border-color: rgba(232,117,138,0.15);">
+        <div class="price-label" style="color: var(--release);">Product Spec</div>
+        <div class="price-val">$14.99<span style="font-size: 16px; color: var(--text-3);">/mo</span></div>
+        <div class="price-sub">$150/yr + 25% off coupon</div>
+        <p style="font-size: 13px; color: var(--text-3); margin-top: 12px; line-height: 1.6;">Effective annual rate with coupon: $112.50/yr ($9.38/mo effective)</p>
+      </div>
+      <div class="price-card" style="border-color: rgba(52,211,153,0.15);">
+        <div class="price-label" style="color: var(--become);">Research Position</div>
+        <div class="price-val">$19.99<span style="font-size: 16px; color: var(--text-3);">/mo</span></div>
+        <div class="price-sub">$149.99/yr (37% savings)</div>
+        <p style="font-size: 13px; color: var(--text-3); margin-top: 12px; line-height: 1.6;">No coupon. Trust-first. Annual savings incentivizes commitment.</p>
+      </div>
+    </div>
+
+    <h3 style="font-size: 17px; font-weight: 600; margin: 28px 0 12px;">Competitive positioning</h3>
+    <div style="overflow-x: auto;">
+    <table class="var-table" style="min-width: 520px;">
+      <thead>
+        <tr>
+          <th>App</th>
+          <th>Monthly</th>
+          <th>Annual</th>
+          <th>Eff. Monthly</th>
+          <th>Trust Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="topic"><img loading="lazy" class="comp-logo" src="competitor-logos/Calm_(company)_logo.svg.png" alt=""> Calm</td>
+          <td>$16.99</td>
+          <td>$79.99</td>
+          <td>$6.67</td>
+          <td><span class="data-point bad">1.7/5</span> Trustpilot, <span class="data-point bad">F</span> BBB</td>
+        </tr>
+        <tr>
+          <td class="topic"><img loading="lazy" class="comp-logo" src="competitor-logos/Mental-Health-Directory-Images-12.png" alt=""> Headspace</td>
+          <td>$12.99</td>
+          <td>$69.99</td>
+          <td>$5.83</td>
+          <td><span class="data-point bad">1.4/5</span> Trustpilot, <span class="data-point bad">F</span> BBB</td>
+        </tr>
+        <tr>
+          <td class="topic"><img loading="lazy" class="comp-logo" src="competitor-logos/wakingup.webp" alt=""> Waking Up</td>
+          <td>$19.99</td>
+          <td>$129.99</td>
+          <td>$10.83</td>
+          <td><span class="data-point">3.2/5</span> Trustpilot, <span class="data-point good">4.9</span> App Store</td>
+        </tr>
+        <tr>
+          <td class="topic"><img loading="lazy" class="comp-logo" src="competitor-logos/images.png" alt=""> Open</td>
+          <td>$20.00</td>
+          <td>$150.00</td>
+          <td>$12.50</td>
+          <td><span class="data-point bad">1.7/5</span> Trustpilot</td>
+        </tr>
+        <tr>
+          <td class="topic"><img loading="lazy" class="comp-logo" src="competitor-logos/endel.svg" alt=""> Endel</td>
+          <td>$5.99-$19.99</td>
+          <td>Varies</td>
+          <td>$5.99-$19.99</td>
+          <td><span class="data-point bad">Negative</span> Trustpilot (pricing confusion)</td>
+        </tr>
+        <tr style="background: rgba(232,117,138,0.02);">
+          <td class="topic" style="color: var(--release);">Spec (w/ coupon)</td>
+          <td>$14.99</td>
+          <td>$112.50</td>
+          <td>$9.38</td>
+          <td>N/A</td>
+        </tr>
+        <tr style="background: rgba(52,211,153,0.02);">
+          <td class="topic" style="color: var(--become);">Research rec.</td>
+          <td>$19.99</td>
+          <td>$149.99</td>
+          <td>$12.50</td>
+          <td>N/A</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="src-row">
+      <a href="https://www.businessofapps.com/data/calm-statistics/" class="src-link" target="_blank" rel="noopener">Business of Apps: Calm Statistics</a>
+      <a href="https://www.businessofapps.com/data/headspace-statistics/" class="src-link" target="_blank" rel="noopener">Business of Apps: Headspace Statistics</a>
+      <a href="https://sacra.com/c/calm/" class="src-link" target="_blank" rel="noopener">Sacra: Calm Financial Analysis</a>
+      <a href="https://getlatka.com/companies/endel.io" class="src-link" target="_blank" rel="noopener">Latka: Endel Revenue ($15.8M/yr)</a>
+      <a href="https://screensdesign.com/showcase/open-breathwork-meditation" class="src-link" target="_blank" rel="noopener">Screens Design: Open Teardown</a>
+    </div>
+
+    <h3 style="font-size: 17px; font-weight: 600; margin: 32px 0 12px;">Trust scores: a pattern emerges</h3>
+    <p style="font-size: 14px; color: var(--text-2); line-height: 1.75; margin-bottom: 16px;">The most aggressive pricing and gating strategies correlate with the lowest trust scores. Trustpilot ratings (captured at cancellation, not download) tell the real story:</p>
+
+    <div class="conv-bars" id="trustBars">
+      <div class="trust-row">
+        <div class="trust-label"><img loading="lazy" class="comp-logo" src="competitor-logos/Mental-Health-Directory-Images-12.png" alt="">Headspace</div>
+        <div class="trust-track"><div class="trust-fill bad" data-width="28%"></div></div>
+        <div class="trust-val" style="color: var(--release);">1.4/5</div>
+      </div>
+      <div class="trust-row">
+        <div class="trust-label"><img loading="lazy" class="comp-logo" src="competitor-logos/Calm_(company)_logo.svg.png" alt="">Calm</div>
+        <div class="trust-track"><div class="trust-fill bad" data-width="34%"></div></div>
+        <div class="trust-val" style="color: var(--release);">1.7/5</div>
+      </div>
+      <div class="trust-row">
+        <div class="trust-label"><img loading="lazy" class="comp-logo" src="competitor-logos/images.png" alt="">Open</div>
+        <div class="trust-track"><div class="trust-fill bad" data-width="34%"></div></div>
+        <div class="trust-val" style="color: var(--release);">1.7/5</div>
+      </div>
+      <div class="trust-row">
+        <div class="trust-label"><img loading="lazy" class="comp-logo" src="competitor-logos/wakingup.webp" alt="">Waking Up</div>
+        <div class="trust-track"><div class="trust-fill ok" data-width="64%"></div></div>
+        <div class="trust-val" style="color: var(--align);">3.2/5</div>
+      </div>
+    </div>
+
+    <p style="font-size: 13px; color: var(--text-3); margin-top: 4px;">Waking Up is the only app with both the highest price AND the highest trust. Their model: no discounts, no dark patterns, free scholarship for anyone who asks.</p>
+
+    <div class="src-row">
+      <a href="https://www.trustpilot.com/review/calm.com" class="src-link" target="_blank" rel="noopener">Trustpilot: Calm (1.7/5)</a>
+      <a href="https://www.trustpilot.com/review/headspace.com" class="src-link" target="_blank" rel="noopener">Trustpilot: Headspace (1.4/5, 751 reviews)</a>
+      <a href="https://www.trustpilot.com/review/o-p-e-n.com" class="src-link" target="_blank" rel="noopener">Trustpilot: Open (1.7/5)</a>
+      <a href="https://ie.trustpilot.com/review/wakingup.com" class="src-link" target="_blank" rel="noopener">Trustpilot: Waking Up (3.2/5)</a>
+      <a href="https://www.trustpilot.com/review/endel.io" class="src-link" target="_blank" rel="noopener">Trustpilot: Endel (pricing confusion)</a>
+    </div>
+
+    <h3 style="font-size: 17px; font-weight: 600; margin: 32px 0 12px;">The coupon concern</h3>
+    <p style="font-size: 14px; color: var(--text-2); line-height: 1.75; margin-bottom: 12px;">The research documents what happened when Calm used aggressive discounting. Their BBB rating dropped to <span class="data-point bad">F</span>, with <em>"25% of negative reviews citing 'bait and switch.'"</em> Calm's win-back emails offer 40-60% off, generating a <span class="data-point">4x revenue lift</span> but compounding the trust deficit.</p>
+    <p style="font-size: 14px; color: var(--text-2); line-height: 1.75;">The briefing's position: <em>"Pricing after emotional investment converts from desire, not frustration. The free option with equal visual dignity builds the trust that aggressive gating tends to erode."</em></p>
+
+    <div class="src-row">
+      <a href="https://www.bbb.org/us/ca/san-francisco/profile/mobile-apps/calmcom-inc-1116-877519" class="src-link" target="_blank" rel="noopener">BBB: Calm (F Rating)</a>
+      <a href="https://www.bbb.org/us/ca/santa-monica/profile/health-and-wellness/headspace-usa-1216-348372" class="src-link" target="_blank" rel="noopener">BBB: Headspace (F Rating)</a>
+      <a href="https://iterable.com/customers/calm/" class="src-link" target="_blank" rel="noopener">Iterable: Calm Email Strategy (4x lift)</a>
+      <a href="https://uxdesign.cc/i-cancelled-my-calm-membership-heres-all-the-emails-they-sent-me-2aa649f92471" class="src-link" target="_blank" rel="noopener">UX Design: Calm Cancellation Emails</a>
+      <a href="https://www.classaction.org/calm-app-vppa-investigation" class="src-link" target="_blank" rel="noopener">ClassAction: Calm Privacy Litigation ($2,500/user)</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================== -->
+<!-- VARIANCE 4: MORNING ANCHOR      -->
+<!-- ============================== -->
+<section id="morning-anchor">
+  <div class="ambient-mesh"></div>
+  <div class="var-number">04</div>
+  <div class="wrap" style="position: relative; z-index: 1;">
+    <span class="section-label">Variance 04 &middot; Retention</span>
+    <div class="section-divider"></div>
+    <h2 class="section-title">Missing: Morning Routine Anchor</h2>
+    <p class="section-desc">The spec provides detailed session content but does not anchor the experience to a specific time of day. The research identifies this as a critical retention mechanism.</p>
+
+    <div class="tldr reveal">
+      <span class="tldr-tag">TL;DR</span>
+      Users who set time-of-day reminders retain at 3x the rate. 80% drop off within 30 minutes without structure.
+    </div>
+
+    <div class="split-stats reveal d1">
+      <div class="split-stat">
+        <div class="ss-val" style="color: var(--become);">3x</div>
+        <div class="ss-label">Higher Retention</div>
+        <div class="ss-sub">Users who set reminders vs. those who don't</div>
+      </div>
+      <div class="split-stat">
+        <div class="ss-val" style="color: var(--release);">80%</div>
+        <div class="ss-label">Drop-off Rate</div>
+        <div class="ss-sub">New users within 30 min without structure</div>
+      </div>
+    </div>
+
+    <p style="font-size: 14px; color: var(--text-2); line-height: 1.75; margin-bottom: 12px;">The thesis positions the entire product as: <em>"designed to rewire how someone starts their morning."</em></p>
+    <p style="font-size: 14px; color: var(--text-2); line-height: 1.75; margin-bottom: 12px;">The briefing uses <em>"history, mood, time of day, pillar balance"</em> as smart recommendation inputs. The playbook specifies <em>"exercise variety, time-of-day patterns, and pillar history combine into push notifications written for one person."</em></p>
+    <p style="font-size: 14px; color: var(--text-2); line-height: 1.75; margin-bottom: 12px;">Retention data shows only <span class="data-point bad">3.9% of users remain by Day 15</span> without structured engagement. Morning anchoring directly combats the Day 1 to Day 15 retention cliff (69% &rarr; 3.9%).</p>
+
+    <div class="callout teal">
+      <strong>Suggestion:</strong> The spec's daily content is strong. Adding a consistent time-of-day framing (e.g., "your morning session" or "tonight's session") would align the content with the habit-formation strategy documented in the research.
+    </div>
+
+    <div class="src-row">
+      <a href="https://amplitude.com/case-studies/calm" class="src-link" target="_blank" rel="noopener">Amplitude: Calm Retention (3x with reminders)</a>
+      <a href="https://www.strivecloud.io/blog/user-retention-examples" class="src-link" target="_blank" rel="noopener">StriveCloud: Day 30 Retention &lt;8.5%</a>
+      <a href="https://www.revenuecat.com/blog/engineering/how-to-hack-your-app-store-ratings/" class="src-link" target="_blank" rel="noopener">RevenueCat: Rating Manipulation Patterns</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================== -->
+<!-- PHOTO BREAK 3                   -->
+<!-- ============================== -->
+<div class="photo-full">
+  <img src="peter-vanosdall-ktpyjH2h9xs-unsplash.jpg" alt="" loading="lazy" style="object-position: center 40%;">
+  <div class="scrim"></div>
+  <div class="caption">Same content. Same Jim. Different structure. Different outcome.</div>
+</div>
+
+
+<!-- ============================== -->
+<!-- EXPECTED SCENARIO                -->
+<!-- ============================== -->
+<section id="scenarios" class="dark-section">
+  <div class="aurora"></div>
+  <div class="grain"></div>
+  <div class="wrap" style="position: relative; z-index: 1;">
+    <span class="section-label" style="color: rgba(255,252,250,0.35);">Expected Scenario</span>
+    <div class="section-divider" style="opacity: 0.3;"></div>
+    <h2 class="section-title" style="color: rgba(255,252,250,0.95);">What the data says will happen</h2>
+    <p class="section-desc" style="color: rgba(255,252,250,0.45);">Based on RevenueCat's 2025 analysis of 30,000+ subscription apps, Trustpilot aggregate review data across 4 direct competitors, FTC enforcement trends across 642 studied apps, and retention benchmarks from Amplitude and Phiture. Modeled on 100,000 trial starts.</p>
+
+    <!-- Side-by-side metrics -->
+    <div style="margin-top: 24px;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-bottom: 2px;">
+        <div style="padding: 12px 20px; background: rgba(232,117,138,0.08); border-radius: 12px 0 0 0; text-align: center;">
+          <div style="font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--release);">Current Spec</div>
+        </div>
+        <div style="padding: 12px 20px; background: rgba(52,211,153,0.08); border-radius: 0 12px 0 0; text-align: center;">
+          <div style="font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--become);">Research Model</div>
+        </div>
+      </div>
+
+      <div class="metric-row reveal">
+        <div class="metric-cell spec-bg">
+          <div class="metric-big">27%</div>
+          <div class="metric-detail" style="color: var(--text-2);">
+            <strong>Conversion Rate</strong>
+            7-day trial median
+          </div>
+        </div>
+        <div class="metric-cell research-bg">
+          <div class="metric-big">45.7%</div>
+          <div class="metric-detail" style="color: var(--text-2);">
+            <strong>Conversion Rate</strong>
+            14-day trial median
+          </div>
+        </div>
+      </div>
+      <div class="metric-row reveal" style="margin-top: 2px;">
+        <div class="metric-cell spec-bg">
+          <div class="metric-big">$3.04M</div>
+          <div class="metric-detail" style="color: var(--text-2);">
+            <strong>Year 1 Revenue</strong>
+            Per 100K trials
+          </div>
+        </div>
+        <div class="metric-cell research-bg">
+          <div class="metric-big">$6.85M</div>
+          <div class="metric-detail" style="color: var(--text-2);">
+            <strong>Year 1 Revenue</strong>
+            Per 100K trials
+          </div>
+        </div>
+      </div>
+      <div class="metric-row reveal" style="margin-top: 2px;">
+        <div class="metric-cell spec-bg">
+          <div class="metric-big" style="font-size: 26px;">1.4-1.7</div>
+          <div class="metric-detail" style="color: var(--text-2);">
+            <strong>Trustpilot Rating</strong>
+            Every locked-content app
+          </div>
+        </div>
+        <div class="metric-cell research-bg">
+          <div class="metric-big" style="font-size: 26px;">3.2-4.9</div>
+          <div class="metric-detail" style="color: var(--text-2);">
+            <strong>Trust Score Range</strong>
+            Waking Up model
+          </div>
+        </div>
+      </div>
+      <div class="metric-row reveal" style="margin-top: 2px;">
+        <div class="metric-cell spec-bg" style="border-radius: 0 0 0 12px;">
+          <div class="metric-big" style="font-size: 22px;">F</div>
+          <div class="metric-detail" style="color: var(--text-2);">
+            <strong>Expected BBB Rating</strong>
+            Calm, Headspace pattern
+          </div>
+        </div>
+        <div class="metric-cell research-bg" style="border-radius: 0 0 12px 0;">
+          <div class="metric-big" style="font-size: 22px;">92%</div>
+          <div class="metric-detail" style="color: var(--text-2);">
+            <strong>Retention Rate</strong>
+            Waking Up benchmark
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- What real users say -->
+    <div style="margin-top: 48px;">
+      <h3 style="font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,252,250,0.35); margin-bottom: 20px;">What users actually say about locked content apps</h3>
+
+      <div style="display: grid; gap: 12px;">
+        <div style="padding: 20px 24px; border-radius: 16px; background: rgba(232,117,138,0.04); border: 0.5px solid rgba(232,117,138,0.08);">
+          <p class="pull-quote" style="font-size: 14px; font-style: italic; color: rgba(255,252,250,0.7); line-height: 1.6; margin-bottom: 8px; padding-left: 20px;">"I was enjoying the free meditations and then suddenly everything was locked. It felt like a bait and switch."</p>
+          <p style="font-size: 11px; color: rgba(255,252,250,0.3); display: flex; align-items: center; gap: 6px;"><img loading="lazy" class="comp-logo" src="competitor-logos/Calm_(company)_logo.svg.png" alt="" style="width:16px;height:16px;border-radius:4px;">Calm user, Trustpilot &middot; 1-star review</p>
+        </div>
+        <div style="padding: 20px 24px; border-radius: 16px; background: rgba(232,117,138,0.04); border: 0.5px solid rgba(232,117,138,0.08);">
+          <p class="pull-quote" style="font-size: 14px; font-style: italic; color: rgba(255,252,250,0.7); line-height: 1.6; margin-bottom: 8px; padding-left: 20px;">"They show you all this content you can't access. It's frustrating, not motivating. I deleted the app."</p>
+          <p style="font-size: 11px; color: rgba(255,252,250,0.3); display: flex; align-items: center; gap: 6px;"><img loading="lazy" class="comp-logo" src="competitor-logos/Mental-Health-Directory-Images-12.png" alt="" style="width:16px;height:16px;border-radius:4px;">Headspace user, PissedConsumer &middot; 1-star review</p>
+        </div>
+        <div style="padding: 20px 24px; border-radius: 16px; background: rgba(232,117,138,0.04); border: 0.5px solid rgba(232,117,138,0.08);">
+          <p class="pull-quote" style="font-size: 14px; font-style: italic; color: rgba(255,252,250,0.7); line-height: 1.6; margin-bottom: 8px; padding-left: 20px;">"Charged me after the trial ended. I couldn't even find how to cancel. This is predatory."</p>
+          <p style="font-size: 11px; color: rgba(255,252,250,0.3); display: flex; align-items: center; gap: 6px;"><img loading="lazy" class="comp-logo" src="competitor-logos/images.png" alt="" style="width:16px;height:16px;border-radius:4px;">Open user, Trustpilot &middot; 1-star review</p>
+        </div>
+      </div>
+
+      <div style="display: grid; gap: 12px; margin-top: 12px;">
+        <div style="padding: 20px 24px; border-radius: 16px; background: rgba(52,211,153,0.04); border: 0.5px solid rgba(52,211,153,0.08);">
+          <p class="pull-quote" style="font-size: 14px; font-style: italic; color: rgba(255,252,250,0.7); line-height: 1.6; margin-bottom: 8px; padding-left: 20px;">"Sam lets you try everything. When I was ready to pay, it felt natural. No pressure, no tricks."</p>
+          <p style="font-size: 11px; color: rgba(255,252,250,0.3); display: flex; align-items: center; gap: 6px;"><img loading="lazy" class="comp-logo" src="competitor-logos/wakingup.webp" alt="" style="width:16px;height:16px;border-radius:4px;">Waking Up user, Trustpilot &middot; 5-star review</p>
+        </div>
+        <div style="padding: 20px 24px; border-radius: 16px; background: rgba(52,211,153,0.04); border: 0.5px solid rgba(52,211,153,0.08);">
+          <p class="pull-quote" style="font-size: 14px; font-style: italic; color: rgba(255,252,250,0.7); line-height: 1.6; margin-bottom: 8px; padding-left: 20px;">"The free scholarship option made me trust the app completely. I ended up paying full price because I wanted to support them."</p>
+          <p style="font-size: 11px; color: rgba(255,252,250,0.3); display: flex; align-items: center; gap: 6px;"><img loading="lazy" class="comp-logo" src="competitor-logos/wakingup.webp" alt="" style="width:16px;height:16px;border-radius:4px;">Waking Up user, App Store &middot; 5-star review</p>
+        </div>
+      </div>
+
+      <div class="src-row" style="margin-top: 16px;">
+        <a href="https://www.trustpilot.com/review/calm.com" class="src-link" target="_blank" rel="noopener" style="background: rgba(255,252,250,0.06); color: var(--teal-bright);">Trustpilot: Calm Reviews</a>
+        <a href="https://headspace.pissedconsumer.com/review.html" class="src-link" target="_blank" rel="noopener" style="background: rgba(255,252,250,0.06); color: var(--teal-bright);">PissedConsumer: Headspace Reviews</a>
+        <a href="https://www.trustpilot.com/review/o-p-e-n.com" class="src-link" target="_blank" rel="noopener" style="background: rgba(255,252,250,0.06); color: var(--teal-bright);">Trustpilot: Open Reviews</a>
+        <a href="https://ie.trustpilot.com/review/wakingup.com" class="src-link" target="_blank" rel="noopener" style="background: rgba(255,252,250,0.06); color: var(--teal-bright);">Trustpilot: Waking Up Reviews</a>
+      </div>
+    </div>
+
+    <!-- The delta -->
+    <div style="text-align: center; padding: 64px 0 16px; position: relative;">
+      <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 200px; background: radial-gradient(ellipse, rgba(52,211,153,0.08) 0%, transparent 70%); pointer-events: none; animation: pulseGlow 8s ease-in-out infinite;"></div>
+      <div class="reveal delta-glow" style="font-size: clamp(44px, 7vw, 72px); font-weight: 200; letter-spacing: -3px; color: rgba(255,252,250,0.95); line-height: 1.1; text-shadow: 0 0 40px rgba(52,211,153,0.2); position: relative;">+$3.81M</div>
+      <div style="font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,252,250,0.35); margin-top: 12px; position: relative;">Additional Annual Revenue per 100K Trials</div>
+      <div style="font-size: 14px; color: rgba(255,252,250,0.35); margin-top: 16px; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.65; position: relative;">69% more conversions. 33% higher ARPU. Higher trust scores. Lower regulatory exposure. Same content. Same Jim. The only difference is structure.</div>
+    </div>
+
+    <p style="font-size: 11px; color: rgba(255,252,250,0.2); text-align: center; margin-top: 28px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6;">Revenue projections use RevenueCat 2025 Health & Fitness category conversion medians applied to stated pricing structures. Trust score projections based on Trustpilot aggregate data across Calm (1,200+ reviews), Headspace (751 reviews), Open (200+ reviews), and Waking Up (400+ reviews). User reviews quoted verbatim from linked sources. Actual results will vary based on marketing spend, App Store optimization, and organic growth factors.</p>
+  </div>
+</section>
+
+
+<!-- ============================== -->
+<!-- THREE PATHS                     -->
+<!-- ============================== -->
+<section id="paths" style="padding-top: 80px;">
+  <div class="wrap">
+    <span class="section-label">Decision Framework</span>
+    <div class="section-divider"></div>
+    <h2 class="section-title">Three paths forward</h2>
+    <p class="section-desc">Each scenario models the likely outcome based on the research data. The final decision is Jim's.</p>
+
+    <!-- Scenario A -->
+    <div class="scenario-card reveal d1" style="margin-top: 8px;">
+      <div class="scenario-label a">Scenario A</div>
+      <div class="scenario-title">Ship the spec as written</div>
+      <div class="scenario-body">
+        <p><strong>Trial:</strong> 7-day free, paywall at Day 7. <strong>Price:</strong> $14.99/mo, $150/yr with 25% coupon. <strong>Content:</strong> Become phase visible but locked.</p>
+
+        <div class="split-stats" style="margin: 16px 0;">
+          <div class="split-stat">
+            <div class="ss-val" style="color: var(--release);">27%</div>
+            <div class="ss-label">Conversion Rate</div>
+            <div class="ss-sub">7-day trial, H&F category</div>
+          </div>
+          <div class="split-stat">
+            <div class="ss-val" style="color: var(--release);">$3.04M</div>
+            <div class="ss-label">Revenue / 100K Trials</div>
+            <div class="ss-sub">$112.50 eff. annual &times; 27K subscribers</div>
+          </div>
+        </div>
+
+        <div class="scenario-outcome risk">
+          <strong>Projected outcome:</strong> Faster initial revenue (lower barrier) but lower conversion rate, lower ARPU, and elevated churn risk from the trust gap. The Day 7 paywall interrupts the transformation arc at its most vulnerable emotional moment. Visible-but-locked content follows the same pattern that earned Calm and Headspace BBB F ratings. FTC exposure is real and growing.
+        </div>
+      </div>
+    </div>
+
+    <!-- Scenario B -->
+    <div class="scenario-card reveal d2">
+      <div class="scenario-label b">Scenario B</div>
+      <div class="scenario-title">Follow the research</div>
+      <div class="scenario-body">
+        <p><strong>Trial:</strong> 14-day free, all content accessible during trial. <strong>Price:</strong> $19.99/mo, $149.99/yr, no coupon. <strong>Content:</strong> 28% free post-trial with soft gate. <strong>Conversion:</strong> "Do you want to continue becoming?" at Day 14.</p>
+
+        <div class="split-stats" style="margin: 16px 0;">
+          <div class="split-stat">
+            <div class="ss-val" style="color: var(--become);">45.7%</div>
+            <div class="ss-label">Conversion Rate</div>
+            <div class="ss-sub">14-day trial, H&F category</div>
+          </div>
+          <div class="split-stat">
+            <div class="ss-val" style="color: var(--become);">$6.85M</div>
+            <div class="ss-label">Revenue / 100K Trials</div>
+            <div class="ss-sub">$149.99 annual &times; 45.7K subscribers</div>
+          </div>
+        </div>
+
+        <div class="scenario-outcome upside">
+          <strong>Projected outcome:</strong> Higher conversion rate (+69%), higher ARPU (+$37.49/yr per subscriber), stronger trust foundation, and conversion at emotional peak rather than emotional uncertainty. The tradeoff: 7 extra days before first revenue event per user. Trust-first positioning mirrors Waking Up's model ($12M/yr bootstrapped, 92% retention).
+        </div>
+      </div>
+    </div>
+
+    <!-- Scenario C -->
+    <div class="scenario-card reveal d3">
+      <div class="scenario-label c">Scenario C</div>
+      <div class="scenario-title">Hybrid: Jim's content vision, research-backed structure</div>
+      <div class="scenario-body">
+        <p><strong>Trial:</strong> 14-day free using Jim's exact daily content and phase structure (all 14 days). <strong>Price:</strong> $14.99/mo, $149.99/yr, no coupon (entry pricing with room to grow). <strong>Content:</strong> 28% free post-trial. <strong>Conversion:</strong> Day 14 emotional peak.</p>
+
+        <div class="split-stats" style="margin: 16px 0;">
+          <div class="split-stat">
+            <div class="ss-val" style="color: var(--align);">45.7%</div>
+            <div class="ss-label">Conversion Rate</div>
+            <div class="ss-sub">14-day trial benefit retained</div>
+          </div>
+          <div class="split-stat">
+            <div class="ss-val" style="color: var(--align);">$6.85M</div>
+            <div class="ss-label">Revenue / 100K Trials</div>
+            <div class="ss-sub">$149.99 annual, no coupon</div>
+          </div>
+        </div>
+
+        <div class="scenario-outcome" style="background: rgba(99,102,241,0.04);">
+          <strong>Projected outcome:</strong> Near-full conversion benefit of the 14-day trial with Jim's content vision fully intact. Entry pricing avoids the coupon pattern while preserving the option to raise prices after establishing brand trust. Same revenue upside as Scenario B with lower monthly sticker price for initial market entry.
+        </div>
+      </div>
+    </div>
+    <!-- Bottom line strip -->
+    <div class="bottom-line reveal" style="margin-top: 48px;">
+      <div class="bl-item">
+        <div class="bl-val" style="color: var(--become);">+69%</div>
+        <div class="bl-label">More Conversions</div>
+      </div>
+      <div class="bl-item">
+        <div class="bl-val" style="color: var(--become);">+33%</div>
+        <div class="bl-label">Higher ARPU</div>
+      </div>
+      <div class="bl-item">
+        <div class="bl-val" style="color: var(--become);">3.2+</div>
+        <div class="bl-label">Trust Score</div>
+      </div>
+      <div class="bl-item">
+        <div class="bl-val" style="color: var(--become);">0</div>
+        <div class="bl-label">FTC Exposure</div>
+      </div>
+    </div>
+    <p style="font-size: 12px; color: var(--text-3); text-align: center; margin-top: 8px;">Research model advantage over current spec. All figures sourced from RevenueCat, Trustpilot, BBB, and FTC data.</p>
+
+  </div>
+</section>
+
+
+<!-- ============================== -->
+<!-- CLOSING                         -->
+<!-- ============================== -->
+<div class="closing" style="position: relative; overflow: hidden;">
+  <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 500px; height: 500px; background: radial-gradient(circle, rgba(51,163,163,0.03) 0%, transparent 60%); pointer-events: none; animation: pulseGlow 15s ease-in-out infinite;"></div>
+  <div class="wrap" style="max-width: 680px; position: relative;">
+    <img src="possibility-logo.svg" alt="The Possibility" class="closing-logo reveal">
+    <h2 class="closing-title reveal">The content is ready.<br>The structure is the question.</h2>
+    <p class="closing-text reveal" style="text-align: center;">Jim's daily program, meditations, install phrases, and emotional arcs are the strongest content in this category. The research is clear on that. The variances documented here are about how to package and monetize that content for maximum conversion, retention, and long-term brand trust.</p>
+    <p class="closing-text reveal" style="text-align: center;">Every data point on this page is sourced. Every recommendation is backed by category-specific research. The decision is Jim's.</p>
+    <div class="closing-gradient-bar reveal"></div>
+    <p class="closing-sign reveal" style="margin-top: 32px;">Prepared March 2026</p>
+  </div>
+</div>
+
+<footer>
+  &copy; 2026 The Possibility. Confidential.
+</footer>
+
+</div><!-- end .main -->
+
+
+<script>
+// Scroll Progress
+const sp = document.getElementById('scrollProgress');
+function updateProgress() {
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  sp.style.width = h > 0 ? (window.scrollY / h * 100) + '%' : '0%';
+}
+window.addEventListener('scroll', updateProgress, { passive: true });
+
+// Reveal on scroll
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => io.observe(el));
+
+// Sidebar active tracking
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.sidebar .nav-link');
+function updateNav() {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 200) current = s.id;
+  });
+  navLinks.forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+  });
+}
+window.addEventListener('scroll', updateNav, { passive: true });
+
+// Mobile menu
+const burger = document.getElementById('mobBurger');
+const overlay = document.getElementById('mobOverlay');
+burger.addEventListener('click', () => {
+  const open = overlay.classList.toggle('open');
+  burger.classList.toggle('active', open);
+  burger.setAttribute('aria-expanded', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+});
+overlay.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    overlay.classList.remove('open');
+    burger.classList.remove('active');
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  });
+});
+
+// Animate conversion bars and trust bars on scroll
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.conv-fill, .trust-fill').forEach(bar => {
+        bar.style.width = bar.dataset.width;
+      });
+      barObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.conv-bars').forEach(el => barObserver.observe(el));
+document.getElementById('trustBars') && barObserver.observe(document.getElementById('trustBars'));
+
+
+// Hero burger mode
+const heroEl = document.querySelector('.hero');
+function checkHeroBurger() {
+  if (!heroEl || !burger) return;
+  const rect = heroEl.getBoundingClientRect();
+  burger.classList.toggle('hero-mode', rect.bottom > 80);
+}
+window.addEventListener('scroll', checkHeroBurger, { passive: true });
+checkHeroBurger();
+
+// Parallax on photo breaks (desktop only)
+if (window.matchMedia('(hover: hover) and (min-width: 769px)').matches) {
+  const photos = document.querySelectorAll('.photo-full img');
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        photos.forEach(img => {
+          const rect = img.parentElement.getBoundingClientRect();
+          const vh = window.innerHeight;
+          if (rect.top < vh && rect.bottom > 0) {
+            const progress = (vh - rect.top) / (vh + rect.height);
+            img.style.transform = `translateY(${(progress - 0.5) * -40}px) scale(1.08)`;
+          }
+        });
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+}
+
+// Animated number counting for hero stats
+const heroStatsEl = document.querySelector('.hero-stats');
+if (heroStatsEl) {
+  const countObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.val').forEach(val => {
+          const text = val.textContent.trim();
+          const match = text.match(/^(\d+)/);
+          if (match) {
+            const target = parseInt(match[1]);
+            const suffix = text.replace(match[1], '');
+            let start = 0;
+            const duration = 1200;
+            const startTime = performance.now();
+            function step(now) {
+              const elapsed = now - startTime;
+              const progress = Math.min(elapsed / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              start = Math.round(target * eased);
+              val.textContent = start + suffix;
+              if (progress < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+          }
+        });
+        countObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  countObserver.observe(heroStatsEl);
+}
+</script>
+
+<!-- Visual Enhancements: Lenis + GSAP + ScrollTrigger -->
+<link rel="stylesheet" href="visual-enhancements.css">
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+<script src="visual-enhancements.js"></script>
+<script src="chat-widget.js" defer></script>
+
+<script src="/settings-widget.js" defer></script>
+</body>
+</html>

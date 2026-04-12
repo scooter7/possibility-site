@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code Auto-Research &amp; Autonomous Agents | Reference Guide</title>
+    <style>
+        :root {
+            --bg: #FAF8F5;
+            --bg-dark: #080A0F;
+            --text: #1A1410;
+            --text-muted: rgba(26,20,16,0.55);
+            --teal: #2E9E9E;
+            --teal-bright: #33A3A3;
+            --card-bg: rgba(26,20,16,0.025);
+            --card-border: rgba(26,20,16,0.08);
+            --code-bg: #1a1a2e;
+            --code-text: #e0e0e0;
+            --serif: 'Georgia', 'Times New Roman', serif;
+            --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            --zen: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Hero */
+        .hero {
+            background: var(--bg-dark);
+            color: #fff;
+            padding: 80px 40px 60px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-family: var(--serif);
+            font-size: 2.8rem;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+        .hero h1 span { color: var(--teal-bright); }
+        .hero .subtitle {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.6);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .hero .date {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.35);
+            margin-top: 20px;
+            font-family: var(--mono);
+        }
+
+        /* Layout */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        /* TOC */
+        .toc {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 32px;
+            margin: 48px auto;
+            max-width: 900px;
+        }
+        .toc h2 {
+            font-family: var(--serif);
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 16px;
+            color: var(--teal);
+        }
+        .toc ol {
+            padding-left: 24px;
+        }
+        .toc li {
+            margin-bottom: 8px;
+        }
+        .toc a {
+            color: var(--text);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(26,20,16,0.15);
+            transition: all 0.2s;
+        }
+        .toc a:hover {
+            color: var(--teal);
+            border-color: var(--teal);
+        }
+
+        /* Sections */
+        section {
+            margin: 56px 0;
+        }
+        section h2 {
+            font-family: var(--serif);
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--card-border);
+            letter-spacing: -0.01em;
+        }
+        section h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin: 32px 0 12px;
+            color: var(--teal);
+        }
+        section h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 24px 0 8px;
+        }
+        p {
+            margin-bottom: 16px;
+            color: rgba(26,20,16,0.85);
+        }
+        ul, ol {
+            margin-bottom: 16px;
+            padding-left: 24px;
+        }
+        li {
+            margin-bottom: 6px;
+            color: rgba(26,20,16,0.85);
+        }
+        strong {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* Code blocks */
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px 24px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 16px 0 24px;
+            font-family: var(--mono);
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+        code {
+            font-family: var(--mono);
+            font-size: 0.875em;
+            background: rgba(26,20,16,0.06);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            font-size: 1em;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 16px 0;
+        }
+        .card h4 {
+            margin-top: 0;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 24px;
+            font-size: 0.925rem;
+        }
+        th, td {
+            text-align: left;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--card-border);
+        }
+        th {
+            font-weight: 600;
+            color: var(--text);
+            background: var(--card-bg);
+        }
+        td {
+            color: rgba(26,20,16,0.8);
+        }
+
+        /* Callouts */
+        .callout {
+            background: rgba(46,158,158,0.06);
+            border-left: 3px solid var(--teal);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+        .callout p { margin-bottom: 0; }
+
+        .callout-warning {
+            background: rgba(234,179,8,0.06);
+            border-left-color: #eab308;
+        }
+
+        /* Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        /* Back link */
+        .back-link {
+            display: inline-block;
+            margin: 32px 0;
+            color: var(--teal);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .back-link:hover { text-decoration: underline; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 48px 32px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--card-border);
+            margin-top: 64px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero { padding: 60px 24px 40px; }
+            .hero h1 { font-size: 2rem; }
+            .container { padding: 0 20px; }
+            .toc { margin: 32px 20px; padding: 24px; }
+            .grid-2 { grid-template-columns: 1fr; }
+            section h2 { font-size: 1.5rem; }
+            pre { padding: 16px; font-size: 0.8rem; }
+        }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.6rem; }
+            .hero { padding: 48px 16px 32px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <h1>Claude Code <span>Auto-Research</span> &amp; Autonomous Agents</h1>
+    <p class="subtitle">A comprehensive reference guide to Claude Code's research capabilities, subagents, agent teams, automation hooks, and the Agent SDK.</p>
+    <p class="date">Last updated: March 2026</p>
+</div>
+
+<div class="container">
+
+    <div class="toc">
+        <h2>Contents</h2>
+        <ol>
+            <li><a href="#overview">Overview: The Agentic Loop</a></li>
+            <li><a href="#explore">The Explore Agent and Auto-Research</a></li>
+            <li><a href="#subagents">Subagents: Specialized Task Delegation</a></li>
+            <li><a href="#teams">Agent Teams: Coordinated Parallel Work</a></li>
+            <li><a href="#auto-mode">Auto Mode (Research Preview)</a></li>
+            <li><a href="#hooks">Hooks: Deterministic Automation</a></li>
+            <li><a href="#memory">Memory Systems: Persistent Learning</a></li>
+            <li><a href="#scheduled">Scheduled Tasks and Recurring Automation</a></li>
+            <li><a href="#mcp">MCP: External Tool Integration</a></li>
+            <li><a href="#sdk">Agent SDK: Programmatic Agents</a></li>
+            <li><a href="#community">Community Deep Research Skills</a></li>
+            <li><a href="#patterns">Advanced Autonomous Patterns</a></li>
+            <li><a href="#comparison">Comparison Table</a></li>
+            <li><a href="#quick-ref">Quick Reference Commands</a></li>
+        </ol>
+    </div>
+
+    <!-- Section 1 -->
+    <section id="overview">
+        <h2>1. Overview: The Agentic Loop</h2>
+        <p>Claude Code is built on an <strong>agentic loop</strong>: Claude autonomously reads files, runs commands, searches code, edits files, and reasons through problems without requiring approval for every step. The system automatically manages tool execution, permissions, context, and can delegate work to specialized subagents running in parallel.</p>
+        <p>The core autonomy comes from several interlocking systems:</p>
+        <ul>
+            <li><strong>Built-in tools</strong> for file operations and code execution</li>
+            <li><strong>Subagents</strong> for specialized task delegation</li>
+            <li><strong>Agent teams</strong> for coordinated parallel work</li>
+            <li><strong>Hooks</strong> for deterministic automation</li>
+            <li><strong>Memory systems</strong> for persistent learning</li>
+            <li><strong>Scheduled tasks</strong> for recurring automation</li>
+        </ul>
+    </section>
+
+    <!-- Section 2 -->
+    <section id="explore">
+        <h2>2. The Explore Agent and Auto-Research</h2>
+
+        <h3>How It Works</h3>
+        <p>Claude Code includes a built-in <strong>Explore</strong> subagent optimized specifically for research and codebase analysis. It runs on the Haiku model for fast, low-latency responses and has read-only access (Glob, Read, Grep, Bash). It cannot modify files during exploration.</p>
+        <p>Exploration results stay out of your main conversation context (separate context window), keeping your primary session lean.</p>
+
+        <h3>Thoroughness Levels</h3>
+        <div class="grid-2">
+            <div class="card">
+                <h4>Quick</h4>
+                <p>Targeted lookups. "Find the auth config file."</p>
+            </div>
+            <div class="card">
+                <h4>Medium</h4>
+                <p>Balanced exploration. "How does the API handle rate limiting?"</p>
+            </div>
+        </div>
+        <div class="card">
+            <h4>Very Thorough</h4>
+            <p>Comprehensive analysis across multiple locations and naming conventions. "Map the entire authentication flow from login to token refresh."</p>
+        </div>
+
+        <h3>Built-in Research Tools</h3>
+        <table>
+            <thead>
+                <tr><th>Tool</th><th>Purpose</th><th>Auto-Approved</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>Glob</code></td><td>Find files by pattern</td><td>Yes</td></tr>
+                <tr><td><code>Grep</code></td><td>Search file contents with regex</td><td>Yes</td></tr>
+                <tr><td><code>Read</code></td><td>Read any file in working directory</td><td>Yes</td></tr>
+                <tr><td><code>WebSearch</code></td><td>Search the web for current information</td><td>Yes</td></tr>
+                <tr><td><code>WebFetch</code></td><td>Fetch and parse web page content</td><td>Yes</td></tr>
+                <tr><td><code>Bash</code></td><td>Run terminal commands</td><td>Requires permission</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Parallel Research Pattern</h3>
+        <pre><code># Single-agent research
+claude -p "Find all database migrations and summarize their purpose"
+
+# Multi-agent parallel research (in conversation)
+"Research the authentication, database, and API modules in parallel using separate subagents"</code></pre>
+
+        <div class="callout">
+            <p><strong>Cost tip:</strong> Running multiple subagents that each return detailed results can consume significant context. Request summaries to limit what returns to the main conversation.</p>
+        </div>
+    </section>
+
+    <!-- Section 3 -->
+    <section id="subagents">
+        <h2>3. Subagents: Specialized Task Delegation</h2>
+
+        <h3>Built-in Subagent Types</h3>
+        <table>
+            <thead>
+                <tr><th>Type</th><th>Model</th><th>Tools</th><th>Use Case</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Explore</strong></td><td>Haiku</td><td>Read-only</td><td>File discovery, code search</td></tr>
+                <tr><td><strong>Plan</strong></td><td>Inherited</td><td>Read-only</td><td>Research before implementation</td></tr>
+                <tr><td><strong>General-Purpose</strong></td><td>Inherited</td><td>All tools</td><td>Complex multi-step tasks</td></tr>
+                <tr><td><strong>Code Reviewer</strong></td><td>Inherited</td><td>All tools</td><td>Thorough code review</td></tr>
+                <tr><td><strong>Verifier</strong></td><td>Inherited</td><td>All tools</td><td>Validate builds/tests pass</td></tr>
+                <tr><td><strong>Test Writer</strong></td><td>Inherited</td><td>All tools</td><td>Write Playwright E2E tests</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Creating Custom Subagents</h3>
+        <table>
+            <thead>
+                <tr><th>Location</th><th>Scope</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>.claude/agents/</code></td><td>Project-only (team shared, checked into git)</td></tr>
+                <tr><td><code>~/.claude/agents/</code></td><td>All projects (personal)</td></tr>
+                <tr><td><code>--agents</code> CLI flag</td><td>Session only</td></tr>
+            </tbody>
+        </table>
+
+        <pre><code># Example: .claude/agents/security-auditor.md
+---
+name: security-auditor
+description: Scans codebase for OWASP Top 10 vulnerabilities
+tools: Read, Glob, Grep, Bash
+model: sonnet
+---
+
+You are a senior security engineer. When invoked:
+1. Search for common vulnerability patterns
+2. Check input validation and sanitization
+3. Review authentication and authorization logic
+4. Report findings by severity (Critical, High, Medium, Low)</code></pre>
+
+        <h3>Foreground vs Background</h3>
+        <ul>
+            <li><strong>Foreground:</strong> Blocks main conversation, handles permission prompts interactively</li>
+            <li><strong>Background:</strong> Runs concurrently (press <code>Ctrl+B</code> to move to background). Pre-approves permissions before launching so the agent doesn't get blocked mid-run.</li>
+        </ul>
+
+        <h3>Subagent Memory</h3>
+        <p>Subagents can maintain persistent memory across sessions:</p>
+        <pre><code>---
+name: code-reviewer
+memory: user    # Options: user, project, local
+---</code></pre>
+        <ul>
+            <li><code>user</code>: <code>~/.claude/agent-memory/&lt;agent-name&gt;/</code> (across all projects)</li>
+            <li><code>project</code>: <code>.claude/agent-memory/&lt;agent-name&gt;/</code> (project-specific, shared via git)</li>
+            <li><code>local</code>: <code>.claude/agent-memory-local/&lt;agent-name&gt;/</code> (project-specific, not versioned)</li>
+        </ul>
+    </section>
+
+    <!-- Section 4 -->
+    <section id="teams">
+        <h2>4. Agent Teams: Coordinated Parallel Work</h2>
+
+        <div class="callout-warning callout">
+            <p><strong>Experimental:</strong> Agent teams are disabled by default. Enable with <code>CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1</code> in settings or environment.</p>
+        </div>
+
+        <h3>What Are Agent Teams?</h3>
+        <p>Multiple Claude Code instances working together with a lead agent coordinating shared tasks, messaging, and results. Unlike subagents (which report back only to the main agent), agent team members communicate directly with each other via a mailbox system.</p>
+
+        <h3>Best Use Cases</h3>
+        <div class="grid-2">
+            <div class="card">
+                <h4>Parallel code review</h4>
+                <p>Security reviewer, performance reviewer, and test coverage reviewer run simultaneously.</p>
+            </div>
+            <div class="card">
+                <h4>Competing hypotheses</h4>
+                <p>Multiple agents test different root-cause theories for a bug.</p>
+            </div>
+            <div class="card">
+                <h4>New feature modules</h4>
+                <p>Teammates each own separate pieces without file conflicts.</p>
+            </div>
+            <div class="card">
+                <h4>Cross-layer coordination</h4>
+                <p>Frontend, backend, and test changes handled in parallel.</p>
+            </div>
+        </div>
+
+        <h3>Display Modes</h3>
+        <ul>
+            <li><strong>In-process</strong> (default): All teammates run in main terminal. Use <code>Shift+Down</code> to cycle through teammates.</li>
+            <li><strong>Split panes</strong> (requires tmux or iTerm2): Each teammate gets its own pane. See all output simultaneously.</li>
+        </ul>
+
+        <h3>Controlling Teams</h3>
+        <pre><code># Natural language team creation
+"Create an agent team to explore this from different angles:
+ one on UX, one on architecture, one playing devil's advocate."
+
+# Team lead commands
+"Spawn 4 teammates to refactor these modules in parallel"
+"Assign the auth module to teammate-1"
+"Ask researcher teammate to shut down"
+"Clean up the team"</code></pre>
+
+        <h3>Limitations</h3>
+        <ul>
+            <li>No in-process session resumption (<code>/resume</code> and <code>/rewind</code> don't restore teammates)</li>
+            <li>One team per session, no nested teams</li>
+            <li>The session that creates the team is lead for life</li>
+            <li>Split panes require tmux or iTerm2 (not VS Code integrated terminal)</li>
+        </ul>
+    </section>
+
+    <!-- Section 5 -->
+    <section id="auto-mode">
+        <h2>5. Auto Mode (Research Preview)</h2>
+
+        <p>Announced by Anthropic as a research preview rolling out March 12, 2026. Instead of prompting the developer for every file write or shell command, Claude itself classifies risk and decides which actions to auto-approve:</p>
+
+        <ul>
+            <li><strong>Read-only operations</strong> on project files: auto-approved</li>
+            <li><strong>Shell commands</strong> with broad filesystem or network access: more likely to surface a prompt</li>
+            <li>Ships with prompt injection safeguards (acknowledged as incomplete)</li>
+            <li>Organizations can disable auto mode entirely via MDM or file-based OS policies</li>
+        </ul>
+
+        <div class="callout">
+            <p><strong>Separate from headless mode:</strong> Headless mode (<code>-p</code> or <code>--print</code> flag) has existed longer for non-interactive use in CI/CD, pre-commit hooks, and build scripts.</p>
+        </div>
+    </section>
+
+    <!-- Section 6 -->
+    <section id="hooks">
+        <h2>6. Hooks: Deterministic Automation</h2>
+
+        <p>Hooks are scripts that run automatically at specific lifecycle points in Claude Code. Unlike skills (which Claude applies at its judgment), hooks <strong>always execute</strong> when their event fires.</p>
+
+        <h3>Hook Events</h3>
+        <table>
+            <thead>
+                <tr><th>Event</th><th>When It Fires</th><th>Use Case</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>SessionStart</code></td><td>Session begins or resumes</td><td>Inject context, setup environment</td></tr>
+                <tr><td><code>PreToolUse</code></td><td>Before tool executes (can block)</td><td>Validate commands, enforce rules</td></tr>
+                <tr><td><code>PostToolUse</code></td><td>After tool succeeds</td><td>Auto-format, run linters</td></tr>
+                <tr><td><code>UserPromptSubmit</code></td><td>When you submit a prompt</td><td>Pre-process input</td></tr>
+                <tr><td><code>Stop</code></td><td>Claude finishes responding</td><td>Check completeness</td></tr>
+                <tr><td><code>SubagentStart</code></td><td>Subagent spawned</td><td>Log or setup</td></tr>
+                <tr><td><code>SubagentStop</code></td><td>Subagent finishes</td><td>Cleanup, process results</td></tr>
+                <tr><td><code>PreCompact</code></td><td>Before context compaction</td><td>Preserve critical context</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Hook Types</h3>
+        <ul>
+            <li><strong>Command hooks:</strong> Run shell scripts</li>
+            <li><strong>Prompt hooks:</strong> Single-turn LLM evaluation</li>
+            <li><strong>Agent hooks:</strong> Multi-turn verification with tools</li>
+            <li><strong>HTTP hooks:</strong> POST to external services</li>
+        </ul>
+
+        <h3>Examples</h3>
+        <pre><code>// Auto-format after edits (in settings.json)
+{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": "Edit|Write",
+      "hooks": [{
+        "type": "command",
+        "command": "jq -r '.tool_input.file_path' | xargs npx prettier --write"
+      }]
+    }]
+  }
+}
+
+// Block protected files
+{
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": "Edit|Write",
+      "hooks": [{
+        "type": "command",
+        "command": "./.claude/hooks/protect-files.sh"
+      }]
+    }]
+  }
+}</code></pre>
+    </section>
+
+    <!-- Section 7 -->
+    <section id="memory">
+        <h2>7. Memory Systems: Persistent Learning</h2>
+
+        <h3>CLAUDE.md Files</h3>
+        <p>Persistent instructions that load every session.</p>
+        <table>
+            <thead>
+                <tr><th>Location</th><th>Scope</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>~/.claude/CLAUDE.md</code></td><td>All projects (user-level)</td></tr>
+                <tr><td><code>./CLAUDE.md</code></td><td>Single project (team-shared)</td></tr>
+                <tr><td>Managed policy</td><td>Organization-wide (admin-controlled)</td></tr>
+            </tbody>
+        </table>
+        <p>Best practice: keep under 200 lines per file. Include build commands, code style, and workflow rules. Use <code>@file</code> references to import additional context.</p>
+
+        <h3>Auto Memory</h3>
+        <p>Notes Claude writes itself based on discoveries and your corrections. Stored per-project at <code>~/.claude/projects/&lt;project&gt;/memory/</code>. Machine-local, does not sync across machines.</p>
+        <ul>
+            <li>Claude reads the first 200 lines of <code>MEMORY.md</code> at session start</li>
+            <li>Learns from corrections and preferences</li>
+            <li>Saves insights to topic files (e.g., <code>debugging.md</code>, <code>api-conventions.md</code>)</li>
+            <li>Toggle with <code>/memory</code> command</li>
+        </ul>
+    </section>
+
+    <!-- Section 8 -->
+    <section id="scheduled">
+        <h2>8. Scheduled Tasks and Recurring Automation</h2>
+
+        <h3>The /loop Command</h3>
+        <pre><code>/loop 5m check if the deployment finished
+/loop check the build every 2 hours
+/loop 30m /review-pr 1234
+/loop 24h audit the codebase for security issues</code></pre>
+        <p>Supported units: <code>s</code> (seconds), <code>m</code> (minutes), <code>h</code> (hours), <code>d</code> (days). Default interval: 10 minutes.</p>
+
+        <h3>One-Time Reminders</h3>
+        <pre><code>remind me at 3pm to push the release branch
+in 45 minutes, check whether integration tests passed</code></pre>
+
+        <h3>Timing Details</h3>
+        <ul>
+            <li>Tasks fire between your turns (not during Claude's response)</li>
+            <li>All times in local timezone</li>
+            <li>Recurring tasks auto-expire 3 days after creation</li>
+            <li>Up to 50 scheduled tasks per session</li>
+        </ul>
+    </section>
+
+    <!-- Section 9 -->
+    <section id="mcp">
+        <h2>9. MCP: External Tool Integration</h2>
+
+        <p>The Model Context Protocol (MCP) connects Claude to external tools and services without custom tool execution code.</p>
+
+        <h3>Setup</h3>
+        <pre><code># Quick interactive setup
+claude mcp add
+
+# Manual configuration (.mcp.json)
+{
+  "mcpServers": {
+    "github": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-github"]
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    }
+  }
+}</code></pre>
+
+        <h3>Research-Enhancing MCP Servers</h3>
+        <table>
+            <thead>
+                <tr><th>Server</th><th>Capability</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Perplexity MCP</strong></td><td>Sonar search, Sonar Pro (advanced reasoning), Deep Research, Reasoning Pro</td></tr>
+                <tr><td><strong>mcp-omnisearch</strong></td><td>Multi-engine web search, doc reading, AI-powered responses</td></tr>
+                <tr><td><strong>Chrome DevTools MCP</strong></td><td>Web browsing, screenshots, interaction, performance analysis</td></tr>
+                <tr><td><strong>GitHub MCP</strong></td><td>Issues, PRs, code search, repository management</td></tr>
+                <tr><td><strong>Playwright MCP</strong></td><td>Browser automation, visual testing, UI analysis</td></tr>
+            </tbody>
+        </table>
+
+        <p>Over 1,000 MCP servers are available, with curated directories of 70+ verified servers.</p>
+    </section>
+
+    <!-- Section 10 -->
+    <section id="sdk">
+        <h2>10. Agent SDK: Programmatic Agents</h2>
+
+        <p>The Claude Agent SDK (formerly "Claude Code SDK") lets you build production AI agents with Claude as a library. Available in Python and TypeScript.</p>
+
+        <h3>Installation</h3>
+        <pre><code># Python
+pip install claude-agent-sdk
+
+# TypeScript
+npm install @anthropic-ai/claude-agent-sdk</code></pre>
+
+        <h3>Basic Usage (Python)</h3>
+        <pre><code>import asyncio
+from claude_agent_sdk import query, ClaudeAgentOptions
+
+async def main():
+    async for message in query(
+        prompt="Find and fix the bug in auth.py",
+        options=ClaudeAgentOptions(
+            allowed_tools=["Read", "Edit", "Bash"]
+        ),
+    ):
+        if hasattr(message, "result"):
+            print(message.result)
+
+asyncio.run(main())</code></pre>
+
+        <h3>Key Features</h3>
+        <ul>
+            <li>Same tools, agent loop, and context management that power Claude Code</li>
+            <li>Custom tools defined as Python functions (in-process MCP servers)</li>
+            <li>Hooks for programmatic agent behavior control</li>
+            <li>Subagent spawning and coordination</li>
+            <li>Session persistence and resumption</li>
+            <li>MCP server integration</li>
+        </ul>
+
+        <h3>Deployment Providers</h3>
+        <ul>
+            <li>Claude API (direct)</li>
+            <li>Amazon Bedrock</li>
+            <li>Google Vertex AI</li>
+            <li>Microsoft Azure Foundry</li>
+        </ul>
+    </section>
+
+    <!-- Section 11 -->
+    <section id="community">
+        <h2>11. Community Deep Research Skills</h2>
+
+        <p>Several open-source skills add deep research capabilities to Claude Code:</p>
+
+        <div class="card">
+            <h4>claude-deep-research-skill (199-biotechnologies)</h4>
+            <p>Enterprise-grade 8.5-phase pipeline: Scope, Plan, Retrieve, Triangulate, Outline Refinement, Synthesize, Critique, Refine, Package. Supports Quick/Standard/Deep/UltraDeep modes with source credibility scoring and citation management.</p>
+        </div>
+
+        <div class="card">
+            <h4>Deep-Research-skills (Weizhena)</h4>
+            <p>Two-phase research (outline generation + deep investigation) with human-in-the-loop control. Compatible with Claude Code, Open Code, and Codex.</p>
+        </div>
+
+        <div class="card">
+            <h4>Claude-Deep-Research (mcherukara)</h4>
+            <p>An MCP server that enables comprehensive research capabilities within Claude Code sessions.</p>
+        </div>
+
+        <div class="card">
+            <h4>claude-scientific-skills (K-Dense-AI)</h4>
+            <p>Ready-to-use agent skills for research, science, engineering, analysis, and technical writing.</p>
+        </div>
+
+        <p><strong>Curated directories:</strong> <code>travisvn/awesome-claude-skills</code>, <code>VoltAgent/awesome-agent-skills</code>, <code>ComposioHQ/awesome-claude-skills</code></p>
+    </section>
+
+    <!-- Section 12 -->
+    <section id="patterns">
+        <h2>12. Advanced Autonomous Patterns</h2>
+
+        <h3>Research to Implementation Pipeline</h3>
+        <pre><code># Session 1: Research (Explore agent)
+"Use the Explore agent to research the current authentication system in detail"
+
+# Session 2: Planning (Plan Mode)
+claude --permission-mode plan
+"Based on the research, create an implementation plan for OAuth migration"
+
+# Session 3: Implementation (Normal Mode)
+"Implement the plan from session 2 with verification"</code></pre>
+
+        <h3>Parallel Hypothesis Testing</h3>
+        <pre><code>"Create an agent team with 5 investigators:
+ - One researching database index strategy
+ - One investigating caching layer
+ - One testing query optimization
+ - One analyzing slow query logs
+ - One researching alternative database engines
+
+Have them communicate findings and converge on a solution"</code></pre>
+
+        <h3>Scheduled Monitoring</h3>
+        <pre><code>/loop 1h check deployment health and report any issues
+/loop 30m run security audit and flag vulnerabilities
+/loop 6h update project status report with latest metrics</code></pre>
+
+        <h3>CI/CD Integration</h3>
+        <pre><code>#!/bin/bash
+# Run Claude Code in CI/CD for code analysis
+claude -p "Analyze PR #$PR_NUMBER for quality, security, and coverage" \
+  --output-format json > analysis.json
+
+gh pr comment $PR_NUMBER -b "$(cat analysis.json)"</code></pre>
+    </section>
+
+    <!-- Section 13 -->
+    <section id="comparison">
+        <h2>13. Comparison: Subagents vs Agent Teams vs Parallel Sessions</h2>
+
+        <table>
+            <thead>
+                <tr><th>Feature</th><th>Subagents</th><th>Agent Teams</th><th>Parallel Sessions</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Context</strong></td><td>Own context, results return to main</td><td>Own context, independent</td><td>Fully independent</td></tr>
+                <tr><td><strong>Communication</strong></td><td>Report back only</td><td>Direct inter-agent messaging</td><td>Manual coordination</td></tr>
+                <tr><td><strong>Coordination</strong></td><td>Main agent manages</td><td>Shared task list</td><td>Via git/shared files</td></tr>
+                <tr><td><strong>Token Cost</strong></td><td>Lower</td><td>Higher</td><td>Highest</td></tr>
+                <tr><td><strong>Setup</strong></td><td>Easy</td><td>Moderate (experimental)</td><td>Simple</td></tr>
+                <tr><td><strong>Best For</strong></td><td>Focused tasks</td><td>Complex parallel exploration</td><td>Independent workflows</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Section 14 -->
+    <section id="quick-ref">
+        <h2>14. Quick Reference Commands</h2>
+
+        <pre><code># Autonomous Research
+claude -p "Research the codebase and find all TODOs"        # One-off research
+/loop 24h audit the codebase for security issues            # Recurring research
+
+# Subagent Delegation
+"Use the Explore agent to investigate authentication"       # Explicit delegation
+
+# Plan Mode (Safe Exploration)
+claude --permission-mode plan                               # Start in plan mode
+Shift+Tab (twice)                                           # Switch modes mid-session
+
+# Memory Management
+/memory                                                     # View/edit memory
+/init                                                       # Generate CLAUDE.md
+/compact                                                    # Summarize context
+
+# Hooks
+/hooks                                                      # Browse configured hooks
+
+# Session Management
+claude --continue                                           # Resume last session
+claude --resume                                             # Choose from history
+
+# Scheduled Tasks
+/loop 5m check deployment status                            # Recurring prompt
+"remind me at 3pm to release"                               # One-time reminder
+
+# Cost Monitoring
+claude /cost                                                # View session costs</code></pre>
+    </section>
+
+    <a href="/docs/open-deep-dive.html" class="back-link">&larr; Back to docs</a>
+
+</div>
+
+<footer>
+    <p>Reference compiled March 2026. Sources: Anthropic official documentation, Claude Code docs, Agent SDK docs, community repositories.</p>
+</footer>
+
+</body>
+</html>

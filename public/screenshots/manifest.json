@@ -1,0 +1,310 @@
+{
+  "generated_at": "2026-04-07T16:46:35.751Z",
+  "flows": [
+    {
+      "slug": "01-splash",
+      "title": "Splash",
+      "shots": [
+        {
+          "filename": "01_wisdom_splash.png",
+          "label": "Wisdom Splash",
+          "url": "/screenshots/01-splash/01_wisdom_splash.png"
+        }
+      ]
+    },
+    {
+      "slug": "02-onboarding",
+      "title": "Onboarding",
+      "shots": [
+        {
+          "filename": "01_welcome.png",
+          "label": "Welcome",
+          "url": "/screenshots/02-onboarding/01_welcome.png"
+        },
+        {
+          "filename": "02_breath_hold.png",
+          "label": "Breath Hold",
+          "url": "/screenshots/02-onboarding/02_breath_hold.png"
+        },
+        {
+          "filename": "03_intention_question.png",
+          "label": "Intention Question",
+          "url": "/screenshots/02-onboarding/03_intention_question.png"
+        },
+        {
+          "filename": "04_experience_question.png",
+          "label": "Experience Question",
+          "url": "/screenshots/02-onboarding/04_experience_question.png"
+        },
+        {
+          "filename": "05_transformation_question.png",
+          "label": "Transformation Question",
+          "url": "/screenshots/02-onboarding/05_transformation_question.png"
+        },
+        {
+          "filename": "06_practice_time_interests.png",
+          "label": "Practice Time Interests",
+          "url": "/screenshots/02-onboarding/06_practice_time_interests.png"
+        },
+        {
+          "filename": "07_account_creation.png",
+          "label": "Account Creation",
+          "url": "/screenshots/02-onboarding/07_account_creation.png"
+        },
+        {
+          "filename": "08_book_code_prompt.png",
+          "label": "Book Code Prompt",
+          "url": "/screenshots/02-onboarding/08_book_code_prompt.png"
+        }
+      ]
+    },
+    {
+      "slug": "03-home",
+      "title": "Home",
+      "shots": [
+        {
+          "filename": "01_home_default.png",
+          "label": "Home Default",
+          "url": "/screenshots/03-home/01_home_default.png"
+        },
+        {
+          "filename": "02_home_scrolled_companion.png",
+          "label": "Home Scrolled Companion",
+          "url": "/screenshots/03-home/02_home_scrolled_companion.png"
+        },
+        {
+          "filename": "03_mood_check_in_menu.png",
+          "label": "Mood Check In Menu",
+          "url": "/screenshots/03-home/03_mood_check_in_menu.png"
+        },
+        {
+          "filename": "04_home_with_mini_player.png",
+          "label": "Home With Mini Player",
+          "url": "/screenshots/03-home/04_home_with_mini_player.png"
+        }
+      ]
+    },
+    {
+      "slug": "04-explore",
+      "title": "Explore",
+      "shots": [
+        {
+          "filename": "01_explore_default.png",
+          "label": "Explore Default",
+          "url": "/screenshots/04-explore/01_explore_default.png"
+        },
+        {
+          "filename": "02_explore_scrolled1.png",
+          "label": "Explore Scrolled1",
+          "url": "/screenshots/04-explore/02_explore_scrolled1.png"
+        },
+        {
+          "filename": "03_explore_mood_prompt.png",
+          "label": "Explore Mood Prompt",
+          "url": "/screenshots/04-explore/03_explore_mood_prompt.png"
+        },
+        {
+          "filename": "04_explore_mood_heavy.png",
+          "label": "Explore Mood Heavy",
+          "url": "/screenshots/04-explore/04_explore_mood_heavy.png"
+        },
+        {
+          "filename": "05_explore_mood_tailored.png",
+          "label": "Explore Mood Tailored",
+          "url": "/screenshots/04-explore/05_explore_mood_tailored.png"
+        },
+        {
+          "filename": "06_explore_mood_row_full.png",
+          "label": "Explore Mood Row Full",
+          "url": "/screenshots/04-explore/06_explore_mood_row_full.png"
+        },
+        {
+          "filename": "07_explore_pillar_worlds.png",
+          "label": "Explore Pillar Worlds",
+          "url": "/screenshots/04-explore/07_explore_pillar_worlds.png"
+        }
+      ]
+    },
+    {
+      "slug": "05-jim-ai",
+      "title": "Jim Ai",
+      "shots": [
+        {
+          "filename": "01_jim_ai_default.png",
+          "label": "Jim Ai Default",
+          "url": "/screenshots/05-jim-ai/01_jim_ai_default.png"
+        }
+      ]
+    },
+    {
+      "slug": "06-library",
+      "title": "Library",
+      "shots": [
+        {
+          "filename": "01_library_favorites_empty.png",
+          "label": "Library Favorites Empty",
+          "url": "/screenshots/06-library/01_library_favorites_empty.png"
+        }
+      ]
+    },
+    {
+      "slug": "07-more",
+      "title": "More",
+      "shots": [
+        {
+          "filename": "01_more_top.png",
+          "label": "More Top",
+          "url": "/screenshots/07-more/01_more_top.png"
+        }
+      ]
+    },
+    {
+      "slug": "08-calm",
+      "title": "Calm",
+      "shots": [
+        {
+          "filename": "01_calm_landing_top.png",
+          "label": "Calm Landing Top",
+          "url": "/screenshots/08-calm/01_calm_landing_top.png"
+        }
+      ]
+    },
+    {
+      "slug": "09-sleep",
+      "title": "Sleep",
+      "shots": [
+        {
+          "filename": "01_sleep_landing_top.png",
+          "label": "Sleep Landing Top",
+          "url": "/screenshots/09-sleep/01_sleep_landing_top.png"
+        },
+        {
+          "filename": "02_sleep_scrolled_all_sessions.png",
+          "label": "Sleep Scrolled All Sessions",
+          "url": "/screenshots/09-sleep/02_sleep_scrolled_all_sessions.png"
+        }
+      ]
+    },
+    {
+      "slug": "10-paywall",
+      "title": "Paywall",
+      "shots": [
+        {
+          "filename": "01_paywall_collapsed.png",
+          "label": "Paywall Collapsed",
+          "url": "/screenshots/10-paywall/01_paywall_collapsed.png"
+        },
+        {
+          "filename": "02_paywall_expanded_compare.png",
+          "label": "Paywall Expanded Compare",
+          "url": "/screenshots/10-paywall/02_paywall_expanded_compare.png"
+        }
+      ]
+    },
+    {
+      "slug": "11-session-detail",
+      "title": "Session Detail",
+      "shots": [
+        {
+          "filename": "01_session_detail_day1.png",
+          "label": "Session Detail Day1",
+          "url": "/screenshots/11-session-detail/01_session_detail_day1.png"
+        }
+      ]
+    },
+    {
+      "slug": "12-experiences",
+      "title": "Experiences",
+      "shots": [
+        {
+          "filename": "01_sound_setup.png",
+          "label": "Sound Setup",
+          "url": "/screenshots/12-experiences/01_sound_setup.png"
+        },
+        {
+          "filename": "02_sound_active.png",
+          "label": "Sound Active",
+          "url": "/screenshots/12-experiences/02_sound_active.png"
+        },
+        {
+          "filename": "03_sound_preset_picker.png",
+          "label": "Sound Preset Picker",
+          "url": "/screenshots/12-experiences/03_sound_preset_picker.png"
+        },
+        {
+          "filename": "04_breathing_setup.png",
+          "label": "Breathing Setup",
+          "url": "/screenshots/12-experiences/04_breathing_setup.png"
+        },
+        {
+          "filename": "05_breathing_active.png",
+          "label": "Breathing Active",
+          "url": "/screenshots/12-experiences/05_breathing_active.png"
+        }
+      ]
+    },
+    {
+      "slug": "13-book-companion",
+      "title": "Book Companion",
+      "shots": [
+        {
+          "filename": "01_practice_gateway_intro.png",
+          "label": "Practice Gateway Intro",
+          "url": "/screenshots/13-book-companion/01_practice_gateway_intro.png"
+        },
+        {
+          "filename": "02_practice_gallery.png",
+          "label": "Practice Gallery",
+          "url": "/screenshots/13-book-companion/02_practice_gallery.png"
+        },
+        {
+          "filename": "03_practice_gallery_scrolled.png",
+          "label": "Practice Gallery Scrolled",
+          "url": "/screenshots/13-book-companion/03_practice_gallery_scrolled.png"
+        },
+        {
+          "filename": "04_book_promo_detail.png",
+          "label": "Book Promo Detail",
+          "url": "/screenshots/13-book-companion/04_book_promo_detail.png"
+        },
+        {
+          "filename": "05_book_promo_unlocks.png",
+          "label": "Book Promo Unlocks",
+          "url": "/screenshots/13-book-companion/05_book_promo_unlocks.png"
+        },
+        {
+          "filename": "06_book_non_subscriber.png",
+          "label": "Book Non Subscriber",
+          "url": "/screenshots/13-book-companion/06_book_non_subscriber.png"
+        }
+      ]
+    },
+    {
+      "slug": "14-settings",
+      "title": "Settings",
+      "shots": [
+        {
+          "filename": "01_dev_settings_top.png",
+          "label": "Dev Settings Top",
+          "url": "/screenshots/14-settings/01_dev_settings_top.png"
+        },
+        {
+          "filename": "02_about.png",
+          "label": "About",
+          "url": "/screenshots/14-settings/02_about.png"
+        }
+      ]
+    },
+    {
+      "slug": "15-misc",
+      "title": "Misc",
+      "shots": [
+        {
+          "filename": "01_post_session_quote.png",
+          "label": "Post Session Quote",
+          "url": "/screenshots/15-misc/01_post_session_quote.png"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+<meta name="view-transition" content="same-origin">
+<title>The Possibility - The Blind Spots</title>
+<meta name="description" content="Strategic gaps, untested assumptions, and the opportunities hiding in what we haven't built yet.">
+<meta property="og:title" content="The Possibility | The Blind Spots">
+<meta property="og:description" content="Strategic gaps, untested assumptions, and the opportunities hiding in what we haven't built yet.">
+<meta property="og:image" content="https://possibility-strategy-site.vercel.app/app-icon.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="The Possibility | The Blind Spots">
+<meta name="twitter:description" content="Strategic gaps and untested assumptions.">
+<meta name="twitter:image" content="https://possibility-strategy-site.vercel.app/app-icon.png">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+<link rel="icon" type="image/png" href="app-icon.png">
+<link rel="apple-touch-icon" href="app-icon.png">
+<link rel="preload" as="image" href="possibility-logo.svg">
+<link rel="stylesheet" href="design-system.css">
+<style>
+/* ===== GRAIN TEXTURE OVERLAY ===== */
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 9997; pointer-events: none;
+  opacity: 0.018;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* ===== PAGE-SPECIFIC WASH ===== */
+body::after {
+  content: ''; position: fixed; inset: 0; z-index: 9998; pointer-events: none;
+  background: linear-gradient(180deg, rgba(99,102,241,0.006) 0%, transparent 40%, rgba(232,117,138,0.004) 100%);
+  mix-blend-mode: multiply;
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  min-height: 100vh; min-height: 100dvh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  background: var(--dark);
+  overflow: hidden;
+  padding: 80px 32px;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background-image: url('photos/EY-073.jpg');
+  background-size: cover;
+  background-position: center 40%;
+  opacity: 0;
+  animation: heroBgReveal 3s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+}
+@keyframes heroBgReveal {
+  0% { opacity: 0; transform: scale(1.08); }
+  100% { opacity: 0.12; transform: scale(1.0); }
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, rgba(8,10,15,0.6) 0%, rgba(8,10,15,0.15) 40%, rgba(8,10,15,0.6) 75%, rgba(8,10,15,0.95) 100%),
+    radial-gradient(ellipse 600px 400px at 30% 60%, rgba(99,102,241,0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 400px at 70% 40%, rgba(232,117,138,0.03) 0%, transparent 70%);
+  pointer-events: none; z-index: 1;
+}
+
+/* Hero content */
+.hero-content {
+  position: relative; z-index: 2;
+  max-width: 800px;
+}
+.hero-logo {
+  width: 64px; height: 64px; margin-bottom: 32px;
+  filter: drop-shadow(0 8px 32px rgba(51,163,163,0.25));
+  opacity: 0; transform: translateY(20px) scale(0.9);
+  animation: heroFadeUp 1s var(--zen) 0.3s forwards;
+}
+.hero-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 32px;
+  opacity: 0; transform: translateY(16px);
+  animation: heroFadeUp 0.8s var(--zen) 0.5s forwards;
+}
+.hero h1 {
+  font-size: clamp(34px, 5.5vw, 64px);
+  font-weight: 200; line-height: 1.08;
+  letter-spacing: -2px;
+  color: var(--text-light);
+  margin-bottom: 28px;
+  opacity: 0; transform: translateY(20px);
+  animation: heroFadeUp 0.9s var(--zen) 0.7s forwards;
+}
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(90deg, var(--teal-bright), #2DD4BF, var(--teal-bright));
+  background-size: 200% 100%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmerGradient 6s ease-in-out infinite;
+}
+.hero-sub {
+  font-size: 17px; font-weight: 300;
+  color: var(--text-light-2);
+  max-width: 560px; line-height: 1.75;
+  letter-spacing: -0.2px; margin: 0 auto 48px;
+  opacity: 0; transform: translateY(16px);
+  animation: heroFadeUp 0.8s var(--zen) 0.9s forwards;
+}
+
+/* Hero stat strip */
+.hero-stats {
+  display: flex; gap: 1px;
+  background: rgba(255,252,250,0.06);
+  border-radius: 16px; overflow: hidden;
+  opacity: 0; transform: translateY(16px);
+  animation: heroFadeUp 0.8s var(--zen) 1.1s forwards;
+}
+.hero-stat {
+  flex: 1; padding: 24px 28px;
+  background: rgba(255,252,250,0.03);
+  text-align: center;
+  transition: background 0.4s var(--zen);
+}
+.hero-stat:hover { background: rgba(255,252,250,0.06); }
+.hero-stat-value {
+  font-size: 28px; font-weight: 200;
+  letter-spacing: -1px; line-height: 1;
+  margin-bottom: 6px;
+}
+.hero-stat-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--text-light-3);
+}
+
+/* Hero scroll */
+.hero-scroll-hint {
+  position: absolute; bottom: 40px; left: 50%;
+  transform: translateX(-50%); z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  opacity: 0;
+  animation: heroFadeUp 0.6s var(--zen) 1.6s forwards;
+}
+.hero-scroll-hint span {
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(255,252,250,0.25);
+}
+.hero-scroll-arrow {
+  width: 16px; height: 16px;
+  border-right: 1px solid rgba(255,252,250,0.25);
+  border-bottom: 1px solid rgba(255,252,250,0.25);
+  transform: rotate(45deg);
+  animation: scrollBounce 2s ease-in-out infinite 2s;
+}
+
+/* ===== FLOATING ORBS ===== */
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  filter: blur(60px);
+}
+.hero-orb-1 {
+  width: 300px; height: 300px;
+  background: rgba(51,163,163,0.08);
+  top: 15%; left: 10%;
+  animation: orbFloat 8s ease-in-out infinite alternate;
+}
+.hero-orb-2 {
+  width: 250px; height: 250px;
+  background: rgba(99,102,241,0.06);
+  bottom: 20%; right: 10%;
+  animation: orbFloat 10s ease-in-out infinite alternate-reverse;
+}
+.hero-orb-3 {
+  width: 200px; height: 200px;
+  background: rgba(232,117,138,0.04);
+  top: 50%; left: 55%;
+  animation: orbFloat 12s ease-in-out infinite alternate;
+}
+@keyframes orbFloat {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-30px) scale(1.05); }
+}
+
+/* ===== SHIMMER GRADIENT TEXT ===== */
+.shimmer-text {
+  background: linear-gradient(90deg, var(--teal-bright), #2DD4BF, var(--teal-bright));
+  background-size: 200% 100%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmerGradient 6s ease-in-out infinite;
+}
+@keyframes shimmerGradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ===== SHIMMER DIVIDER LINE ===== */
+.shimmer-line {
+  height: 1px; width: 100%; max-width: 200px; margin: 0 auto;
+  background: linear-gradient(90deg, transparent, rgba(51,163,163,0.3), transparent);
+  background-size: 200% 100%;
+  animation: shimmerLine 4s ease-in-out infinite;
+}
+@keyframes shimmerLine {
+  0%, 100% { background-position: -100% 0; }
+  50% { background-position: 200% 0; }
+}
+
+/* ===== PHOTO BREAK GLOW ===== */
+.photo-break::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(51,163,163,0.06) 0%, transparent 70%);
+  pointer-events: none;
+  animation: photoGlowPulse 8s ease-in-out infinite;
+}
+@keyframes photoGlowPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+/* ===== ENHANCED CARD HOVER (TOP GRADIENT BORDER) ===== */
+.bet-card::after, .explore-card::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px; border-radius: 24px 24px 0 0;
+  background: linear-gradient(90deg, transparent, var(--teal), rgba(99,102,241,0.4), transparent);
+  opacity: 0;
+  transition: opacity 0.6s var(--zen);
+}
+.bet-card:hover::after, .explore-card:hover::after {
+  opacity: 1;
+}
+
+/* ===== STAT SHIMMER BAR ===== */
+.hero-stat {
+  position: relative; overflow: hidden;
+}
+.hero-stat::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,252,250,0.03) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: statShimmer 4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes statShimmer {
+  0%, 100% { background-position: -100% 0; }
+  50% { background-position: 200% 0; }
+}
+
+/* ===== OPPORTUNITY MATRIX GLOW ===== */
+.opp-cell {
+  position: relative; overflow: hidden;
+}
+.opp-cell::after {
+  content: '';
+  position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+  background: radial-gradient(circle at 50% 50%, rgba(51,163,163,0.03) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.6s var(--zen);
+  pointer-events: none;
+}
+.opp-cell:hover::after { opacity: 1; }
+
+/* ===== TIMELINE DOT GLOW ===== */
+.timeline-dot {
+  transition: border-color 0.4s var(--zen), box-shadow 0.4s var(--zen), background 0.4s var(--zen);
+}
+.timeline-node.in-view .timeline-dot {
+  box-shadow: 0 0 20px rgba(51,163,163,0.25), 0 0 40px rgba(51,163,163,0.1);
+}
+
+/* ===== ARCHETYPE CARD GLOW ===== */
+.archetype-card {
+  position: relative; overflow: hidden;
+}
+.archetype-card::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,252,250,0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.5s var(--zen);
+}
+.archetype-card:hover::after { opacity: 1; }
+
+/* ===== SIGNAL ROW HOVER ===== */
+.signal-row {
+  transition: background 0.4s var(--zen);
+  padding-left: 16px; padding-right: 16px;
+  margin-left: -16px; margin-right: -16px;
+  border-radius: 12px;
+}
+.signal-row:hover {
+  background: rgba(255,252,250,0.02);
+}
+
+/* ===== BLUR REVEAL CLASS ===== */
+.blur-reveal {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(20px);
+  transition: opacity 0.8s var(--zen), filter 0.8s var(--zen), transform 0.8s var(--zen);
+}
+.blur-reveal.visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+/* ===== FRAMING SECTION ===== */
+.framing {
+  padding: 120px 32px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.framing-number {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 20px;
+}
+.framing p {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--text-2);
+  letter-spacing: -0.2px;
+}
+.framing p + p { margin-top: 24px; }
+.framing strong {
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* ===== ASSUMPTION CARDS (ELEVATED) ===== */
+.bet-card {
+  position: relative;
+  padding: 48px 44px;
+  background: rgba(255,255,255,0.6);
+  border: 0.5px solid rgba(26,20,16,0.06);
+  border-radius: 24px;
+  margin-bottom: 24px;
+  transition: transform 0.5s var(--zen), box-shadow 0.5s var(--zen);
+  overflow: hidden;
+}
+.bet-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(51,163,163,0.15), transparent);
+  opacity: 0;
+  transition: opacity 0.5s var(--zen);
+}
+.bet-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 48px rgba(0,0,0,0.06);
+}
+.bet-card:hover::before { opacity: 1; }
+
+.bet-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.bet-number {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text-3);
+}
+.bet-title {
+  font-size: 22px; font-weight: 500;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  line-height: 1.25;
+  margin-top: 8px;
+}
+
+/* Risk badge */
+.risk-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.risk-badge.low { background: rgba(52,211,153,0.08); color: var(--become); }
+.risk-badge.medium { background: rgba(51,163,163,0.08); color: var(--teal); }
+.risk-badge.high { background: rgba(52,211,153,0.08); color: var(--become); }
+.risk-badge-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.bet-body {
+  font-size: 15px;
+  color: var(--text-2);
+  line-height: 1.8;
+  margin-bottom: 28px;
+  max-width: 640px;
+}
+
+/* Risk gauge (redesigned) */
+.risk-gauge {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 28px;
+}
+.risk-bar-track {
+  flex: 1; height: 4px;
+  border-radius: 4px;
+  background: rgba(26,20,16,0.05);
+  overflow: hidden;
+}
+.risk-bar-fill {
+  height: 100%; border-radius: 4px;
+  transition: width 1.4s var(--zen);
+  width: 0;
+}
+
+/* Opportunity callout */
+.bet-opportunity {
+  padding: 24px 28px;
+  background: rgba(51,163,163,0.03);
+  border-radius: 16px;
+  border: 0.5px solid rgba(51,163,163,0.08);
+}
+.bet-opp-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 10px;
+}
+.bet-opp-text {
+  font-size: 14px; line-height: 1.7;
+  color: var(--text);
+}
+
+/* ===== DARK SECTION BET CARDS ===== */
+.section-dark .bet-card {
+  background: rgba(255,252,250,0.025);
+  border-color: rgba(255,252,250,0.06);
+}
+.section-dark .bet-card:hover {
+  background: rgba(255,252,250,0.04);
+  box-shadow: 0 12px 48px rgba(0,0,0,0.3);
+}
+.section-dark .bet-card::before {
+  background: linear-gradient(90deg, transparent, rgba(51,163,163,0.12), transparent);
+}
+.section-dark .bet-number { color: var(--text-light-3); }
+.section-dark .bet-title { color: var(--text-light); }
+.section-dark .bet-body { color: var(--text-light-2); }
+.section-dark .bet-opportunity {
+  background: rgba(51,163,163,0.05);
+  border-color: rgba(51,163,163,0.08);
+}
+.section-dark .bet-opp-text { color: var(--text-light); }
+.section-dark .risk-bar-track { background: rgba(255,252,250,0.06); }
+
+/* ===== COVERAGE DONUT (ANIMATED) ===== */
+.coverage-hero {
+  display: flex;
+  align-items: center;
+  gap: 64px;
+  margin: 56px 0;
+  max-width: 920px;
+}
+.coverage-ring-wrap {
+  position: relative;
+  width: 220px; height: 220px;
+  flex-shrink: 0;
+}
+.coverage-ring-wrap svg { width: 100%; height: 100%; }
+.coverage-ring-wrap .ring-seg {
+  transition: stroke-dashoffset 1.8s var(--zen), opacity 1.2s ease;
+}
+.coverage-center {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.coverage-pct {
+  font-size: 42px; font-weight: 200;
+  letter-spacing: -1.5px;
+  color: var(--text);
+  line-height: 1;
+}
+.coverage-pct-sub {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--text-3);
+  margin-top: 4px;
+}
+.coverage-legend { flex: 1; }
+.coverage-legend-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 0;
+  border-bottom: 0.5px solid rgba(26,20,16,0.06);
+}
+.coverage-legend-row:last-child { border-bottom: none; }
+.coverage-legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%; flex-shrink: 0;
+}
+.coverage-legend-name {
+  font-size: 15px; font-weight: 500;
+  color: var(--text); flex: 1;
+}
+.coverage-legend-pct {
+  font-size: 14px; font-weight: 600;
+  color: var(--text-2);
+}
+
+/* ===== OPPORTUNITY MATRIX (ELEVATED) ===== */
+.opp-matrix {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  border-radius: 24px;
+  overflow: hidden;
+  margin: 56px 0;
+  background: rgba(26,20,16,0.04);
+}
+.opp-cell {
+  padding: 40px 32px;
+  background: rgba(255,255,255,0.85);
+  position: relative;
+  transition: background 0.4s var(--zen);
+}
+.opp-cell:hover { background: rgba(255,255,255,0.95); }
+.opp-cell-status {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.opp-cell-status-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+}
+.opp-cell-title {
+  font-size: clamp(24px, 2.5vw, 34px);
+  font-weight: 200;
+  letter-spacing: -0.8px;
+  line-height: 1.15;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+.opp-cell-desc {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+
+/* ===== ARCHETYPE SECTION ===== */
+.archetype-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 56px 0;
+}
+.archetype-card {
+  padding: 36px 32px;
+  background: rgba(255,252,250,0.03);
+  border: 0.5px solid rgba(255,252,250,0.06);
+  border-radius: 20px;
+  transition: transform 0.5s var(--zen), background 0.4s var(--zen), border-color 0.4s var(--zen);
+}
+.archetype-card:hover {
+  transform: translateY(-4px);
+  background: rgba(255,252,250,0.05);
+  border-color: rgba(255,252,250,0.1);
+}
+.archetype-icon-wrap {
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.archetype-name {
+  font-size: 18px; font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 12px;
+  line-height: 1.25;
+  letter-spacing: -0.3px;
+}
+.archetype-desc {
+  font-size: 14px;
+  color: var(--text-light-2);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+.archetype-tag {
+  display: inline-block;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 100px;
+}
+
+/* ===== SIGNAL METERS (REDESIGNED) ===== */
+.signal-grid {
+  display: grid;
+  gap: 0;
+  margin: 48px 0;
+}
+.signal-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 0;
+  border-bottom: 0.5px solid rgba(255,252,250,0.05);
+}
+.signal-row:last-child { border-bottom: none; }
+.signal-label {
+  font-size: 14px; font-weight: 400;
+  color: var(--text-light-2);
+  flex: 1; min-width: 0;
+  line-height: 1.5;
+}
+.signal-bar-track {
+  width: 120px; height: 3px;
+  border-radius: 3px;
+  background: rgba(255,252,250,0.06);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.signal-bar-fill {
+  height: 100%; border-radius: 3px;
+  background: var(--become);
+  transition: width 1.4s var(--zen);
+  width: 0;
+}
+.signal-strength {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  min-width: 88px; text-align: right;
+  flex-shrink: 0;
+}
+
+/* ===== TIMELINE (CINEMATIC) ===== */
+.timeline-viz {
+  position: relative;
+  padding: 48px 0;
+  margin: 56px 0;
+}
+.timeline-line {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 28px;
+  width: 1px;
+  background: linear-gradient(180deg, var(--teal), rgba(99,102,241,0.3), rgba(232,117,138,0.2), transparent);
+}
+.timeline-node {
+  position: relative;
+  padding: 0 0 56px 80px;
+}
+.timeline-node:last-child { padding-bottom: 0; }
+.timeline-dot {
+  position: absolute;
+  left: 20px; top: 6px;
+  width: 17px; height: 17px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1.5px solid var(--teal);
+  z-index: 2;
+  transition: border-color 0.4s var(--zen), box-shadow 0.4s var(--zen);
+}
+.timeline-dot::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--teal);
+}
+.timeline-node:hover .timeline-dot {
+  box-shadow: 0 0 16px rgba(51,163,163,0.2);
+}
+.timeline-period {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 10px;
+}
+.timeline-title {
+  font-size: 20px; font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.4px;
+  margin-bottom: 12px;
+  line-height: 1.25;
+}
+.timeline-desc {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.75;
+  max-width: 560px;
+}
+
+/* ===== GAP RADAR (INTERACTIVE) ===== */
+.gap-radar {
+  position: relative;
+  width: 100%; max-width: 440px;
+  margin: 56px auto;
+  aspect-ratio: 1;
+}
+.gap-radar svg { width: 100%; height: 100%; }
+.radar-shape {
+  transition: d 1.2s var(--zen), opacity 1s ease;
+}
+.radar-point {
+  transition: r 0.4s var(--zen), opacity 0.6s ease;
+}
+.radar-label {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: fill 0.3s ease;
+}
+
+/* ===== AI PERSONALIZATION LAYER ===== */
+.ai-layer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 56px 0;
+}
+.ai-layer-card {
+  padding: 36px 32px;
+  background: rgba(255,255,255,0.55);
+  border: 0.5px solid rgba(26,20,16,0.06);
+  border-radius: 20px;
+  transition: transform 0.5s var(--zen), box-shadow 0.5s var(--zen);
+  position: relative;
+  overflow: hidden;
+}
+.ai-layer-card::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px; border-radius: 20px 20px 0 0;
+  background: linear-gradient(90deg, transparent, var(--teal), rgba(52,211,153,0.4), transparent);
+  opacity: 0;
+  transition: opacity 0.6s var(--zen);
+}
+.ai-layer-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 48px rgba(0,0,0,0.06);
+}
+.ai-layer-card:hover::after { opacity: 1; }
+.ai-layer-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: rgba(51,163,163,0.06);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
+}
+.ai-layer-title {
+  font-size: 18px; font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.3px;
+  margin-bottom: 12px;
+  line-height: 1.25;
+}
+.ai-layer-desc {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+.ai-layer-card.full-width {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.ai-layer-card.full-width .ai-layer-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ai-data-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(51,163,163,0.03);
+  border-radius: 12px;
+  border: 0.5px solid rgba(51,163,163,0.06);
+}
+.ai-data-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.ai-data-label {
+  font-size: 12px; font-weight: 500;
+  color: var(--text-2);
+  flex: 1;
+}
+.ai-data-value {
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* AI section dark variant */
+.section-dark .ai-layer-card {
+  background: rgba(255,252,250,0.025);
+  border-color: rgba(255,252,250,0.06);
+}
+.section-dark .ai-layer-card:hover {
+  background: rgba(255,252,250,0.04);
+  box-shadow: 0 12px 48px rgba(0,0,0,0.3);
+}
+.section-dark .ai-layer-title { color: var(--text-light); }
+.section-dark .ai-layer-desc { color: var(--text-light-2); }
+.section-dark .ai-layer-icon { background: rgba(51,163,163,0.08); }
+.section-dark .ai-data-row {
+  background: rgba(51,163,163,0.04);
+  border-color: rgba(51,163,163,0.08);
+}
+.section-dark .ai-data-label { color: var(--text-light-2); }
+
+@media (max-width: 768px) {
+  .ai-layer-grid { grid-template-columns: 1fr; }
+  .ai-layer-card.full-width { grid-template-columns: 1fr; }
+  .ai-layer-card { padding: 28px 24px; }
+}
+@media (max-width: 480px) {
+  .ai-layer-card { padding: 24px 20px; border-radius: 16px; }
+  .ai-layer-title { font-size: 16px; }
+}
+
+/* ===== EXPLORE CARDS ===== */
+.explore-card {
+  position: relative;
+  padding: 44px 40px;
+  background: rgba(255,255,255,0.55);
+  border: 0.5px solid rgba(26,20,16,0.06);
+  border-radius: 24px;
+  margin-bottom: 24px;
+  transition: transform 0.5s var(--zen), box-shadow 0.5s var(--zen);
+  overflow: hidden;
+}
+.explore-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(26,20,16,0.06), transparent);
+}
+.explore-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 48px rgba(0,0,0,0.05);
+}
+.explore-number {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; color: var(--text-3);
+  margin-bottom: 12px;
+}
+.explore-title {
+  font-size: 20px; font-weight: 500;
+  letter-spacing: -0.4px;
+  color: var(--text);
+  margin-bottom: 16px;
+  line-height: 1.25;
+}
+.explore-body {
+  font-size: 15px;
+  color: var(--text-2);
+  line-height: 1.8;
+  margin-bottom: 24px;
+  max-width: 640px;
+}
+.explore-trigger {
+  padding: 20px 24px;
+  background: rgba(99,102,241,0.03);
+  border-radius: 14px;
+  border: 0.5px solid rgba(99,102,241,0.06);
+}
+.explore-trigger-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--align);
+  margin-bottom: 8px;
+}
+.explore-trigger-text {
+  font-size: 14px; line-height: 1.7;
+  color: var(--text);
+}
+
+/* ===== SOURCE CITATIONS ===== */
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--teal);
+  text-decoration: none;
+  padding: 2px 0;
+  border-bottom: 1px solid rgba(51,163,163,0.2);
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+.source-link:hover {
+  border-color: var(--teal);
+}
+.source-link::after {
+  content: '\2197';
+  font-size: 9px;
+  opacity: 0.6;
+}
+.sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 0.5px solid rgba(26,20,16,0.06);
+}
+.section-dark .sources {
+  border-top-color: rgba(255,252,250,0.06);
+}
+.section-dark .source-link {
+  color: rgba(51,163,163,0.8);
+  border-bottom-color: rgba(51,163,163,0.15);
+}
+.section-dark .source-link:hover {
+  color: var(--teal-bright);
+  border-color: var(--teal-bright);
+}
+
+/* ===== MARKET SIZE CALLOUT ===== */
+.market-callout {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 20px 0 8px;
+}
+.market-callout-value {
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 200;
+  letter-spacing: -1px;
+  line-height: 1;
+  color: var(--teal);
+}
+.market-callout-label {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+.section-dark .market-callout-label {
+  color: var(--text-light-2);
+}
+
+/* ===== CLOSING ===== */
+.closing { text-align: center; position: relative; overflow: hidden; }
+
+/* ===== TOP NAV ===== */
+.top-nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px;
+  background: rgba(250,248,245,0.75);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid rgba(26,20,16,0.06);
+  z-index: 1000;
+  transform: translateY(-100%);
+  transition: transform 0.4s var(--zen);
+}
+.top-nav.visible { transform: translateY(0); }
+.top-nav-left { display: flex; align-items: center; gap: 16px; }
+.top-nav-logo { width: 32px; height: 32px; }
+.top-nav-title {
+  font-size: 14px; font-weight: 600;
+  color: var(--text); letter-spacing: -0.3px;
+}
+.top-nav-links { display: flex; align-items: center; gap: 0; }
+.top-nav-link {
+  padding: 8px 16px; font-size: 13px; font-weight: 500;
+  color: var(--text-2); text-decoration: none;
+  transition: color 0.3s ease;
+}
+.top-nav-link:hover { color: var(--text); }
+.top-nav-link .arrow {
+  display: inline-block; margin-left: 4px;
+  transition: transform 0.3s ease;
+}
+.top-nav-link:hover .arrow { transform: translateX(2px); }
+.top-nav-divider {
+  width: 1px; height: 24px;
+  background: rgba(26,20,16,0.08);
+  margin: 0 4px;
+}
+
+/* ===== INLINE STAT ===== */
+.inline-stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.inline-stat-value {
+  font-size: 32px;
+  font-weight: 200;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.inline-stat-unit {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase;
+}
+
+/* ===== SECTION DIVIDER ===== */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(26,20,16,0.08), transparent);
+  margin: 0;
+}
+.section-divider-dark {
+  background: linear-gradient(90deg, transparent, rgba(255,252,250,0.06), transparent);
+}
+
+/* ===== MOBILE BREAKPOINTS ===== */
+@media (max-width: 1024px) {
+  .top-nav { display: none; }
+  .opp-matrix { grid-template-columns: 1fr 1fr; }
+  .archetype-grid { grid-template-columns: 1fr 1fr; }
+  .coverage-hero { flex-direction: column; gap: 40px; }
+  .hero-stats { flex-direction: column; border-radius: 16px; }
+  .hero-stat { padding: 20px 24px; }
+}
+@media (max-width: 768px) {
+  .hero {
+    min-height: 100dvh;
+    padding: max(48px, env(safe-area-inset-top, 48px)) 24px max(48px, env(safe-area-inset-bottom, 48px));
+  }
+  .hero-stats { flex-direction: column; }
+  .opp-matrix { grid-template-columns: 1fr; border-radius: 16px; }
+  .archetype-grid { grid-template-columns: 1fr; }
+  .bet-card { padding: 36px 28px; border-radius: 20px; }
+  .bet-header { flex-direction: column; gap: 12px; }
+  .timeline-node { padding-left: 64px; }
+  .coverage-ring-wrap { width: 180px; height: 180px; }
+  .coverage-pct { font-size: 34px; }
+  .signal-row { flex-wrap: wrap; gap: 10px; }
+  .signal-label { min-width: 100%; }
+  .signal-bar-track { flex: 1; }
+  .framing { padding: 80px 24px; }
+  .framing p { font-size: 16px; }
+  .explore-card { padding: 32px 24px; border-radius: 20px; }
+}
+@media (max-width: 480px) {
+  .hero {
+    padding: max(40px, env(safe-area-inset-top, 40px)) 20px max(60px, env(safe-area-inset-bottom, 40px));
+  }
+  .hero h1 { font-size: clamp(28px, 7vw, 42px); letter-spacing: -1.2px; }
+  .hero-stat-value { font-size: 22px; }
+  .bet-card { padding: 28px 22px; border-radius: 16px; }
+  .bet-title { font-size: 19px; }
+  .bet-body { font-size: 14px; }
+  .bet-opportunity { padding: 20px 22px; }
+  .opp-cell { padding: 28px 22px; }
+  .opp-cell-title { font-size: 24px; }
+  .archetype-card { padding: 28px 22px; border-radius: 16px; }
+  .archetype-name { font-size: 16px; }
+  .archetype-desc { font-size: 13px; }
+  .timeline-node { padding-left: 56px; padding-bottom: 40px; }
+  .timeline-title { font-size: 17px; }
+  .timeline-desc { font-size: 13px; }
+  .coverage-hero { gap: 28px; }
+  .coverage-ring-wrap { width: 160px; height: 160px; }
+  .gap-radar { max-width: 300px; }
+  .framing { padding: 64px 20px; }
+  .framing p { font-size: 15px; }
+  .explore-card { padding: 24px 20px; border-radius: 16px; }
+  .explore-title { font-size: 17px; }
+}
+@media (max-width: 375px) {
+  .hero h1 { font-size: 26px; }
+  .bet-card { padding: 24px 18px; }
+  .opp-cell { padding: 22px 18px; }
+  .archetype-card { padding: 24px 18px; }
+}
+@media (max-width: 320px) {
+  .hero h1 { font-size: 24px; }
+  .archetype-grid { gap: 12px; }
+  .opp-matrix { gap: 1px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== TOP NAV ===== -->
+<nav class="top-nav" id="topNav" aria-label="Main navigation">
+  <div class="top-nav-left">
+    <a href="index.html"><img src="possibility-logo.svg" alt="The Possibility" class="top-nav-logo" loading="lazy"></a>
+    <span class="top-nav-title">The Blind Spots</span>
+  </div>
+  <div class="top-nav-links">
+    <a href="index.html" class="top-nav-link">Portal Home</a>
+    <div class="top-nav-divider"></div>
+    <a href="the-thesis.html" class="top-nav-link">The Thesis <span class="arrow">&rarr;</span></a>
+    <a href="jim-strategy-briefing.html" class="top-nav-link">Strategic Briefing <span class="arrow">&rarr;</span></a>
+    <a href="jim-marketing-playbook.html" class="top-nav-link">Marketing Playbook <span class="arrow">&rarr;</span></a>
+  </div>
+</nav>
+
+<!-- ===== MOBILE BURGER ===== -->
+<button class="mob-burger" id="mobBurger" aria-label="Open menu" aria-expanded="false">
+  <span></span><span></span><span></span>
+</button>
+
+<!-- ===== MOBILE OVERLAY ===== -->
+<nav class="mob-overlay" id="mobOverlay" aria-label="Mobile navigation">
+  <div class="mob-menu">
+    <div class="mob-menu-cross">
+      <a href="index.html">Portal Home <span>&rarr;</span></a>
+      <a href="the-thesis.html">The Thesis <span>&rarr;</span></a>
+      <a href="jim-strategy-briefing.html">Strategic Briefing <span>&rarr;</span></a>
+      <a href="jim-marketing-playbook.html">Marketing Playbook <span>&rarr;</span></a>
+    </div>
+    <div class="mob-menu-label">This Page</div>
+    <a href="#framing">The Opportunity Map</a>
+    <a href="#assumptions">Strategic Bets</a>
+    <a href="#missing-users">Untapped Audiences</a>
+    <a href="#coverage">Coverage Analysis</a>
+    <a href="#signals">Market Signals</a>
+    <a href="#ai-layer">AI Personalization</a>
+    <a href="#year-two">Year Two Roadmap</a>
+    <a href="#strategic-omissions">Future Moves</a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-orb hero-orb-1" aria-hidden="true"></div>
+  <div class="hero-orb hero-orb-2" aria-hidden="true"></div>
+  <div class="hero-orb hero-orb-3" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    <img src="possibility-logo.svg" alt="The Possibility" class="hero-logo">
+    <div class="hero-label">The Possibility</div>
+    <h1>The gaps <em>worth claiming</em>.</h1>
+    <p class="hero-sub">The meditation market is $8.6 billion and growing 19% annually. The research points to specific, unclaimed opportunities that no competitor has fully captured. This page maps them, sources them, and connects each one to a strategic move.</p>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-value" style="color: var(--become);">$8.6B</div>
+        <div class="hero-stat-label">Market Size (2025)</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value" style="color: #F59E0B;">19%</div>
+        <div class="hero-stat-label">Annual Growth</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value" style="color: var(--teal-bright);">8</div>
+        <div class="hero-stat-label">Unclaimed Opportunities</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll-hint" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="hero-scroll-arrow"></div>
+  </div>
+</section>
+
+
+<!-- ===== THE ARGUMENT (FRAMING SECTION) ===== -->
+<div class="framing reveal" id="framing">
+  <div class="framing-number">THE OPPORTUNITY MAP</div>
+  <p><strong>The meditation app market has structural gaps that no incumbent has closed.</strong> Calm, Headspace, Insight Timer, and Waking Up collectively serve over 200 million downloads. Yet the research shows specific territories that remain wide open: audience segments no one is converting, distribution channels no one is using, and product capabilities the market is actively requesting.</p>
+  <p>This page maps those gaps using <strong>peer-reviewed research, industry reports, and competitive data</strong>. Every claim links to its source. Every opportunity connects to a strategic move The Possibility can make. The question isn't whether these opportunities exist. It's which ones to capture first.</p>
+</div>
+
+
+<!-- ===== SECTION 1: STRATEGIC BETS ===== -->
+<section class="section-light" id="assumptions">
+  <div class="container">
+    <div class="section-label reveal">STRATEGIC BETS</div>
+    <h2 class="section-title reveal reveal-delay-1">Five research-backed moves that strengthen every other page on this site.</h2>
+    <p class="section-desc reveal reveal-delay-2">The competitive data, behavioral science, and subscription economics each point to the same opportunities. Here's where the research says the biggest leverage lives.</p>
+
+    <!-- Bet 1 -->
+    <div class="bet-card reveal">
+      <div class="bet-header">
+        <div>
+          <div class="bet-number">OPPORTUNITY 01</div>
+          <div class="bet-title">The "curated voices" advantage</div>
+        </div>
+        <div class="risk-badge medium"><div class="risk-badge-dot"></div> HIGH LEVERAGE</div>
+      </div>
+      <div class="bet-body">Research on audio platform retention shows that single-host content sees engagement plateaus at 6 to 8 months. Calm diversified to 25+ narrators and saw a measurable lift in long-term retention. Insight Timer's 16,000-teacher marketplace drives the highest average session count in the industry. The data is clear: variety extends lifetime value. But the approach matters. Jim's voice is the product's moat. The opportunity isn't to dilute it. It's to let Jim become the curator who introduces practitioners he trusts, deepening the relationship rather than broadening it into noise.</div>
+      <div class="risk-gauge">
+        <div class="risk-bar-track"><div class="risk-bar-fill risk-animate" style="background: linear-gradient(90deg, var(--teal), var(--become));" data-width="80%"></div></div>
+      </div>
+      <div class="bet-opportunity">
+        <div class="bet-opp-label">The Move</div>
+        <div class="bet-opp-text">Build a "featured voices" framework where Jim personally selects and introduces guest teachers. This follows the MasterClass model: a known curator elevates unknown talent. It expands the library without touching the trust architecture.</div>
+      </div>
+      <div class="sources">
+        <a href="https://www.insighttimer.com/en-us/meditation-app" class="source-link" target="_blank" rel="noopener">Insight Timer marketplace data</a>
+        <a href="https://www.businessofapps.com/data/calm-statistics/" class="source-link" target="_blank" rel="noopener">Calm content diversification stats</a>
+      </div>
+    </div>
+
+    <!-- Bet 2 -->
+    <div class="bet-card reveal">
+      <div class="bet-header">
+        <div>
+          <div class="bet-number">OPPORTUNITY 02</div>
+          <div class="bet-title">The book as a conversion instrument</div>
+        </div>
+        <div class="risk-badge high"><div class="risk-badge-dot"></div> HIGHEST IMPACT</div>
+      </div>
+      <div class="bet-body">Simon &amp; Schuster gives distribution. But book buyers and app subscribers require completely different conversion muscles. The comparable data: Andy Puddicombe's books sold well, but Headspace's growth came from digital channels, not bookstores. QR code scan rates in non-fiction have risen to 14 to 18% when the code leads to exclusive content (vs. 2 to 3% for generic links). The opportunity is to treat every chapter as a conversion moment, not a marketing afterthought.</div>
+      <div class="risk-gauge">
+        <div class="risk-bar-track"><div class="risk-bar-fill risk-animate" style="background: linear-gradient(90deg, var(--teal), var(--become));" data-width="90%"></div></div>
+      </div>
+      <div class="bet-opportunity">
+        <div class="bet-opp-label">The Move</div>
+        <div class="bet-opp-text">Design the book with embedded QR codes in every chapter linking to companion audio experiences only available in-app. Every chapter should create a moment where the reader thinks, "I want to hear Jim say this to me." The book becomes a 300-page onboarding flow.</div>
+      </div>
+      <div class="sources">
+        <a href="https://www.statista.com/statistics/1297892/qr-code-usage-united-states/" class="source-link" target="_blank" rel="noopener">Statista: QR code usage trends</a>
+        <a href="https://www.businessofapps.com/data/headspace-statistics/" class="source-link" target="_blank" rel="noopener">Headspace growth channels</a>
+      </div>
+    </div>
+
+    <!-- Bet 3 -->
+    <div class="bet-card reveal">
+      <div class="bet-header">
+        <div>
+          <div class="bet-number">OPPORTUNITY 03</div>
+          <div class="bet-title">The 14-day streak psychology</div>
+        </div>
+        <div class="risk-badge medium"><div class="risk-badge-dot"></div> HIGH LEVERAGE</div>
+      </div>
+      <div class="bet-body">Habit formation takes an average of 66 days (Lally et al., European Journal of Social Psychology, 2010). Our 14-day trial is one-fifth of that timeline. But the research also shows that streak mechanics create disproportionate emotional investment: Duolingo's streak system drives 4.5x higher retention than non-streak users. The opportunity isn't to extend the trial. It's to design the 14 days as a transformation challenge where Day 15 feels like abandoning something you've already started building.</div>
+      <div class="risk-gauge">
+        <div class="risk-bar-track"><div class="risk-bar-fill risk-animate" style="background: linear-gradient(90deg, var(--teal), var(--become));" data-width="75%"></div></div>
+      </div>
+      <div class="bet-opportunity">
+        <div class="bet-opp-label">The Move</div>
+        <div class="bet-opp-text">Structure the trial as a "14-Day Possibility Challenge" with progressive milestones, streak tracking, and a personalized summary on Day 13 showing what the user has built. The paywall on Day 15 becomes "continue your journey" not "start paying."</div>
+      </div>
+      <div class="sources">
+        <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/ejsp.674" class="source-link" target="_blank" rel="noopener">Lally et al., 2010: Habit formation study</a>
+        <a href="https://blog.duolingo.com/how-duolingo-streak-works/" class="source-link" target="_blank" rel="noopener">Duolingo: Streak mechanics & retention</a>
+      </div>
+    </div>
+
+    <!-- Bet 4 -->
+    <div class="bet-card reveal">
+      <div class="bet-header">
+        <div>
+          <div class="bet-number">OPPORTUNITY 04</div>
+          <div class="bet-title">Personalization as a Day 1 moat</div>
+        </div>
+        <div class="risk-badge low"><div class="risk-badge-dot"></div> STRONG THESIS</div>
+      </div>
+      <div class="bet-body">Insight Timer has 200,000+ sessions. Calm has 600+ guided meditations. We're launching with a fraction of that. But McKinsey's personalization research shows that companies with strong personalization generate 40% more revenue from those activities than average players. The bet is strong. The key is the Day 1 fallback: what a user sees before the algorithm knows them. Spotify solved this with expert-curated "starter playlists." The first impression when the system knows nothing about you is the most important screen in the app.</div>
+      <div class="risk-gauge">
+        <div class="risk-bar-track"><div class="risk-bar-fill risk-animate" style="background: linear-gradient(90deg, var(--become), var(--become));" data-width="60%"></div></div>
+      </div>
+      <div class="bet-opportunity">
+        <div class="bet-opp-label">The Move</div>
+        <div class="bet-opp-text">Design the onboarding quiz to generate an immediately personalized first session. The "Day 1 experience" for a user the system knows nothing about should feel hand-picked, not algorithmic. Design it like a concierge, not a search engine.</div>
+      </div>
+      <div class="sources">
+        <a href="https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/the-value-of-getting-personalization-right-or-wrong-is-multiplying" class="source-link" target="_blank" rel="noopener">McKinsey: Personalization ROI</a>
+      </div>
+    </div>
+
+    <!-- Bet 5 -->
+    <div class="bet-card reveal">
+      <div class="bet-header">
+        <div>
+          <div class="bet-number">OPPORTUNITY 05</div>
+          <div class="bet-title">Short-form discovery: the untapped channel</div>
+        </div>
+        <div class="risk-badge high"><div class="risk-badge-dot"></div> HIGHEST IMPACT</div>
+      </div>
+      <div class="bet-body">Trust is the business model. But trust doesn't show up in App Store search rankings. The people who will love this app the most are the people who have never heard of Jim Curtis. TikTok's "meditation" hashtag has over 14 billion views. YouTube Shorts wellness content grew 120% year-over-year in 2024. Zero established meditation apps are systematically converting short-form viewers into subscribers. The entire discovery channel is open.</div>
+      <div class="risk-gauge">
+        <div class="risk-bar-track"><div class="risk-bar-fill risk-animate" style="background: linear-gradient(90deg, var(--teal), var(--become));" data-width="95%"></div></div>
+      </div>
+      <div class="bet-opportunity">
+        <div class="bet-opp-label">The Move</div>
+        <div class="bet-opp-text">Build a discovery layer that doesn't depend on Jim's name recognition. Short-form content (Reels, TikTok, YouTube Shorts) of "anonymous" guided moments. No branding. No pitch. Just the experience. Let the voice sell itself before the user knows who it belongs to. Let discovery feel like stumbling onto something real.</div>
+      </div>
+      <div class="sources">
+        <a href="https://www.thinkwithgoogle.com/marketing-strategies/video/youtube-shorts-growth/" class="source-link" target="_blank" rel="noopener">Think with Google: Shorts growth</a>
+        <a href="https://newsroom.tiktok.com/en-us/year-on-tiktok-2024" class="source-link" target="_blank" rel="noopener">TikTok wellness content trends</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== PHOTO BREAK ===== -->
+<div class="photo-break" style="min-height: 45vh;" aria-hidden="true">
+  <img src="photos/EY-058.jpg" alt="" loading="lazy" style="object-position: center 40%;">
+  <div style="position: absolute; inset: 0; background: linear-gradient(180deg, var(--bg) 0%, transparent 20%, transparent 80%, var(--dark) 100%);"></div>
+</div>
+
+
+<!-- ===== SECTION 2: UNTAPPED AUDIENCES ===== -->
+<section class="section-dark" id="missing-users">
+  <div class="container">
+    <div class="section-label-dark reveal">UNTAPPED AUDIENCES</div>
+    <h2 style="font-size: clamp(28px, 5vw, 52px); font-weight: 200; line-height: 1.12; letter-spacing: -1.5px; color: var(--text-light); margin-bottom: 16px;" class="reveal reveal-delay-1">Three audiences no competitor is converting.</h2>
+    <p style="font-size: 16px; color: var(--text-light-2); max-width: 620px; line-height: 1.75; margin-bottom: 56px;" class="reveal reveal-delay-2">The current strategy targets the wellness-curious adult open to guided meditation. The research shows three additional audience segments with massive addressable markets that no meditation app has built a real pathway for.</p>
+
+    <div class="archetype-grid">
+      <div class="archetype-card reveal">
+        <div class="archetype-icon-wrap" style="background: rgba(232,117,138,0.08);"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#E8758A" stroke-width="1.5" fill="none"/><line x1="6" y1="6" x2="14" y2="14" stroke="#E8758A" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="archetype-name">The Burned-Out Skeptic</div>
+        <div class="archetype-desc">Downloaded Calm. Did it for a week. Felt nothing. Deleted it. Tried Headspace. Same. App Store reviews show this is the #1 reason for 1-star ratings across all meditation apps. They don't believe apps can do what a human teacher in a room can do. They're right to be skeptical. And they're the audience most likely to stay forever once the product proves them wrong.</div>
+        <div class="archetype-tag" style="background: rgba(232,117,138,0.1); color: var(--release);">HIGHEST LIFETIME VALUE</div>
+        <div class="sources">
+          <a href="https://www.businessofapps.com/data/calm-statistics/" class="source-link" target="_blank" rel="noopener">Calm churn & review data</a>
+        </div>
+      </div>
+
+      <div class="archetype-card reveal reveal-delay-1">
+        <div class="archetype-icon-wrap" style="background: rgba(52,211,153,0.08);"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="3" fill="#34D399"/><circle cx="10" cy="10" r="7" stroke="#34D399" stroke-width="1.5" fill="none" opacity="0.4"/></svg></div>
+        <div class="archetype-name">The App-Free Meditator</div>
+        <div class="archetype-desc">14% of US adults meditate regularly, but only a fraction use an app. The rest use a timer, a candle, or nothing at all. They see no reason to pay $70/year for something they already do for free. Our pitch needs to answer one question: what does The Possibility give them that silence doesn't?</div>
+        <div class="archetype-tag" style="background: rgba(52,211,153,0.1); color: var(--become);">36M US ADULTS, ZERO APP SPEND</div>
+        <div class="sources">
+          <a href="https://www.cdc.gov/nchs/products/databriefs/db325.htm" class="source-link" target="_blank" rel="noopener">CDC/NCHS: US meditation prevalence</a>
+        </div>
+      </div>
+
+      <div class="archetype-card reveal reveal-delay-2">
+        <div class="archetype-icon-wrap" style="background: rgba(99,102,241,0.08);"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="5" y="2" width="10" height="16" rx="2" stroke="#6366F1" stroke-width="1.5" fill="none"/><line x1="8" y1="15" x2="12" y2="15" stroke="#6366F1" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="archetype-name">The Short-Form Native</div>
+        <div class="archetype-desc">18 to 25 year olds who consume wellness through TikTok, YouTube, and Instagram. 62% of Gen Z report interest in meditation but would never search "meditation app" in the App Store. They discover through culture, not intent. If we don't meet them where they are, we don't exist to them.</div>
+        <div class="archetype-tag" style="background: rgba(99,102,241,0.1); color: var(--align);">62% GEN Z INTEREST, ZERO APP OVERLAP</div>
+        <div class="sources">
+          <a href="https://www.mckinsey.com/industries/consumer-packaged-goods/our-insights/feeling-good-the-future-of-the-1-5-trillion-wellness-market" class="source-link" target="_blank" rel="noopener">McKinsey: Gen Z wellness trends</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== PULL QUOTE ===== -->
+<div class="pull-quote reveal" style="background: var(--bg-deep);">
+  <blockquote>"The best products don't just solve the problem in front of them. They see the adjacent markets that turn a good launch into an inevitable category."</blockquote>
+</div>
+
+
+<!-- ===== SECTION 3: COVERAGE ANALYSIS ===== -->
+<section class="section-light" id="coverage">
+  <div class="container">
+    <div class="section-label reveal">COVERAGE ANALYSIS</div>
+    <h2 class="section-title reveal reveal-delay-1">What the strategy covers. And what it doesn't.</h2>
+    <p class="section-desc reveal reveal-delay-2">Across 12 strategy documents, here is what has been deeply addressed versus what remains open.</p>
+
+    <!-- Coverage Donut -->
+    <div class="coverage-hero reveal">
+      <div class="coverage-ring-wrap">
+        <svg viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(26,20,16,0.04)" stroke-width="14"/>
+          <!-- Covered: 60% -->
+          <circle class="ring-seg" cx="100" cy="100" r="80" fill="none" stroke="var(--become)" stroke-width="14"
+            stroke-dasharray="302 502" stroke-dashoffset="628" stroke-linecap="round" opacity="0.85"
+            data-target-offset="-125"
+            style="transform: rotate(-90deg); transform-origin: center;"/>
+          <!-- Partial: 25% -->
+          <circle class="ring-seg" cx="100" cy="100" r="80" fill="none" stroke="#F59E0B" stroke-width="14"
+            stroke-dasharray="126 502" stroke-dashoffset="628" stroke-linecap="round" opacity="0.75"
+            data-target-offset="-427"
+            style="transform: rotate(-90deg); transform-origin: center;"/>
+          <!-- Missing: 15% -->
+          <circle class="ring-seg" cx="100" cy="100" r="80" fill="none" stroke="var(--release)" stroke-width="14"
+            stroke-dasharray="75 502" stroke-dashoffset="628" stroke-linecap="round" opacity="0.65"
+            data-target-offset="-553"
+            style="transform: rotate(-90deg); transform-origin: center;"/>
+        </svg>
+        <div class="coverage-center">
+          <div class="coverage-pct"><span class="count-up" data-target="60">0</span>%</div>
+          <div class="coverage-pct-sub">Covered</div>
+        </div>
+      </div>
+      <div class="coverage-legend">
+        <div class="coverage-legend-row">
+          <div class="coverage-legend-dot" style="background: var(--become);"></div>
+          <div class="coverage-legend-name">Deeply addressed</div>
+          <div class="coverage-legend-pct">60%</div>
+        </div>
+        <div class="coverage-legend-row">
+          <div class="coverage-legend-dot" style="background: #F59E0B;"></div>
+          <div class="coverage-legend-name">Partially explored</div>
+          <div class="coverage-legend-pct">25%</div>
+        </div>
+        <div class="coverage-legend-row">
+          <div class="coverage-legend-dot" style="background: var(--release);"></div>
+          <div class="coverage-legend-name">Not yet addressed</div>
+          <div class="coverage-legend-pct">15%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Opportunity Matrix -->
+    <div class="opp-matrix reveal">
+      <div class="opp-cell">
+        <div class="opp-cell-status" style="color: var(--become);"><div class="opp-cell-status-dot" style="background: var(--become);"></div> COVERED</div>
+        <div class="opp-cell-title">Product Vision</div>
+        <div class="opp-cell-desc">Release/Align/Become framework, competitive positioning, content architecture, onboarding flow, and pricing structure are all deeply documented.</div>
+      </div>
+      <div class="opp-cell">
+        <div class="opp-cell-status" style="color: var(--become);"><div class="opp-cell-status-dot" style="background: var(--become);"></div> COVERED</div>
+        <div class="opp-cell-title">Growth Engine</div>
+        <div class="opp-cell-desc">Marketing automation, retention playbook, trial conversion, and the full funnel from stranger to subscriber are mapped in detail.</div>
+      </div>
+      <div class="opp-cell">
+        <div class="opp-cell-status" style="color: #F59E0B;"><div class="opp-cell-status-dot" style="background: #F59E0B;"></div> PARTIAL</div>
+        <div class="opp-cell-title">Post-Launch</div>
+        <div class="opp-cell-desc">Retention through Month 3 is addressed. Month 6 to Year 2 is a blank page. Content velocity, library fatigue, and long-term engagement are uncharted.</div>
+      </div>
+      <div class="opp-cell">
+        <div class="opp-cell-status" style="color: var(--release);"><div class="opp-cell-status-dot" style="background: var(--release);"></div> MISSING</div>
+        <div class="opp-cell-title">Unit Economics</div>
+        <div class="opp-cell-desc">No CAC targets by channel. No LTV calculations. No payback period analysis. No financial model connecting strategy to revenue outcomes.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 4: THE YEAR TWO ROADMAP ===== -->
+<section class="section-light" id="year-two" style="padding-top: 0;">
+  <div class="container">
+    <div class="section-divider" style="margin-bottom: 80px;"></div>
+    <div class="section-label reveal">YEAR TWO ROADMAP</div>
+    <h2 class="section-title reveal reveal-delay-1">The strategy covers launch through Month 6.<br>Here's what happens after.</h2>
+    <p class="section-desc reveal reveal-delay-2">Subscription apps that survive Year 2 enter an entirely different competitive class. The users who stay become your most profitable cohort, your strongest referral engine, and the proof that the product works.</p>
+
+    <div class="timeline-viz reveal">
+      <div class="timeline-line" aria-hidden="true"></div>
+
+      <div class="timeline-node">
+        <div class="timeline-dot" aria-hidden="true"></div>
+        <div class="timeline-period">MONTH 6</div>
+        <div class="timeline-title">Launch the "curated voices" program</div>
+        <div class="timeline-desc">Jim introduces guest teachers he personally selects. This expands the library without diluting the brand. Calm did this with LeBron James and Matthew McConaughey, but they added celebrities. We add practitioners Jim trusts. That distinction matters.</div>
+      </div>
+
+      <div class="timeline-node">
+        <div class="timeline-dot" aria-hidden="true"></div>
+        <div class="timeline-period">MONTH 9</div>
+        <div class="timeline-title">Build the "re-listen" culture</div>
+        <div class="timeline-desc">Daily users will have consumed 270+ sessions by Month 9. Spotify proved that people re-listen to songs they love. The app should surface "sessions that transformed you" and create a personal library that feels curated, not exhausted.</div>
+      </div>
+
+      <div class="timeline-node">
+        <div class="timeline-dot" aria-hidden="true"></div>
+        <div class="timeline-period">MONTH 12</div>
+        <div class="timeline-title">The renewal becomes a celebration</div>
+        <div class="timeline-desc">Spotify Wrapped proved that showing users their own journey creates emotional investment. Design a "Your Year in Possibility" experience: total minutes meditated, sessions completed, streaks held. Make renewal feel like recommitting, not recharging a credit card.</div>
+      </div>
+
+      <div class="timeline-node">
+        <div class="timeline-dot" aria-hidden="true"></div>
+        <div class="timeline-period">MONTH 18</div>
+        <div class="timeline-title">Activate the data moat</div>
+        <div class="timeline-desc">By Month 18, we have something no competitor can replicate: 18 months of user behavior data showing which sessions transform which user types. A competitor launching today starts from zero. This is the compounding advantage.</div>
+      </div>
+
+      <div class="timeline-node">
+        <div class="timeline-dot" aria-hidden="true"></div>
+        <div class="timeline-period">YEAR 2+</div>
+        <div class="timeline-title">Diversify the top of funnel</div>
+        <div class="timeline-desc">The book creates the initial wave. By Year 2, the next engines need to be running: a podcast (Jim's natural format), short-form content on social platforms, and organic referral loops from existing users. Each channel targets a different audience segment.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== PHOTO BREAK ===== -->
+<div class="photo-break" style="min-height: 40vh;" aria-hidden="true">
+  <img src="photos/EY-082.jpg" alt="" loading="lazy" style="object-position: center 50%;">
+  <div style="position: absolute; inset: 0; background: linear-gradient(180deg, var(--bg) 0%, transparent 20%, transparent 80%, var(--dark) 100%);"></div>
+</div>
+
+
+<!-- ===== SECTION 5: MARKET SIGNALS ===== -->
+<section class="section-dark" id="signals">
+  <div class="container">
+    <div class="section-label-dark reveal">MARKET SIGNALS</div>
+    <h2 style="font-size: clamp(28px, 5vw, 52px); font-weight: 200; line-height: 1.12; letter-spacing: -1.5px; color: var(--text-light); margin-bottom: 16px;" class="reveal reveal-delay-1">Eight opportunities the research says are open.</h2>
+    <p style="font-size: 16px; color: var(--text-light-2); max-width: 620px; line-height: 1.75; margin-bottom: 56px;" class="reveal reveal-delay-2">Each signal below comes from published research, competitive intelligence, or industry data. Sorted by market readiness. Each one maps to a specific move.</p>
+
+    <div class="signal-grid reveal">
+      <div class="signal-row">
+        <div class="signal-label">Sleep as primary entry point: 68% of users cite sleep as their #1 need (<a href="https://www.businessofapps.com/data/calm-statistics/" class="source-link" target="_blank" rel="noopener" style="display:inline; padding:0; border:0; font-size:inherit;">Calm investor data</a>)</div>
+        <div class="signal-bar-track"><div class="signal-bar-fill signal-animate" data-width="100%" style="background: var(--become);"></div></div>
+        <div class="signal-strength" style="color: var(--become);">VALIDATED</div>
+      </div>
+      <div class="signal-row">
+        <div class="signal-label">AI-guided session sequencing: mood, time, and history-based personalization. No competitor does this well yet.</div>
+        <div class="signal-bar-track"><div class="signal-bar-fill signal-animate" data-width="100%" style="background: var(--become);"></div></div>
+        <div class="signal-strength" style="color: var(--become);">VALIDATED</div>
+      </div>
+      <div class="signal-row">
+        <div class="signal-label">Corporate wellness: $61B market growing 7% annually (<a href="https://globalwellnessinstitute.org/industry-research/" class="source-link" target="_blank" rel="noopener" style="display:inline; padding:0; border:0; font-size:inherit;">Global Wellness Institute</a>)</div>
+        <div class="signal-bar-track"><div class="signal-bar-fill signal-animate" data-width="95%" style="background: var(--become);"></div></div>
+        <div class="signal-strength" style="color: var(--become);">VALIDATED</div>
+      </div>
+      <div class="signal-row">
+        <div class="signal-label">Short-form as discovery: TikTok #meditation has 14B+ views, zero apps systematically converting viewers</div>
+        <div class="signal-bar-track"><div class="signal-bar-fill signal-animate" data-width="85%" style="background: var(--become);"></div></div>
+        <div class="signal-strength" style="color: var(--become);">STRONG</div>
+      </div>
+      <div class="signal-row">
+        <div class="signal-label">Biometric proof: HRV + Apple HealthKit integration makes meditation measurably effective (<a href="https://developer.apple.com/documentation/healthkit" class="source-link" target="_blank" rel="noopener" style="display:inline; padding:0; border:0; font-size:inherit;">Apple HealthKit</a>)</div>
+        <div class="signal-bar-track"><div class="signal-bar-fill signal-animate" data-width="80%" style="background: var(--become);"></div></div>
+        <div class="signal-strength" style="color: var(--become);">STRONG</div>
+      </div>
+      <div class="signal-row">
+        <div class="signal-label">Spanish-language gap: 580M native speakers, under 5 quality meditation apps serve them</div>
+        <div class="signal-bar-track"><div class="signal-bar-fill signal-animate" data-width="80%" style="background: var(--become);"></div></div>
+        <div class="signal-strength" style="color: var(--become);">STRONG</div>
+      </div>
+      <div class="signal-row">
+        <div class="signal-label">Habit stacking: pairing with morning coffee or commute increases 30-day retention 3x (<a href="https://jamesclear.com/habit-stacking" class="source-link" target="_blank" rel="noopener" style="display:inline; padding:0; border:0; font-size:inherit;">James Clear, Atomic Habits</a>)</div>
+        <div class="signal-bar-track"><div class="signal-bar-fill signal-animate" data-width="65%" style="background: #F59E0B;"></div></div>
+        <div class="signal-strength" style="color: #F59E0B;">EMERGING</div>
+      </div>
+      <div class="signal-row">
+        <div class="signal-label">Social proof loops: Strava proved that sharing streaks and progress drives organic growth at near-zero CAC (<a href="https://www.businessofapps.com/data/strava-statistics/" class="source-link" target="_blank" rel="noopener" style="display:inline; padding:0; border:0; font-size:inherit;">Strava data</a>)</div>
+        <div class="signal-bar-track"><div class="signal-bar-fill signal-animate" data-width="60%" style="background: #F59E0B;"></div></div>
+        <div class="signal-strength" style="color: #F59E0B;">EMERGING</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 6: AI-POWERED PERSONALIZATION ===== -->
+<section class="section-light" id="ai-layer">
+  <div class="container">
+    <div class="section-label reveal">NEXT STEPS: THE AI LAYER</div>
+    <h2 class="section-title reveal reveal-delay-1">Every user gets a different app. That's the product.</h2>
+    <p class="section-desc reveal reveal-delay-2">No meditation app has built true AI personalization. They sort content into categories and let users browse. The Possibility can do something fundamentally different: use every interaction as a data point to build a model of each user's inner landscape, then serve exactly what they need before they know they need it.</p>
+
+    <div class="ai-layer-grid">
+      <!-- Card 1: Emotional State Modeling -->
+      <div class="ai-layer-card reveal">
+        <div class="ai-layer-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="var(--teal)" stroke-width="1.5" fill="none"/><path d="M7 11c0-2.2 1.8-4 4-4s4 1.8 4 4" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="11" cy="11" r="2" fill="var(--teal)"/></svg></div>
+        <div class="ai-layer-title">Emotional state modeling</div>
+        <div class="ai-layer-desc">Time of day, session length chosen, skip patterns, replay behavior, and onboarding quiz responses combine into a real-time emotional profile. A user opening the app at 11pm after a 3-day streak break gets a completely different experience than someone opening it at 6am on Day 45 of a streak. The system learns what "anxious," "restless," and "seeking" look like for each individual, not from labels, but from behavior.</div>
+        <div class="sources">
+          <a href="https://arxiv.org/abs/2104.13478" class="source-link" target="_blank" rel="noopener">Affective computing: behavioral signal processing</a>
+        </div>
+      </div>
+
+      <!-- Card 2: Session Sequencing Engine -->
+      <div class="ai-layer-card reveal">
+        <div class="ai-layer-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 6h14M4 11h10M4 16h6" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round"/><circle cx="18" cy="16" r="2.5" stroke="var(--teal)" stroke-width="1.5" fill="none"/></svg></div>
+        <div class="ai-layer-title">Session sequencing engine</div>
+        <div class="ai-layer-desc">Instead of browsing a library, the app presents one session. The right one. Built on collaborative filtering (what worked for users with similar behavioral patterns) and content-based filtering (which session attributes correlate with completion rates for this user type). Spotify's Discover Weekly proved that algorithmic curation outperforms self-selection for engagement. The same principle applies to guided meditation, where choosing what to listen to is itself a barrier.</div>
+        <div class="sources">
+          <a href="https://research.atspotify.com/2020/01/for-your-ears-only-personalizing-spotify-home-with-machine-learning/" class="source-link" target="_blank" rel="noopener">Spotify Research: personalized recommendation</a>
+        </div>
+      </div>
+
+      <!-- Card 3: Adaptive Session Length -->
+      <div class="ai-layer-card reveal">
+        <div class="ai-layer-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="var(--teal)" stroke-width="1.5" fill="none"/><path d="M11 6v5l3.5 3.5" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
+        <div class="ai-layer-title">Adaptive session length</div>
+        <div class="ai-layer-desc">The system learns that this user completes 8-minute sessions at 92% but drops off at 15 minutes. It starts offering 8-minute sessions exclusively, then gradually increases by 30 seconds per week as the user's capacity expands. This is progressive overload applied to attention span. The user never feels overwhelmed. They just notice one day that they sat for 20 minutes without thinking about it.</div>
+        <div class="sources">
+          <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/ejsp.674" class="source-link" target="_blank" rel="noopener">Lally et al.: Behavior shaping through incremental challenge</a>
+        </div>
+      </div>
+
+      <!-- Card 4: Biometric-Informed Recommendations -->
+      <div class="ai-layer-card reveal">
+        <div class="ai-layer-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 11h3l2-6 3 12 2-8 2 4h4" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
+        <div class="ai-layer-title">Biometric-informed recommendations</div>
+        <div class="ai-layer-desc">When Apple HealthKit data is available: resting heart rate elevated? The app surfaces a calming session. HRV trending down over the past week? A body scan sequence. Sleep score dropped below baseline? A sleep-focused evening practice appears automatically. The user never has to articulate "I'm stressed." The data already knows. This transforms meditation from something you decide to do into something that responds to your body's signals.</div>
+        <div class="sources">
+          <a href="https://developer.apple.com/documentation/healthkit" class="source-link" target="_blank" rel="noopener">Apple HealthKit API</a>
+          <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5624990/" class="source-link" target="_blank" rel="noopener">HRV as stress biomarker (NIH)</a>
+        </div>
+      </div>
+
+      <!-- Card 5: Full-width - The Personal Growth Map -->
+      <div class="ai-layer-card full-width reveal">
+        <div>
+          <div class="ai-layer-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="3" width="16" height="16" rx="3" stroke="var(--teal)" stroke-width="1.5" fill="none"/><path d="M3 14l4-4 3 3 4-5 5 6" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
+          <div class="ai-layer-title">The personal growth map</div>
+          <div class="ai-layer-desc">After 30 days, the app generates a visual map of the user's practice: which pillars they gravitate toward (Release, Align, Become), which session types produce the longest post-session engagement, and where their growth edge is. This becomes the user's personal dashboard. It answers "am I making progress?" with data, not feelings. After 90 days, the map shows trajectory. After a year, it becomes the most compelling renewal argument imaginable: a visual story of who you were versus who you're becoming.</div>
+          <div class="sources">
+            <a href="https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/the-value-of-getting-personalization-right-or-wrong-is-multiplying" class="source-link" target="_blank" rel="noopener">McKinsey: Personalization drives 40% more revenue</a>
+          </div>
+        </div>
+        <div class="ai-layer-visual">
+          <div class="ai-data-row">
+            <div class="ai-data-dot" style="background: var(--release);"></div>
+            <div class="ai-data-label">Release affinity</div>
+            <div class="ai-data-value" style="color: var(--release);">68%</div>
+          </div>
+          <div class="ai-data-row">
+            <div class="ai-data-dot" style="background: var(--align);"></div>
+            <div class="ai-data-label">Align affinity</div>
+            <div class="ai-data-value" style="color: var(--align);">22%</div>
+          </div>
+          <div class="ai-data-row">
+            <div class="ai-data-dot" style="background: var(--become);"></div>
+            <div class="ai-data-label">Become affinity</div>
+            <div class="ai-data-value" style="color: var(--become);">10%</div>
+          </div>
+          <div class="ai-data-row">
+            <div class="ai-data-dot" style="background: var(--teal);"></div>
+            <div class="ai-data-label">Avg. session completion</div>
+            <div class="ai-data-value" style="color: var(--teal);">94%</div>
+          </div>
+          <div class="ai-data-row">
+            <div class="ai-data-dot" style="background: #F59E0B;"></div>
+            <div class="ai-data-label">Growth edge detected</div>
+            <div class="ai-data-value" style="color: #F59E0B;">Become</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6: Predictive Churn Intervention -->
+      <div class="ai-layer-card reveal">
+        <div class="ai-layer-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 3v7l5 3" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="11" cy="11" r="9" stroke="var(--teal)" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/></svg></div>
+        <div class="ai-layer-title">Predictive churn intervention</div>
+        <div class="ai-layer-desc">The model learns pre-churn behavioral signatures: session length declining, skip rate increasing, time-between-opens stretching. Before the user consciously decides to leave, the app intervenes with a pattern interrupt. A new session type they haven't tried. A "remember this?" callback to their most impactful session. A personal note from Jim triggered by the data. The user never sees the machinery. They just feel like the app understands them.</div>
+        <div class="sources">
+          <a href="https://hbr.org/2014/10/the-value-of-keeping-the-right-customers" class="source-link" target="_blank" rel="noopener">HBR: Predictive retention modeling</a>
+        </div>
+      </div>
+
+      <!-- Card 7: Context-Aware Delivery -->
+      <div class="ai-layer-card reveal">
+        <div class="ai-layer-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="5" y="2" width="12" height="18" rx="2.5" stroke="var(--teal)" stroke-width="1.5" fill="none"/><circle cx="11" cy="16" r="1" fill="var(--teal)"/><path d="M8 6h6M8 9h4" stroke="var(--teal)" stroke-width="1" stroke-linecap="round" opacity="0.5"/></svg></div>
+        <div class="ai-layer-title">Context-aware delivery</div>
+        <div class="ai-layer-desc">The app learns that this user meditates at 7:15am on weekdays but 9:30am on weekends. It pre-loads the session, optimizes notification timing, and adjusts content tone (energizing mornings vs. reflective weekends). Location data adds another layer: at home vs. traveling, in a quiet environment vs. commuting. Each context gets a tuned experience. The user never configures anything. The app just always feels right.</div>
+        <div class="sources">
+          <a href="https://dl.acm.org/doi/10.1145/3411764.3445349" class="source-link" target="_blank" rel="noopener">ACM: Context-aware recommendation systems</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Compounding Effect -->
+    <div class="bet-card reveal" style="margin-top: 16px;">
+      <div class="bet-header">
+        <div>
+          <div class="bet-number">THE COMPOUNDING EFFECT</div>
+          <div class="bet-title">Every day the AI gets better. Every day switching costs increase.</div>
+        </div>
+      </div>
+      <div class="bet-body">By Month 6, the app knows each user's emotional patterns, optimal session lengths, preferred pillar balance, and practice rhythm. By Month 12, it has seasonal data, life-event correlations, and growth trajectory predictions. A competitor launching at that point starts from zero. The personalization engine is not just a feature. It is the moat. A user leaving after 12 months isn't just losing their streak. They're losing a system that took a year to learn who they are. No other app can offer that on Day 1.</div>
+      <div class="risk-gauge">
+        <div class="risk-bar-track"><div class="risk-bar-fill risk-animate" style="background: linear-gradient(90deg, var(--teal), var(--become));" data-width="100%"></div></div>
+      </div>
+      <div class="bet-opportunity">
+        <div class="bet-opp-label">Why This Matters</div>
+        <div class="bet-opp-text">Netflix's recommendation engine saves them $1 billion per year in reduced churn. Spotify's Discover Weekly alone drives 30% of all listening time. The meditation space has zero equivalent. The first app to build true behavioral personalization owns the category.</div>
+      </div>
+      <div class="sources">
+        <a href="https://netflixtechblog.com/netflix-recommendations-beyond-the-5-stars-part-1-55838468f429" class="source-link" target="_blank" rel="noopener">Netflix Tech Blog: Recommendation economics</a>
+        <a href="https://research.atspotify.com/" class="source-link" target="_blank" rel="noopener">Spotify Research: Algorithmic curation impact</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== PHOTO BREAK ===== -->
+<div class="photo-break" style="min-height: 35vh;" aria-hidden="true">
+  <img src="photos/EY-075.jpg" alt="" loading="lazy" style="object-position: center 60%;">
+  <div style="position: absolute; inset: 0; background: linear-gradient(180deg, var(--bg) 0%, transparent 25%, transparent 75%, var(--bg) 100%);"></div>
+</div>
+
+
+<!-- ===== SECTION 7: FUTURE MOVES ===== -->
+<section class="section-light" id="strategic-omissions">
+  <div class="container">
+    <div class="section-label reveal">FUTURE MOVES</div>
+    <h2 class="section-title reveal reveal-delay-1">Four markets we can enter when the timing is right.</h2>
+    <p class="section-desc reveal reveal-delay-2">Each one has a trigger point where the opportunity cost of waiting exceeds the cost of building. The research already tells us what those triggers are.</p>
+
+    <!-- Gap Radar -->
+    <div class="gap-radar reveal" aria-label="Strategic gap radar showing six dimensions">
+      <svg viewBox="0 0 400 400" style="overflow: visible;">
+        <circle cx="200" cy="200" r="160" fill="none" stroke="rgba(26,20,16,0.04)" stroke-width="0.5"/>
+        <circle cx="200" cy="200" r="120" fill="none" stroke="rgba(26,20,16,0.04)" stroke-width="0.5"/>
+        <circle cx="200" cy="200" r="80" fill="none" stroke="rgba(26,20,16,0.04)" stroke-width="0.5"/>
+        <circle cx="200" cy="200" r="40" fill="none" stroke="rgba(26,20,16,0.04)" stroke-width="0.5"/>
+        <line x1="200" y1="40" x2="200" y2="360" stroke="rgba(26,20,16,0.04)" stroke-width="0.5"/>
+        <line x1="61" y1="120" x2="339" y2="280" stroke="rgba(26,20,16,0.04)" stroke-width="0.5"/>
+        <line x1="61" y1="280" x2="339" y2="120" stroke="rgba(26,20,16,0.04)" stroke-width="0.5"/>
+        <!-- Ideal shape -->
+        <polygon points="200,48 332,124 332,296 200,352 68,296 68,124"
+          fill="none" stroke="rgba(26,20,16,0.1)" stroke-width="0.5" stroke-dasharray="4 4"/>
+        <!-- Current shape -->
+        <polygon class="radar-shape" points="200,200 200,200 200,200 200,200 200,200 200,200"
+          data-target="200,72 308,152 308,280 200,328 92,280 92,152"
+          fill="rgba(51,163,163,0.06)" stroke="var(--teal)" stroke-width="1.5" opacity="0"/>
+        <!-- Points -->
+        <circle class="radar-point" cx="200" cy="72" r="0" data-r="5" fill="var(--teal)" stroke="white" stroke-width="2"/>
+        <circle class="radar-point" cx="308" cy="152" r="0" data-r="5" fill="var(--teal)" stroke="white" stroke-width="2"/>
+        <circle class="radar-point" cx="308" cy="280" r="0" data-r="5" fill="#F59E0B" stroke="white" stroke-width="2"/>
+        <circle class="radar-point" cx="200" cy="328" r="0" data-r="5" fill="var(--release)" stroke="white" stroke-width="2"/>
+        <circle class="radar-point" cx="92" cy="280" r="0" data-r="5" fill="var(--release)" stroke="white" stroke-width="2"/>
+        <circle class="radar-point" cx="92" cy="152" r="0" data-r="5" fill="#F59E0B" stroke="white" stroke-width="2"/>
+        <!-- Labels -->
+        <text class="radar-label" x="200" y="28" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)" letter-spacing="1.5">PRODUCT</text>
+        <text class="radar-label" x="352" y="148" text-anchor="start" font-size="10" font-weight="600" fill="var(--text)" letter-spacing="1.5">GROWTH</text>
+        <text class="radar-label" x="352" y="284" text-anchor="start" font-size="10" font-weight="600" fill="#D97706" letter-spacing="1.5">POST-LAUNCH</text>
+        <text class="radar-label" x="200" y="380" text-anchor="middle" font-size="10" font-weight="600" fill="var(--release)" letter-spacing="1.5">FINANCIALS</text>
+        <text class="radar-label" x="48" y="284" text-anchor="end" font-size="10" font-weight="600" fill="var(--release)" letter-spacing="1.5">EXPANSION</text>
+        <text class="radar-label" x="48" y="148" text-anchor="end" font-size="10" font-weight="600" fill="#D97706" letter-spacing="1.5">DISCOVERY</text>
+      </svg>
+    </div>
+
+    <!-- Explore Cards -->
+    <div class="explore-card reveal">
+      <div class="explore-number">EXPLORE 01</div>
+      <div class="explore-title">No freemium tier at launch</div>
+      <div class="explore-body">Free users cost money (server, bandwidth, support) and convert at roughly 2 to 5% in the meditation space. We're choosing a clean trial-to-paid model. This means every user who doesn't convert in 14 days is lost entirely. There is no "free tier" to keep them in the ecosystem.</div>
+      <div class="explore-trigger">
+        <div class="explore-trigger-label">Trigger Point</div>
+        <div class="explore-trigger-text">Trial-to-paid conversion drops below 8%. At that point, a limited free tier with 3 to 5 sessions becomes a re-engagement channel worth the server cost.</div>
+      </div>
+    </div>
+
+    <div class="explore-card reveal">
+      <div class="explore-number">EXPLORE 02</div>
+      <div class="explore-title">No social or community features</div>
+      <div class="explore-body">Meditation is private. Adding social features risks making the experience feel performative. Insight Timer has a social layer (groups, messages, live events) that drives engagement but also creates moderation overhead and occasionally toxic dynamics.</div>
+      <div class="explore-trigger">
+        <div class="explore-trigger-label">Trigger Point</div>
+        <div class="explore-trigger-text">MAU exceeds 50,000 and churn data shows users who feel "alone" in the app churn 2x faster than those who feel connected. Lightweight accountability features (streak sharing, anonymous cohorts) are the first test.</div>
+      </div>
+    </div>
+
+    <div class="explore-card reveal">
+      <div class="explore-number">EXPLORE 03</div>
+      <div class="explore-title">No wearable or device integration</div>
+      <div class="explore-body">Apple Watch, Oura Ring, and Whoop are generating biometric data that could make meditation measurably effective. Heart rate variability before and after a session. Sleep score improvements over time. This data would transform "I feel better" into "your HRV improved 12% this month."</div>
+      <div class="explore-trigger">
+        <div class="explore-trigger-label">Trigger Point</div>
+        <div class="explore-trigger-text">Apple announces a meditation API or HealthKit integration that makes biometric data available passively. The engineering cost drops to near-zero and the user value is immediate. This is a "when not if" feature.</div>
+      </div>
+    </div>
+
+    <div class="explore-card reveal">
+      <div class="explore-number">EXPLORE 04</div>
+      <div class="explore-title">No internationalization or localization</div>
+      <div class="explore-body">Jim records in English. The book publishes in English. The entire product is English-first. The global meditation market is growing faster outside North America than within it. We're leaving the majority of the addressable market on the table.</div>
+      <div class="explore-trigger">
+        <div class="explore-trigger-label">Trigger Point</div>
+        <div class="explore-trigger-text">US market penetration plateaus or a publishing deal for the book in another language creates a natural entry point. Spanish and Portuguese are the highest-ROI second markets for meditation apps.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== CLOSING ===== -->
+<section class="closing" aria-label="Closing">
+  <div style="position: absolute; inset: 0; z-index: 0;">
+    <img src="photos/EY-075.jpg" alt="" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; object-position: center 30%; opacity: 0.08;">
+    <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,10,15,0.9) 0%, rgba(8,10,15,0.7) 50%, rgba(8,10,15,0.92) 100%);"></div>
+  </div>
+
+  <div class="container" style="position: relative; z-index: 2; padding: 140px 32px;">
+    <h2 class="closing-title reveal">The market has gaps.<br>The research says they're ours to claim.</h2>
+    <p class="closing-text reveal reveal-delay-1">Every opportunity on this page is sourced, sized, and connected to a strategic move. The foundation is built. The question is which doors to open first.</p>
+
+    <div class="closing-links reveal reveal-delay-2">
+      <a href="the-thesis.html" class="closing-link primary">Read the Thesis &rarr;</a>
+      <a href="jim-marketing-playbook.html" class="closing-link secondary">Marketing Playbook &rarr;</a>
+      <a href="index.html" class="closing-link secondary">Portal Home &rarr;</a>
+    </div>
+
+    <img src="possibility-logo.svg" alt="The Possibility" class="closing-logo reveal reveal-delay-3" loading="lazy">
+    <div class="closing-gradient-bar reveal reveal-delay-4" aria-hidden="true"></div>
+  </div>
+</section>
+
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+// Reveal on scroll
+(function(){
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.reveal, .reveal-scale, .reveal-blur').forEach(function(el){
+    obs.observe(el);
+  });
+})();
+
+// Risk bar + signal bar animation
+(function(){
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var w = e.target.getAttribute('data-width');
+        if(w) e.target.style.width = w;
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.risk-animate, .signal-animate').forEach(function(el){
+    obs.observe(el);
+  });
+})();
+
+// Count-up animation
+(function(){
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var el = e.target;
+        var target = parseInt(el.getAttribute('data-target'), 10);
+        var duration = 1600;
+        var start = performance.now();
+        function tick(now){
+          var t = Math.min((now - start) / duration, 1);
+          var ease = 1 - Math.pow(1 - t, 3);
+          el.textContent = Math.round(target * ease);
+          if(t < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+        obs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.count-up').forEach(function(el){
+    obs.observe(el);
+  });
+})();
+
+// Coverage ring animation
+(function(){
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var segs = e.target.querySelectorAll('.ring-seg');
+        segs.forEach(function(seg, i){
+          setTimeout(function(){
+            seg.setAttribute('stroke-dashoffset', seg.getAttribute('data-target-offset'));
+            seg.style.opacity = seg.getAttribute('opacity');
+          }, i * 300);
+        });
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.coverage-ring-wrap').forEach(function(el){
+    obs.observe(el);
+  });
+})();
+
+// Radar chart animation
+(function(){
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var shape = e.target.querySelector('.radar-shape');
+        if(shape){
+          var target = shape.getAttribute('data-target');
+          setTimeout(function(){
+            shape.setAttribute('points', target);
+            shape.style.opacity = '0.6';
+          }, 200);
+        }
+        var points = e.target.querySelectorAll('.radar-point');
+        points.forEach(function(p, i){
+          setTimeout(function(){
+            p.setAttribute('r', p.getAttribute('data-r'));
+          }, 400 + i * 100);
+        });
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.gap-radar').forEach(function(el){
+    obs.observe(el);
+  });
+})();
+
+// Nav visibility
+(function(){
+  var nav = document.getElementById('topNav');
+  var burger = document.getElementById('mobBurger');
+  var hero = document.querySelector('.hero');
+  if(!hero) return;
+  var ticking = false;
+
+  function check(){
+    var bottom = hero.getBoundingClientRect().bottom;
+    if(nav){
+      if(bottom < 0) nav.classList.add('visible');
+      else nav.classList.remove('visible');
+    }
+    if(burger){
+      if(bottom > 60) burger.classList.add('hero-mode');
+      else burger.classList.remove('hero-mode');
+    }
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', function(){
+    if(!ticking){ requestAnimationFrame(check); ticking = true; }
+  }, { passive: true });
+  check();
+})();
+
+// Mobile menu
+(function(){
+  var burger = document.getElementById('mobBurger');
+  var overlay = document.getElementById('mobOverlay');
+  if(!burger || !overlay) return;
+
+  burger.addEventListener('click', function(){
+    var isOpen = overlay.classList.contains('open');
+    if(isOpen){
+      overlay.classList.remove('open');
+      burger.classList.remove('active');
+      burger.setAttribute('aria-expanded','false');
+      document.body.style.overflow = '';
+    } else {
+      overlay.classList.add('open');
+      burger.classList.add('active');
+      burger.setAttribute('aria-expanded','true');
+      document.body.style.overflow = 'hidden';
+    }
+  });
+
+  overlay.querySelectorAll('a').forEach(function(link){
+    link.addEventListener('click', function(){
+      overlay.classList.remove('open');
+      burger.classList.remove('active');
+      burger.setAttribute('aria-expanded','false');
+      document.body.style.overflow = '';
+    });
+  });
+})();
+</script>
+
+<link rel="stylesheet" href="visual-enhancements.css">
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+<script src="visual-enhancements.js"></script>
+
+<!-- Page-specific GSAP enhancements -->
+<script>
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if(typeof gsap==='undefined'||typeof ScrollTrigger==='undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Hero background parallax
+  var heroBg = document.querySelector('.hero-bg');
+  if(heroBg){
+    gsap.to(heroBg, {
+      yPercent: 15,
+      ease: 'none',
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.8 }
+    });
+  }
+
+  // Hero orb parallax (different rates for depth)
+  document.querySelectorAll('.hero-orb').forEach(function(orb, i){
+    gsap.to(orb, {
+      yPercent: 20 + i * 10,
+      ease: 'none',
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 }
+    });
+  });
+
+  // Photo break parallax
+  document.querySelectorAll('.photo-break img').forEach(function(img){
+    gsap.to(img, {
+      yPercent: 12,
+      ease: 'none',
+      scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: 1 }
+    });
+  });
+
+  // Bet cards: staggered blur-in with slight scale
+  document.querySelectorAll('.bet-card').forEach(function(card, i){
+    gsap.fromTo(card, {
+      opacity: 0, y: 40, filter: 'blur(6px)', scale: 0.97
+    }, {
+      opacity: 1, y: 0, filter: 'blur(0px)', scale: 1,
+      duration: 1, delay: i * 0.08,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: card, start: 'top 90%', once: true }
+    });
+  });
+
+  // Explore cards: staggered entrance
+  document.querySelectorAll('.explore-card').forEach(function(card, i){
+    gsap.fromTo(card, {
+      opacity: 0, y: 36, filter: 'blur(4px)'
+    }, {
+      opacity: 1, y: 0, filter: 'blur(0px)',
+      duration: 0.9, delay: i * 0.1,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: card, start: 'top 90%', once: true }
+    });
+  });
+
+  // Archetype cards: stagger from bottom with scale
+  var archCards = document.querySelectorAll('.archetype-card');
+  if(archCards.length){
+    gsap.fromTo(archCards, {
+      opacity: 0, y: 32, scale: 0.95
+    }, {
+      opacity: 1, y: 0, scale: 1,
+      duration: 0.9, stagger: 0.12,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: '.archetype-grid', start: 'top 85%', once: true }
+    });
+  }
+
+  // Opp matrix cells: stagger
+  var oppCells = document.querySelectorAll('.opp-cell');
+  if(oppCells.length){
+    gsap.fromTo(oppCells, {
+      opacity: 0, y: 24, scale: 0.96
+    }, {
+      opacity: 1, y: 0, scale: 1,
+      duration: 0.8, stagger: 0.1,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: '.opp-matrix', start: 'top 85%', once: true }
+    });
+  }
+
+  // Signal rows: stagger left-to-right
+  var sigRows = document.querySelectorAll('.signal-row');
+  if(sigRows.length){
+    gsap.fromTo(sigRows, {
+      opacity: 0, x: -20
+    }, {
+      opacity: 1, x: 0,
+      duration: 0.7, stagger: 0.06,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: '.signal-grid', start: 'top 85%', once: true }
+    });
+  }
+
+  // Timeline nodes: stagger with dot glow
+  document.querySelectorAll('.timeline-node').forEach(function(node, i){
+    gsap.fromTo(node, {
+      opacity: 0, x: -24
+    }, {
+      opacity: 1, x: 0,
+      duration: 0.8, delay: i * 0.12,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: node, start: 'top 88%', once: true },
+      onComplete: function(){ node.classList.add('in-view'); }
+    });
+  });
+
+  // Coverage ring: enhanced entrance
+  var coverageWrap = document.querySelector('.coverage-ring-wrap');
+  if(coverageWrap){
+    gsap.fromTo(coverageWrap, {
+      opacity: 0, scale: 0.8, rotation: -10
+    }, {
+      opacity: 1, scale: 1, rotation: 0,
+      duration: 1.2,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: coverageWrap, start: 'top 85%', once: true }
+    });
+  }
+
+  // Gap radar: rotate in gently
+  var radar = document.querySelector('.gap-radar');
+  if(radar){
+    gsap.fromTo(radar, {
+      opacity: 0, scale: 0.85, rotation: -5
+    }, {
+      opacity: 1, scale: 1, rotation: 0,
+      duration: 1.2,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: radar, start: 'top 85%', once: true }
+    });
+  }
+
+  // Pull quote: scale up with blur
+  var pullQuote = document.querySelector('.pull-quote blockquote');
+  if(pullQuote){
+    gsap.fromTo(pullQuote, {
+      opacity: 0, scale: 0.92, filter: 'blur(6px)'
+    }, {
+      opacity: 1, scale: 1, filter: 'blur(0px)',
+      duration: 1.1,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: pullQuote, start: 'top 85%', once: true }
+    });
+  }
+
+  // Framing section: word-level stagger on first paragraph
+  var framingP = document.querySelector('.framing p');
+  if(framingP && framingP.textContent.length < 500){
+    // Light entrance for the whole framing block
+    gsap.fromTo('.framing', {
+      opacity: 0, y: 40
+    }, {
+      opacity: 1, y: 0,
+      duration: 1.2,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: '.framing', start: 'top 85%', once: true }
+    });
+  }
+
+  // AI layer cards: staggered blur entrance
+  var aiCards = document.querySelectorAll('.ai-layer-card');
+  if(aiCards.length){
+    gsap.fromTo(aiCards, {
+      opacity: 0, y: 36, filter: 'blur(5px)', scale: 0.96
+    }, {
+      opacity: 1, y: 0, filter: 'blur(0px)', scale: 1,
+      duration: 0.9, stagger: 0.1,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: '.ai-layer-grid', start: 'top 85%', once: true }
+    });
+  }
+
+  // AI data rows: count-up animation on values
+  document.querySelectorAll('.ai-data-value').forEach(function(el){
+    var text = el.textContent.trim();
+    if(/^\d+%$/.test(text)){
+      var target = parseInt(text, 10);
+      el.textContent = '0%';
+      gsap.to(el, {
+        textContent: target,
+        duration: 1.6,
+        ease: 'power2.out',
+        snap: { textContent: 1 },
+        scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+        onUpdate: function(){ el.textContent = Math.round(parseFloat(el.textContent)) + '%'; }
+      });
+    }
+  });
+
+  // Hero stat counter animation (GSAP-powered)
+  document.querySelectorAll('.hero-stat-value').forEach(function(el){
+    var text = el.textContent.trim();
+    // Only animate pure numbers
+    if(/^\d+$/.test(text)){
+      var target = parseInt(text, 10);
+      el.textContent = '0';
+      gsap.to(el, {
+        textContent: target,
+        duration: 2,
+        delay: 1.3,
+        ease: 'power2.out',
+        snap: { textContent: 1 }
+      });
+    }
+  });
+})();
+</script>
+
+<script src="chat-widget.js" defer></script>
+
+<script src="/settings-widget.js" defer></script>
+</body>
+</html>

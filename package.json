@@ -1,0 +1,19 @@
+{
+  "name": "possibility-strategy-site",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve .",
+    "screenshots": "node scripts/generate-screenshot-manifest.js",
+    "build": "node scripts/generate-screenshot-manifest.js"
+  },
+  "devDependencies": {
+    "vercel": "^50.28.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.99.1",
+    "mammoth": "^1.11.0",
+    "pdf-parse": "^2.4.5",
+    "playwright": "^1.58.2"
+  }
+}

@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+<title>Sign In - The Possibility</title>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<link rel="icon" type="image/png" href="app-icon.png">
+<link rel="apple-touch-icon" href="app-icon.png">
+<link rel="preload" as="image" href="photos/jeremy-bishop-h7bQ8VEZtws-unsplash.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080A0F;
+  --text-light: rgba(255,252,250,0.92);
+  --text-light-2: rgba(255,252,250,0.5);
+  --text-light-3: rgba(255,252,250,0.28);
+  --teal: #2E9E9E;
+  --teal-bright: #33A3A3;
+  --release: #E8758A;
+  --zen: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; height: 100%; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text-light);
+  -webkit-font-smoothing: antialiased;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* === SPLIT LAYOUT === */
+.split {
+  display: grid;
+  grid-template-columns: 55fr 45fr;
+  height: 100%;
+}
+
+/* === LEFT: HERO IMAGE PANEL === */
+.hero-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-panel img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  animation: heroReveal 2s var(--zen) both, heroDrift 30s ease-in-out 2s infinite alternate;
+  will-change: transform, opacity;
+}
+
+@keyframes heroReveal {
+  from { opacity: 0; transform: scale(1.08); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes heroDrift {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.04) translate(-0.3%, -0.2%); }
+}
+
+/* Grain on image */
+.hero-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='5' stitchTiles='stitch' seed='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23paper)' opacity='0.025'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  opacity: 0.35;
+}
+
+/* Dark gradient blending right edge into the form panel */
+.hero-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(to right, transparent 50%, rgba(8,10,15,0.4) 75%, rgba(8,10,15,0.95) 100%),
+    linear-gradient(to top, rgba(8,10,15,0.6) 0%, transparent 25%);
+}
+
+/* Particles on the hero side */
+.particles {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  animation: particleFloat linear infinite;
+}
+
+@keyframes particleFloat {
+  0% { transform: translateY(100%) translateX(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-100%) translateX(30px); opacity: 0; }
+}
+
+/* Hero brand text (top-left on image) */
+.hero-brand {
+  position: absolute;
+  top: 40px;
+  left: 44px;
+  z-index: 4;
+  animation: fadeUp 0.8s var(--zen) 0.3s both;
+}
+
+.hero-brand-name {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+}
+
+/* Quote overlay on image */
+.hero-quote {
+  position: absolute;
+  bottom: 56px;
+  left: 48px;
+  right: 64px;
+  z-index: 4;
+  animation: fadeUp 1s var(--zen) 0.8s both;
+}
+
+/* Decorative line */
+.hero-quote::before {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 1.5px;
+  background: linear-gradient(to right, rgba(46,158,158,0.6), transparent);
+  margin-bottom: 24px;
+}
+
+.hero-quote blockquote {
+  font-size: 28px;
+  font-weight: 200;
+  line-height: 1.45;
+  color: rgba(255,255,255,0.9);
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 24px rgba(0,0,0,0.3);
+  font-style: normal;
+}
+
+.quote-line {
+  display: block;
+}
+
+.quote-line:last-child {
+  color: rgba(46,158,158,0.85);
+  font-weight: 300;
+}
+
+.hero-quote cite {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+}
+
+.hero-quote cite::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 1px;
+  background: rgba(255,255,255,0.2);
+}
+
+/* === RIGHT: FORM PANEL === */
+.form-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 52px;
+  background: var(--bg);
+  overflow-y: auto;
+}
+
+/* Subtle teal ambient glow bleeding in from the image seam */
+.form-panel::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -60px;
+  width: 200px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(46,158,158,0.05) 0%, transparent 70%);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* Grain */
+.form-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='5' stitchTiles='stitch' seed='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23paper)' opacity='0.025'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 380px;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Logo on form side */
+.form-brand {
+  margin-bottom: 44px;
+  animation: fadeUp 0.7s var(--zen) 0.15s both;
+}
+
+.form-logo {
+  width: 40px;
+  height: 40px;
+  filter: drop-shadow(0 0 14px rgba(46,158,158,0.15));
+}
+
+/* Card area */
+.form-content {
+  animation: fadeUp 0.8s var(--zen) 0.4s both;
+}
+
+.card-title {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.8px;
+  color: var(--text-light);
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.card-subtitle {
+  font-size: 14px;
+  color: var(--text-light-3);
+  margin-bottom: 32px;
+}
+
+/* Fields */
+.field {
+  margin-bottom: 20px;
+}
+
+.field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-light-3);
+  margin-bottom: 8px;
+}
+
+.field input {
+  width: 100%;
+  padding: 15px 18px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  color: var(--text-light);
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.field input::placeholder { color: rgba(255,252,250,0.14); }
+
+.field input:focus {
+  border-color: rgba(46,158,158,0.5);
+  box-shadow: 0 0 0 4px rgba(46,158,158,0.08), 0 0 24px rgba(46,158,158,0.04);
+  background: rgba(255,255,255,0.045);
+}
+
+/* Button */
+.submit-btn {
+  width: 100%;
+  padding: 15px;
+  margin-top: 8px;
+  background: linear-gradient(135deg, var(--teal), #28B5B5);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  letter-spacing: 0.3px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.3s ease;
+}
+
+.submit-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.12) 50%, transparent 100%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.submit-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 32px rgba(46,158,158,0.3), 0 2px 8px rgba(46,158,158,0.15);
+}
+
+.submit-btn:hover::before { transform: translateX(100%); }
+.submit-btn:active { transform: translateY(0) scale(0.985); }
+.submit-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* Error */
+.error-msg {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: rgba(232,117,138,0.06);
+  border: 1px solid rgba(232,117,138,0.1);
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--release);
+  text-align: center;
+  display: none;
+}
+
+.error-msg.visible {
+  display: block;
+  animation: fadeUp 0.3s var(--zen) both;
+}
+
+/* Footer text */
+.form-footer {
+  margin-top: 40px;
+  font-size: 11px;
+  color: rgba(255,252,250,0.15);
+  letter-spacing: 0.5px;
+  animation: fadeUp 0.8s var(--zen) 0.7s both;
+}
+
+.form-footer a {
+  color: rgba(255,252,250,0.25);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.form-footer a:hover { color: var(--teal); }
+
+/* === SUCCESS TRANSITION === */
+.login-success-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: var(--bg);
+  padding: 48px;
+}
+
+.login-success-overlay.active { display: flex; }
+
+/* Ambient teal glow */
+.success-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 600px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(46,158,158,0.06) 0%, transparent 70%);
+  opacity: 0;
+  animation: glowIn 2s ease-out 0.2s both;
+  pointer-events: none;
+}
+
+@keyframes glowIn {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+/* Decorative line above quote */
+.success-line {
+  position: relative;
+  z-index: 2;
+  width: 40px;
+  height: 1.5px;
+  background: linear-gradient(to right, transparent, rgba(46,158,158,0.6), transparent);
+  opacity: 0;
+  animation: lineIn 0.8s var(--zen) 0.3s both;
+  margin-bottom: 40px;
+}
+
+@keyframes lineIn {
+  from { opacity: 0; width: 0; }
+  to { opacity: 1; width: 40px; }
+}
+
+/* Quote text */
+.success-quote {
+  position: relative;
+  z-index: 2;
+  max-width: 640px;
+  text-align: center;
+}
+
+.success-quote blockquote {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(26px, 4vw, 44px);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.5;
+  color: rgba(255,252,250,0.78);
+  letter-spacing: 0.2px;
+  margin: 0;
+}
+
+.success-quote .sq-phrase {
+  display: block;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: phraseReveal 1.2s var(--zen) both;
+}
+
+.success-quote .sq-accent {
+  color: var(--teal-bright);
+  font-weight: 300;
+}
+
+.success-quote .sq-em {
+  color: rgba(255,252,250,0.95);
+  font-weight: 300;
+}
+
+@keyframes phraseReveal {
+  from { opacity: 0; transform: translateY(12px); filter: blur(3px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.success-quote cite {
+  display: block;
+  margin-top: 32px;
+  font-size: 11px;
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,252,250,0.3);
+  opacity: 0;
+  animation: citeIn 0.6s var(--zen) both;
+}
+
+@keyframes citeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Subtle floating particles in transition */
+.success-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.success-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(46,158,158,0.15);
+  animation: sParticle 6s ease-in-out infinite;
+}
+
+@keyframes sParticle {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0; }
+  50% { transform: translateY(-40px) scale(1.5); opacity: 1; }
+}
+
+/* Final fade to white before redirect */
+.success-fade {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: var(--bg);
+  opacity: 0;
+  pointer-events: none;
+  animation: finalFade 0.8s ease-in both;
+}
+
+@keyframes finalFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* === WELCOME MODAL (Jim / Eric) === */
+.welcome-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(8,10,15,0.78);
+  backdrop-filter: saturate(140%) blur(10px);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.welcome-overlay.active { display: flex; opacity: 1; }
+
+.welcome-card {
+  position: relative;
+  max-width: 460px;
+  width: 100%;
+  padding: 40px 36px 32px;
+  background: linear-gradient(180deg, #11141c 0%, #0b0e15 100%);
+  border: 1px solid rgba(255,252,250,0.08);
+  border-radius: 22px;
+  box-shadow: 0 30px 90px rgba(0,0,0,0.55), 0 0 0 1px rgba(46,158,158,0.08) inset;
+  text-align: center;
+  transform: translateY(14px) scale(0.97);
+  transition: transform 0.45s var(--zen);
+}
+.welcome-overlay.active .welcome-card { transform: translateY(0) scale(1); }
+
+.welcome-mark {
+  width: 56px;
+  height: 56px;
+  border-radius: 15px;
+  margin: 0 auto 22px;
+  background: linear-gradient(135deg, var(--teal), var(--teal-bright));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(46,158,158,0.35);
+}
+.welcome-mark svg { width: 26px; height: 26px; }
+
+.welcome-eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--teal-bright);
+  margin-bottom: 10px;
+}
+
+.welcome-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 32px;
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.2;
+  color: var(--text-light);
+  margin-bottom: 14px;
+  letter-spacing: 0.3px;
+}
+
+.welcome-body {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--text-light-2);
+  margin-bottom: 28px;
+}
+.welcome-body strong { color: var(--text-light); font-weight: 500; }
+
+.welcome-cta {
+  display: block;
+  width: 100%;
+  height: 52px;
+  background: var(--teal);
+  color: #fff;
+  border: none;
+  border-radius: 13px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+.welcome-cta:hover { background: var(--teal-bright); }
+.welcome-cta:active { transform: translateY(1px); }
+
+.welcome-secondary {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  background: none;
+  border: none;
+  color: var(--text-light-3);
+  font: inherit;
+  font-size: 12.5px;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  padding: 8px;
+}
+.welcome-secondary:hover { color: var(--text-light-2); }
+
+/* === RESPONSIVE === */
+@media (max-width: 900px) {
+  .split {
+    grid-template-columns: 1fr;
+    grid-template-rows: 45vh 1fr;
+  }
+
+  .hero-panel::after {
+    background:
+      linear-gradient(to bottom, transparent 40%, rgba(8,10,15,0.95) 100%),
+      linear-gradient(to bottom, rgba(8,10,15,0.2) 0%, transparent 20%);
+  }
+
+  .hero-quote {
+    bottom: 28px;
+    left: 28px;
+    right: 28px;
+  }
+
+  .hero-quote blockquote { font-size: 20px; }
+
+  .hero-brand { top: 20px; left: 24px; }
+  .hero-brand-name { font-size: 10px; letter-spacing: 2px; }
+
+  .form-brand { margin-bottom: 24px; }
+  .form-logo { width: 32px; height: 32px; }
+
+  .form-panel {
+    padding: 32px 28px 40px;
+    justify-content: center;
+  }
+
+  .card-subtitle { margin-bottom: 24px; }
+}
+
+@media (max-width: 480px) {
+  .split {
+    grid-template-rows: 38vh 1fr;
+  }
+
+  .hero-quote {
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+  }
+
+  .hero-quote blockquote { font-size: 17px; }
+  .hero-quote cite { font-size: 9px; }
+
+  .hero-brand { top: 16px; left: 20px; }
+  .hero-brand-name { font-size: 9px; letter-spacing: 2px; }
+
+  .form-brand { margin-bottom: 16px; }
+  .form-logo { width: 28px; height: 28px; }
+
+  .form-panel { padding: 24px 20px 32px; }
+
+  .card-title { font-size: 24px; }
+  .card-subtitle { margin-bottom: 20px; }
+
+  .field input { padding: 13px 14px; }
+  .submit-btn { padding: 14px; }
+
+  .form-footer { margin-top: 24px; }
+}
+
+@media (max-width: 375px) {
+  .split { grid-template-rows: 32vh 1fr; }
+  .form-panel { padding: 20px 16px 28px; }
+  .hero-quote blockquote { font-size: 15px; }
+}
+
+/* Tall desktops */
+@media (min-width: 901px) and (min-height: 800px) {
+  .hero-quote { bottom: 72px; }
+}
+</style>
+</head>
+<body>
+
+<div class="split">
+
+  <!-- LEFT: Hero image -->
+  <div class="hero-panel">
+    <img src="photos/jeremy-bishop-h7bQ8VEZtws-unsplash.jpg" alt="" draggable="false">
+    <div class="particles" id="particles"></div>
+
+    <div class="hero-brand">
+      <span class="hero-brand-name">The Possibility</span>
+    </div>
+
+    <div class="hero-quote">
+      <blockquote><span class="quote-line">One realization,</span> <span class="quote-line">one unlock,</span> <span class="quote-line">and everything opens up.</span></blockquote>
+      <cite>Jim Curtis</cite>
+    </div>
+  </div>
+
+  <!-- RIGHT: Form -->
+  <div class="form-panel">
+    <div class="form-wrapper">
+
+      <div class="form-brand">
+        <img src="possibility-logo.svg" alt="The Possibility" class="form-logo">
+      </div>
+
+      <div class="form-content">
+        <div class="card-title" id="title">Welcome back</div>
+        <div class="card-subtitle" id="subtitle">Sign in to continue</div>
+
+        <!-- Login Form -->
+        <form id="login-form" autocomplete="on">
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" autocomplete="email" placeholder="you@example.com" required>
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" autocomplete="current-password" placeholder="Enter your password" required>
+          </div>
+          <button type="submit" class="submit-btn" id="submit-btn">Sign in</button>
+        </form>
+
+        <!-- Change Password Form -->
+        <form id="change-pw-form" style="display: none;">
+          <div class="field">
+            <label for="new-password">New Password</label>
+            <input type="password" id="new-password" name="new-password" autocomplete="new-password" placeholder="At least 8 characters" required minlength="8">
+          </div>
+          <div class="field">
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" name="confirm-password" autocomplete="new-password" placeholder="Confirm your new password" required minlength="8">
+          </div>
+          <button type="submit" class="submit-btn" id="change-btn">Set new password</button>
+        </form>
+
+        <div class="error-msg" id="error-msg"></div>
+      </div>
+
+      <div class="form-footer">
+        Need access? Contact <a href="mailto:eric@agency-os.ai">eric@agency-os.ai</a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Success transition overlay -->
+<div class="welcome-overlay" id="welcome-overlay" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+  <div class="welcome-card">
+    <div class="welcome-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    </div>
+    <div class="welcome-eyebrow">Copy Review</div>
+    <div class="welcome-title" id="welcome-title">Welcome back.</div>
+    <div class="welcome-body">Pick up where you left off. Tap any screenshot, drop a comment with your edit, and use <strong>&larr;</strong> <strong>&rarr;</strong> to move between screens.</div>
+    <button type="button" class="welcome-cta" id="welcome-cta">Go to Copy Review</button>
+    <button type="button" class="welcome-secondary" id="welcome-secondary">Continue to home instead</button>
+  </div>
+</div>
+
+<div class="login-success-overlay" id="success-overlay">
+  <div class="success-glow"></div>
+  <div class="success-particles" id="success-particles"></div>
+  <div class="success-line"></div>
+  <div class="success-quote">
+    <blockquote id="success-quote-text"></blockquote>
+    <cite>Jim Curtis</cite>
+  </div>
+  <div class="success-fade" id="success-fade"></div>
+</div>
+
+<script>
+// Particles (on hero panel only)
+(function() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 15; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (14 + Math.random() * 18) + 's';
+    p.style.animationDelay = (Math.random() * 12) + 's';
+    p.style.width = p.style.height = (1.5 + Math.random() * 2) + 'px';
+    p.style.opacity = 0.06 + Math.random() * 0.12;
+    container.appendChild(p);
+  }
+})();
+
+// Auth logic
+const loginForm = document.getElementById('login-form');
+const changePwForm = document.getElementById('change-pw-form');
+const btn = document.getElementById('submit-btn');
+const changeBtn = document.getElementById('change-btn');
+const errorEl = document.getElementById('error-msg');
+const titleEl = document.getElementById('title');
+const subtitleEl = document.getElementById('subtitle');
+const successOverlay = document.getElementById('success-overlay');
+const welcomeOverlay = document.getElementById('welcome-overlay');
+const welcomeTitleEl = document.getElementById('welcome-title');
+const welcomeCta = document.getElementById('welcome-cta');
+const welcomeSecondary = document.getElementById('welcome-secondary');
+
+let pendingAccessToken = null;
+
+function showWelcomeModal(firstName) {
+  welcomeTitleEl.textContent = 'Welcome back, ' + firstName + '.';
+  welcomeOverlay.classList.add('active');
+}
+
+welcomeCta.addEventListener('click', () => { window.location.href = '/copy-review.html'; });
+welcomeSecondary.addEventListener('click', () => { window.location.href = '/'; });
+
+function handleLoginSuccess(email) {
+  const e = (email || '').toLowerCase();
+  if (e.startsWith('jim')) { showWelcomeModal('Jim'); return; }
+  if (e.startsWith('eric')) { showWelcomeModal('Eric'); return; }
+  showSuccess();
+}
+
+function showSuccess() {
+  successOverlay.classList.add('active');
+
+  // Generate subtle particles
+  const pContainer = document.getElementById('success-particles');
+  for (let i = 0; i < 8; i++) {
+    const p = document.createElement('div');
+    p.className = 'success-particle';
+    p.style.left = (15 + Math.random() * 70) + '%';
+    p.style.top = (20 + Math.random() * 60) + '%';
+    p.style.width = p.style.height = (2 + Math.random() * 3) + 'px';
+    p.style.animationDelay = (Math.random() * 3) + 's';
+    p.style.animationDuration = (4 + Math.random() * 4) + 's';
+    pContainer.appendChild(p);
+  }
+
+  // Animate quote phrase by phrase with colored keywords
+  const quoteEl = document.getElementById('success-quote-text');
+  const phrases = [
+    ['\u201CI really believe there\u2019s a ', 'sq-phrase'],
+    ['<span class="sq-accent">possibility</span> for <span class="sq-accent">anything.</span>', 'sq-phrase'],
+    ['It\u2019s how we <span class="sq-em">look at it,</span>', 'sq-phrase'],
+    ['how we <span class="sq-em">focus</span> our own minds', 'sq-phrase'],
+    ['to jump into <span class="sq-accent">what we want.</span>\u201D', 'sq-phrase'],
+  ];
+
+  quoteEl.innerHTML = phrases.map((p, i) =>
+    '<span class="' + p[1] + '" style="animation-delay:' + (0.6 + i * 0.4) + 's">' + p[0] + '</span>'
+  ).join(' ');
+
+  // Animate cite
+  const cite = quoteEl.parentElement.querySelector('cite');
+  const citeDelay = 0.6 + phrases.length * 0.4 + 0.5;
+  cite.style.animationDelay = citeDelay + 's';
+
+  // Final fade and redirect
+  const fadeDelay = citeDelay + 1.8;
+  const fadeEl = document.getElementById('success-fade');
+  fadeEl.style.animationDelay = fadeDelay + 's';
+  setTimeout(() => { window.location.href = '/'; }, (fadeDelay + 0.8) * 1000);
+}
+
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  errorEl.classList.remove('visible');
+  btn.disabled = true;
+  btn.textContent = 'Signing in...';
+
+  const submittedEmail = document.getElementById('email').value.trim();
+
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: submittedEmail,
+        password: document.getElementById('password').value,
+      }),
+    });
+
+    const data = await res.json().catch(() => ({}));
+
+    if (res.ok && data.mustChangePassword) {
+      pendingAccessToken = data.accessToken;
+      loginForm.style.display = 'none';
+      changePwForm.style.display = 'block';
+      titleEl.textContent = 'Set your password';
+      subtitleEl.textContent = 'Please choose a new password to continue.';
+      document.getElementById('new-password').focus();
+      return;
+    }
+
+    if (res.ok) {
+      handleLoginSuccess(submittedEmail);
+    } else {
+      errorEl.textContent = data.error || 'Invalid credentials. Please try again.';
+      errorEl.classList.add('visible');
+      btn.disabled = false;
+      btn.textContent = 'Sign in';
+    }
+  } catch (err) {
+    errorEl.textContent = 'Connection error. Please try again.';
+    errorEl.classList.add('visible');
+    btn.disabled = false;
+    btn.textContent = 'Sign in';
+  }
+});
+
+changePwForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  errorEl.classList.remove('visible');
+
+  const newPw = document.getElementById('new-password').value;
+  const confirmPw = document.getElementById('confirm-password').value;
+
+  if (newPw !== confirmPw) {
+    errorEl.textContent = 'Passwords do not match.';
+    errorEl.classList.add('visible');
+    return;
+  }
+
+  if (newPw.length < 8) {
+    errorEl.textContent = 'Password must be at least 8 characters.';
+    errorEl.classList.add('visible');
+    return;
+  }
+
+  changeBtn.disabled = true;
+  changeBtn.textContent = 'Updating...';
+
+  try {
+    const res = await fetch('/api/auth/change-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        newPassword: newPw,
+        accessToken: pendingAccessToken,
+      }),
+    });
+
+    const data = await res.json().catch(() => ({}));
+
+    if (res.ok) {
+      showSuccess();
+    } else {
+      errorEl.textContent = data.error || 'Failed to update password. Please try again.';
+      errorEl.classList.add('visible');
+      changeBtn.disabled = false;
+      changeBtn.textContent = 'Set new password';
+    }
+  } catch (err) {
+    errorEl.textContent = 'Connection error. Please try again.';
+    errorEl.classList.add('visible');
+    changeBtn.disabled = false;
+    changeBtn.textContent = 'Set new password';
+  }
+});
+</script>
+
+</body>
+</html>

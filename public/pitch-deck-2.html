@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+<title>The Possibility Company | Investor Deck</title>
+<meta name="description" content="The Possibility Company. A content, coaching, and education platform built on the personal brand of Jim Curtis.">
+<meta property="og:title" content="The Possibility Company | Investor Deck">
+<meta property="og:description" content="One founder. Three revenue engines. A million people already listening.">
+<meta property="og:image" content="https://possibility-strategy-site.vercel.app/app-icon.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="The Possibility Company | Investor Deck">
+<meta name="twitter:description" content="One founder. Three revenue engines. A million people already listening.">
+<meta name="twitter:image" content="https://possibility-strategy-site.vercel.app/app-icon.png">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+<link rel="icon" type="image/png" href="app-icon.png">
+<link rel="apple-touch-icon" href="app-icon.png">
+<link rel="stylesheet" href="design-system.css">
+<link rel="preload" as="image" href="jim4.jpg">
+<link rel="preload" as="style" href="design-system.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<style>
+/* ===== PITCH DECK 2: RESEARCH-DRIVEN + FULL VISUAL CRAFT ===== */
+.main { margin-left: var(--sidebar-w); overflow-x: clip; }
+
+/* Scroll progress */
+.scroll-progress { position: fixed; top: 0; left: var(--sidebar-w); right: 0; height: 2px; z-index: 10000; background: var(--pillar-gradient); opacity: 0.7; width: 0%; transition: width 0.1s linear; }
+
+/* Source links */
+.src { font-size: 10px; font-weight: 500; color: var(--teal); opacity: 0.5; text-decoration: none; border-bottom: 0.5px dotted rgba(51,163,163,0.3); transition: opacity 0.2s; }
+.src:hover { opacity: 1; }
+
+/* ===== HERO ANIMATIONS ===== */
+@keyframes heroImgReveal { 0% { opacity: 0; transform: scale(1.1); } 100% { opacity: 0.4; transform: scale(1.0); } }
+@keyframes scrimFade { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes heroBadgeDrift { 0% { opacity: 0; transform: translateY(16px) scale(0.94); filter: blur(4px); } 100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
+@keyframes heroTitleReveal { 0% { opacity: 0; transform: translateY(36px); filter: blur(6px); } 100% { opacity: 1; transform: translateY(0); filter: blur(0); } }
+@keyframes heroSubReveal { 0% { opacity: 0; transform: translateY(20px); filter: blur(3px); } 100% { opacity: 1; transform: translateY(0); filter: blur(0); } }
+@keyframes phonesRise { 0% { opacity: 0; transform: translateY(calc(50% + 40px)); } 100% { opacity: 1; transform: translateY(50%); } }
+@keyframes scrollBounce { 0%,100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(6px); opacity: 0.8; } }
+@keyframes scrollFadeOut { 0% { opacity: 1; } 100% { opacity: 0.15; } }
+
+/* ===== HERO ===== */
+.hero { position: relative; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; background: var(--dark); }
+.hero-bg { position: absolute; inset: 0; z-index: 1; }
+.hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; opacity: 0; animation: heroImgReveal 2.4s cubic-bezier(0.16,1,0.3,1) 0.1s forwards; }
+.hero-bg::after { content: ''; position: absolute; inset: 0; opacity: 0; animation: scrimFade 2s ease-out 0.3s forwards; background: linear-gradient(180deg, rgba(8,10,15,0.4) 0%, rgba(8,10,15,0.15) 30%, rgba(8,10,15,0.6) 65%, rgba(8,10,15,0.95) 100%); }
+.hero-content { position: relative; z-index: 2; padding: 0 64px 0; max-width: 900px; width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; margin: 0 auto; }
+.hero-logo { width: 56px; height: 56px; margin-bottom: 14px; filter: drop-shadow(0 4px 24px rgba(51,163,163,0.2)); opacity: 0; animation: heroBadgeDrift 1s cubic-bezier(0.16,1,0.3,1) 0.3s forwards; }
+.hero-company { font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,252,250,0.4); margin-bottom: 32px; opacity: 0; animation: heroBadgeDrift 1s cubic-bezier(0.16,1,0.3,1) 0.5s forwards; }
+.hero h1 { font-size: clamp(36px, 5vw, 64px); font-weight: 200; line-height: 1.1; letter-spacing: -2px; color: rgba(255,252,250,0.95); margin-bottom: 16px; opacity: 0; animation: heroTitleReveal 1.6s cubic-bezier(0.16,1,0.3,1) 0.8s forwards; }
+.hero h1 em { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 300; color: var(--teal); }
+.hero-sub { font-size: clamp(14px, 1.8vw, 17px); font-weight: 400; color: var(--text-light-2); max-width: 580px; line-height: 1.7; margin: 0 auto 28px; opacity: 0; animation: heroSubReveal 1.4s cubic-bezier(0.16,1,0.3,1) 1.2s forwards; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; background: rgba(255,252,250,0.1); border: 0.5px solid rgba(255,252,250,0.1); border-radius: 100px; font-size: 10px; font-weight: 600; color: rgba(255,252,250,0.45); letter-spacing: 2px; text-transform: uppercase; opacity: 0; animation: heroBadgeDrift 1.2s cubic-bezier(0.16,1,0.3,1) 1.5s forwards; }
+.hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 12px rgba(51,163,163,0.6); }
+
+/* Hero phones */
+.hero-phones { position: absolute; bottom: 0; right: 64px; z-index: 3; display: flex; align-items: flex-end; gap: 12px; transform: translateY(50%); opacity: 0; animation: phonesRise 1.8s cubic-bezier(0.16,1,0.3,1) 1.5s forwards; }
+.hero-phone { border-radius: 20px; overflow: hidden; box-shadow: 0 32px 80px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.2), inset 0 0 0 0.5px rgba(255,255,255,0.08), 0 0 60px rgba(51,163,163,0.06); }
+.hero-phone img { width: 100%; display: block; }
+.hero-phone.center { width: 180px; z-index: 3; transform: translateY(-16px); }
+.hero-phone.side { width: 145px; opacity: 0.85; }
+.hero-phone.left { transform: perspective(1200px) rotateY(8deg); }
+.hero-phone.right { transform: perspective(1200px) rotateY(-8deg); }
+
+/* Hero scroll indicator */
+.hero-scroll { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); z-index: 4; opacity: 0; animation: heroBadgeDrift 1s cubic-bezier(0.16,1,0.3,1) 2s forwards; }
+.hero-scroll svg { width: 24px; height: 24px; stroke: var(--teal); stroke-width: 2; fill: none; opacity: 0.5; animation: scrollBounce 2s ease-in-out 4, scrollFadeOut 1s ease-out 8s forwards; }
+
+/* ===== THESIS: SHOWSTOPPER ===== */
+.thesis-bar { position: relative; background: var(--dark); padding: 80px 56px; overflow: hidden; border-top: 1px solid rgba(255,252,250,0.06); }
+.thesis-bar::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(51,163,163,0.08) 0%, transparent 70%); pointer-events: none; }
+.thesis-bar::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent 10%, var(--teal) 50%, transparent 90%); opacity: 0.3; }
+.thesis-inner { max-width: 1000px; margin: 0 auto; position: relative; z-index: 2; }
+.thesis-header { text-align: center; margin-bottom: 48px; }
+.thesis-header .label { font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--teal); margin-bottom: 16px; display: inline-block; padding: 6px 18px; background: rgba(51,163,163,0.06); border: 0.5px solid rgba(51,163,163,0.15); border-radius: 100px; }
+.thesis-header h2 { font-size: clamp(24px, 3.5vw, 40px); font-weight: 200; letter-spacing: -1.5px; color: rgba(255,252,250,0.9); line-height: 1.2; }
+.thesis-header h2 em { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 300; color: var(--teal); }
+.thesis-cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.thesis-card { padding: 28px 20px; text-align: center; background: rgba(255,252,250,0.02); border: 0.5px solid rgba(255,252,250,0.06); border-radius: 20px; position: relative; overflow: hidden; transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), border-color 0.4s ease, box-shadow 0.4s ease; }
+.thesis-card:hover { transform: translateY(-4px); border-color: rgba(51,163,163,0.2); box-shadow: 0 16px 48px rgba(0,0,0,0.2), 0 0 40px rgba(51,163,163,0.06); }
+.thesis-card .thesis-icon { width: 40px; height: 40px; margin: 0 auto 14px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(51,163,163,0.06); }
+.thesis-card .thesis-stat { font-size: clamp(20px, 2.5vw, 28px); font-weight: 200; color: var(--teal-bright); letter-spacing: -0.5px; margin-bottom: 4px; line-height: 1; }
+.thesis-card .thesis-card-label { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,252,250,0.4); margin-bottom: 10px; }
+.thesis-card .thesis-card-text { font-size: 12px; color: rgba(255,252,250,0.55); line-height: 1.55; }
+
+/* ===== SCROLL REVEALS ===== */
+.reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-scale { opacity: 0; transform: scale(0.95); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+.reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+/* ===== SECTIONS ===== */
+.s-light { padding: 100px 56px; background: var(--bg); overflow-x: clip; position: relative; }
+.s-dark { padding: 100px 56px; background: var(--dark); overflow: clip; position: relative; }
+.wrap { max-width: 920px; margin: 0 auto; position: relative; z-index: 2; }
+.wrap-w { max-width: 1100px; margin: 0 auto; position: relative; z-index: 2; }
+.s-label { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); padding: 5px 14px; background: rgba(51,163,163,0.05); border: 0.5px solid rgba(51,163,163,0.1); border-radius: 100px; margin-bottom: 20px; }
+.s-label-dark { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); padding: 5px 14px; background: rgba(51,163,163,0.08); border: 0.5px solid rgba(51,163,163,0.15); border-radius: 100px; margin-bottom: 20px; }
+.s-num { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,252,250,0.25); margin-right: 12px; }
+.s-title { font-size: clamp(26px, 4vw, 48px); font-weight: 200; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 16px; text-wrap: balance; }
+.s-desc { font-size: 16px; font-weight: 400; line-height: 1.75; max-width: 620px; margin-bottom: 40px; }
+.section-divider { height: 1px; background: rgba(255,252,250,0.06); max-width: 1100px; margin: 0 auto; }
+
+/* ===== GLASS CARDS ===== */
+.glass { background: rgba(255,255,255,0.7); border: 0.5px solid rgba(26,20,16,0.08); border-radius: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 8px 32px rgba(31,38,135,0.08); position: relative; overflow: hidden; transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s ease; }
+.glass:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(31,38,135,0.12), 0 0 40px rgba(51,163,163,0.1); }
+.glass-dark { background: rgba(255,252,250,0.03); border: 0.5px solid rgba(255,252,250,0.06); border-radius: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); position: relative; overflow: hidden; transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s ease, border-color 0.4s ease; }
+.glass-dark:hover { transform: translateY(-4px); box-shadow: 0 0 40px rgba(51,163,163,0.08), 0 8px 32px rgba(31,38,135,0.12); border-color: rgba(255,252,250,0.1); }
+
+/* ===== PROBLEM ===== */
+.problem-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 40px; }
+.problem-card { padding: 32px 24px; text-align: center; }
+.problem-val { font-size: clamp(28px, 3.5vw, 44px); font-weight: 200; color: var(--release); letter-spacing: -1.5px; margin-bottom: 4px; }
+.problem-val span { font-size: 16px; opacity: 0.5; }
+.problem-lbl { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,252,250,0.5); }
+.problem-bullets { margin-top: 32px; max-width: 700px; }
+.problem-bullets li { font-size: 14px; color: rgba(255,252,250,0.6); line-height: 1.65; padding: 8px 0; padding-left: 20px; position: relative; list-style: none; }
+.problem-bullets li::before { content: ''; position: absolute; left: 0; top: 15px; width: 6px; height: 6px; border-radius: 50%; background: var(--release); opacity: 0.5; }
+
+/* Market stats */
+.market-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 28px; }
+.market-card { padding: 28px 20px; text-align: center; }
+.market-val { font-size: clamp(28px, 4vw, 44px); font-weight: 200; letter-spacing: -1.5px; color: var(--text-light); margin-bottom: 6px; line-height: 1; }
+.market-val .t { color: var(--teal-bright); }
+.market-lbl { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-light-2); margin-bottom: 8px; }
+.market-txt { font-size: 12px; color: rgba(255,252,250,0.55); line-height: 1.55; }
+
+/* ===== WHY NOW ===== */
+.why-now-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; }
+.why-now-card { padding: 32px 28px; }
+.why-now-num { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
+.why-now-title { font-size: 17px; font-weight: 500; color: var(--text); letter-spacing: -0.3px; margin-bottom: 8px; }
+.why-now-text { font-size: 14px; color: var(--text-2); line-height: 1.65; }
+
+/* ===== FOUNDER ===== */
+.founder-section { position: relative; padding: 100px 56px; background: var(--bg); overflow: hidden; }
+.founder-split { display: grid; grid-template-columns: 0.7fr 1fr; gap: 56px; align-items: start; max-width: 1100px; margin: 0 auto; }
+.bio-photo { border-radius: 24px; overflow: hidden; box-shadow: 0 16px 48px rgba(0,0,0,0.08); }
+.bio-photo img { width: 100%; display: block; aspect-ratio: 4/5; object-fit: cover; }
+.bio-lead { font-size: clamp(18px, 2.2vw, 22px); font-weight: 400; color: var(--text); line-height: 1.5; letter-spacing: -0.3px; margin-bottom: 24px; }
+.bio-creds { position: relative; }
+.bio-cred { display: flex; align-items: flex-start; gap: 14px; padding: 12px 0; border-bottom: 0.5px solid rgba(26,20,16,0.06); }
+.bio-cred:last-child { border-bottom: none; }
+.bio-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); margin-top: 7px; flex-shrink: 0; }
+.bio-cred p { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+.bio-cred strong { color: var(--text); font-weight: 600; }
+.bio-creds::before { content: ''; position: absolute; left: 3px; top: 22px; bottom: 22px; width: 1px; background: linear-gradient(to bottom, rgba(51,163,163,0.25), rgba(51,163,163,0.05)); }
+.bio-quote { margin-top: 24px; padding: 20px 24px; border-radius: 16px; background: rgba(26,20,16,0.025); }
+.bio-quote blockquote { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; font-style: italic; font-size: 16px; color: var(--text-2); line-height: 1.5; margin-bottom: 8px; }
+.bio-quote .attrib { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-3); }
+
+/* ===== TRACTION ===== */
+.traction-hero { display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: center; }
+.traction-big { font-size: clamp(48px, 8vw, 80px); font-weight: 200; letter-spacing: -3px; color: var(--teal-bright); line-height: 1; margin-bottom: 4px; }
+.traction-big-label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,252,250,0.4); margin-bottom: 20px; }
+.traction-desc { font-size: 16px; color: var(--text-light-2); line-height: 1.7; max-width: 480px; }
+.traction-mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 28px; }
+.traction-mini { padding: 20px; background: rgba(255,252,250,0.03); border: 0.5px solid rgba(255,252,250,0.06); border-radius: 16px; }
+.traction-mini .val { font-size: clamp(22px, 2.5vw, 30px); font-weight: 200; color: var(--teal-bright); letter-spacing: -0.5px; margin-bottom: 2px; }
+.traction-mini .lbl { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,252,250,0.4); margin-bottom: 4px; }
+.traction-mini .txt { font-size: 12px; color: rgba(255,252,250,0.5); line-height: 1.5; }
+.traction-phone-col { position: relative; }
+.traction-phone-frame { width: 220px; border-radius: 32px; overflow: hidden; box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 0 0 0.5px rgba(255,255,255,0.08); }
+.traction-phone-frame img { width: 100%; display: block; }
+.traction-wide-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+.traction-wide-card { padding: 24px 20px; background: rgba(255,252,250,0.03); border: 0.5px solid rgba(255,252,250,0.06); border-radius: 20px; }
+.traction-wide-card .metric { font-size: clamp(22px, 2.5vw, 32px); font-weight: 200; letter-spacing: -1px; color: var(--teal-bright); margin-bottom: 2px; }
+.traction-wide-card .channel { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,252,250,0.4); margin-bottom: 6px; }
+.traction-wide-card .detail { font-size: 13px; color: rgba(255,252,250,0.6); line-height: 1.6; }
+
+/* ===== FRAMEWORK ===== */
+.framework-section { position: relative; padding: 100px 56px; background: var(--dark); overflow: hidden; }
+.framework-bg { position: absolute; inset: 0; z-index: 0; }
+.framework-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center 50%; opacity: 0.25; }
+.framework-overlay { position: absolute; inset: 0; z-index: 0; background: linear-gradient(180deg, var(--dark) 0%, rgba(8,10,15,0.6) 20%, rgba(8,10,15,0.6) 80%, var(--dark) 100%); }
+.framework-title { font-size: clamp(30px, 4.5vw, 56px); font-weight: 200; line-height: 1.08; letter-spacing: -2px; text-align: center; margin-bottom: 16px; color: rgba(255,252,250,0.95); }
+.framework-title em { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 300; color: var(--teal); }
+.framework-desc { text-align: center; font-size: 15px; color: var(--text-light-2); line-height: 1.75; max-width: 600px; margin: 0 auto 48px; }
+.pillar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1100px; margin: 0 auto; }
+.pillar-block { display: flex; flex-direction: column; padding: 32px 24px; background: rgba(255,252,250,0.03); border: 0.5px solid rgba(255,252,250,0.06); border-radius: 24px; overflow: hidden; position: relative; z-index: 1; transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), border-color 0.4s ease; }
+.pillar-block:hover { transform: translateY(-4px); border-color: rgba(51,163,163,0.2); }
+.pillar-glow { height: 2px; width: 100%; position: absolute; top: 0; left: 0; right: 0; background: linear-gradient(90deg, transparent, var(--teal), transparent); opacity: 0.5; }
+.pillar-name { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+.pillar-tagline { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; font-style: italic; font-size: clamp(16px, 1.8vw, 19px); line-height: 1.35; letter-spacing: -0.3px; color: rgba(255,252,250,0.85); margin-bottom: 12px; }
+.pillar-desc { font-size: 13px; color: rgba(255,252,250,0.6); line-height: 1.7; margin-bottom: 12px; }
+.pillar-outcome { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin-top: auto; color: var(--teal); opacity: 0.6; }
+
+/* ===== PHOTO BREAKS ===== */
+.photo-break { position: relative; height: 50vh; height: 50dvh; min-height: 320px; max-height: 550px; overflow: hidden; }
+.photo-break img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo-break .scrim { position: absolute; inset: 0; pointer-events: none; }
+.photo-break-quote { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 2; padding: 40px; text-align: center; }
+.photo-break-quote blockquote { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 200; font-size: clamp(20px, 3.5vw, 36px); color: rgba(255,255,255,0.93); max-width: 660px; line-height: 1.3; letter-spacing: -0.3px; text-shadow: 0 2px 48px rgba(0,0,0,0.5); }
+.photo-break-quote .attrib { display: block; margin-top: 16px; font-family: -apple-system, sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.35); text-shadow: none; }
+
+/* ===== PRODUCT ===== */
+.app-showcase { display: flex; justify-content: center; align-items: flex-end; gap: 20px; margin: 48px auto 0; max-width: 800px; perspective: 1200px; }
+.app-mock { flex-shrink: 0; border-radius: 24px; overflow: hidden; box-shadow: 0 16px 48px rgba(0,0,0,0.12), 0 0 0 0.5px rgba(26,20,16,0.08); }
+.app-mock img { width: 100%; display: block; }
+.app-mock.center { width: 200px; z-index: 3; transform: translateY(-12px); }
+.app-mock.side { width: 160px; opacity: 0.9; }
+.app-mock.left { transform: rotateY(6deg) translateX(6px); }
+.app-mock.right { transform: rotateY(-6deg) translateX(-6px); }
+.app-pricing { text-align: center; margin-top: 20px; font-size: 12px; font-weight: 500; color: var(--text-3); letter-spacing: 0.5px; }
+
+/* ===== ENGINES ===== */
+.engines-section { position: relative; overflow: hidden; }
+.engines-section::before { content: ''; position: absolute; width: 800px; height: 800px; border-radius: 50%; top: -200px; left: -200px; background: radial-gradient(circle, rgba(51,163,163,0.06) 0%, transparent 70%); pointer-events: none; }
+.engines-section::after { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; bottom: -100px; right: -150px; background: radial-gradient(circle, rgba(99,102,241,0.05) 0%, transparent 70%); pointer-events: none; }
+.engine-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
+.engine-card { padding: 0; display: flex; flex-direction: column; background: rgba(255,252,250,0.02); border: 0.5px solid rgba(255,252,250,0.06); border-radius: 24px; overflow: hidden; transition: transform 0.5s cubic-bezier(0.22,1,0.36,1), box-shadow 0.5s ease, border-color 0.5s ease; }
+.engine-card:hover { transform: translateY(-8px); box-shadow: 0 24px 64px rgba(0,0,0,0.3); }
+.engine-card:nth-child(1):hover { border-color: rgba(51,163,163,0.2); box-shadow: 0 24px 64px rgba(0,0,0,0.3), 0 0 60px rgba(51,163,163,0.08); }
+.engine-card:nth-child(2):hover { border-color: rgba(99,102,241,0.2); box-shadow: 0 24px 64px rgba(0,0,0,0.3), 0 0 60px rgba(99,102,241,0.08); }
+.engine-card:nth-child(3):hover { border-color: rgba(52,211,153,0.2); box-shadow: 0 24px 64px rgba(0,0,0,0.3), 0 0 60px rgba(52,211,153,0.08); }
+.engine-glow { height: 2px; width: 100%; opacity: 0.7; }
+.engine-card:nth-child(1) .engine-glow { background: linear-gradient(90deg, transparent, var(--teal), transparent); }
+.engine-card:nth-child(2) .engine-glow { background: linear-gradient(90deg, transparent, var(--align), transparent); }
+.engine-card:nth-child(3) .engine-glow { background: linear-gradient(90deg, transparent, var(--become), transparent); }
+.engine-inner { padding: 32px 24px; display: flex; flex-direction: column; flex: 1; }
+.engine-num { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+.engine-card:nth-child(1) .engine-num { color: var(--teal); }
+.engine-card:nth-child(2) .engine-num { color: var(--align); }
+.engine-card:nth-child(3) .engine-num { color: var(--become); }
+.engine-title { font-size: 20px; font-weight: 500; letter-spacing: -0.5px; color: var(--text-light); margin-bottom: 3px; }
+.engine-sub { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,252,250,0.3); margin-bottom: 16px; }
+.engine-desc { font-size: 13px; color: rgba(255,252,250,0.6); line-height: 1.7; margin-bottom: 16px; }
+.engine-metric { font-size: clamp(16px, 2vw, 20px); font-weight: 200; color: rgba(255,252,250,0.8); letter-spacing: -0.5px; margin-bottom: 16px; line-height: 1.3; }
+.engine-metric .t { font-weight: 300; }
+.engine-card:nth-child(1) .engine-metric .t { color: var(--teal-bright); }
+.engine-card:nth-child(2) .engine-metric .t { color: var(--align); }
+.engine-card:nth-child(3) .engine-metric .t { color: var(--become); }
+.engine-comp { margin-top: auto; padding: 12px 16px; border-radius: 14px; font-size: 12px; color: rgba(255,252,250,0.45); line-height: 1.55; font-style: italic; }
+.engine-card:nth-child(1) .engine-comp { background: rgba(51,163,163,0.04); border: 0.5px solid rgba(51,163,163,0.08); }
+.engine-card:nth-child(2) .engine-comp { background: rgba(99,102,241,0.04); border: 0.5px solid rgba(99,102,241,0.08); }
+.engine-card:nth-child(3) .engine-comp { background: rgba(52,211,153,0.04); border: 0.5px solid rgba(52,211,153,0.08); }
+
+/* Flywheel inline */
+.flywheel-inline { margin-top: 40px; padding: 32px; }
+.fw-step { display: flex; align-items: flex-start; gap: 16px; padding: 10px 0; }
+.fw-num { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; background: rgba(51,163,163,0.08); border: 1px solid rgba(51,163,163,0.2); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--teal); }
+.fw-text { font-size: 14px; color: rgba(255,252,250,0.6); line-height: 1.6; }
+.fw-text strong { color: rgba(255,252,250,0.85); font-weight: 500; }
+
+/* ===== COMP CARDS ===== */
+.comp-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 40px; }
+.comp-card { padding: 28px 24px; }
+.comp-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+.comp-name-h { font-size: 16px; font-weight: 600; color: var(--text-light); letter-spacing: -0.3px; margin-bottom: 2px; }
+.comp-sub { font-size: 11px; color: rgba(255,252,250,0.45); }
+.comp-tag { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 100px; background: rgba(51,163,163,0.08); color: var(--teal-bright); border: 0.5px solid rgba(51,163,163,0.15); white-space: nowrap; }
+.comp-body { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.comp-col-label { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,252,250,0.45); margin-bottom: 6px; }
+.comp-col-text { font-size: 13px; color: rgba(255,252,250,0.68); line-height: 1.6; }
+
+/* ===== REVENUE ===== */
+.rev-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
+.rev-card { padding: 32px 24px; text-align: center; }
+.rev-year-label { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,252,250,0.4); margin-bottom: 10px; }
+.rev-figure { font-size: clamp(28px, 4vw, 44px); font-weight: 200; color: var(--teal-bright); letter-spacing: -1.5px; margin-bottom: 4px; line-height: 1; }
+.rev-context { font-size: 12px; color: rgba(255,252,250,0.5); line-height: 1.55; margin-top: 12px; }
+.rev-bars-section { margin-top: 32px; }
+.rev-year-block { margin-bottom: 28px; }
+.rev-year-head { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-light-3); margin-bottom: 12px; }
+.rev-bars { display: flex; flex-direction: column; gap: 6px; }
+.rev-row { display: flex; align-items: center; gap: 12px; }
+.rev-label { width: 90px; flex-shrink: 0; font-size: 12px; font-weight: 500; color: var(--text-light-2); text-align: right; }
+.rev-track { flex: 1; height: 28px; background: rgba(255,252,250,0.04); border-radius: 10px; overflow: hidden; }
+.rev-fill { height: 100%; border-radius: 10px; display: flex; align-items: center; padding: 0 12px; font-size: 11px; font-weight: 600; color: var(--text-light); justify-content: flex-end; }
+.rev-fill.app { background: linear-gradient(90deg, var(--teal), var(--teal-bright)); }
+.rev-fill.school { background: linear-gradient(90deg, var(--align), rgba(99,102,241,0.7)); }
+.rev-fill.eco { background: linear-gradient(90deg, var(--become), rgba(52,211,153,0.7)); }
+.unit-econ { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 28px; }
+.unit-card { padding: 20px 16px; background: rgba(255,252,250,0.03); border: 0.5px solid rgba(255,252,250,0.06); border-radius: 16px; text-align: center; }
+.unit-val { font-size: clamp(18px, 2.5vw, 26px); font-weight: 200; color: var(--teal-bright); margin-bottom: 2px; }
+.unit-lbl { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,252,250,0.4); }
+
+/* ===== FUNDS / ASK ===== */
+.funds-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 40px; }
+.fund-card { padding: 32px 24px; }
+.fund-pct { font-size: clamp(32px, 4.5vw, 48px); font-weight: 200; letter-spacing: -2px; color: var(--teal-bright); margin-bottom: 2px; line-height: 1; }
+.fund-amt { font-size: 12px; font-weight: 600; color: var(--text-light-3); letter-spacing: 0.5px; margin-bottom: 14px; }
+.fund-title { font-size: 16px; font-weight: 500; color: var(--text-light); margin-bottom: 6px; letter-spacing: -0.3px; }
+.fund-desc { font-size: 13px; color: var(--text-light-2); line-height: 1.6; }
+.milestones { margin-top: 40px; padding: 32px; }
+.milestone-row { display: flex; align-items: flex-start; gap: 16px; padding: 10px 0; }
+.milestone-date { width: 80px; flex-shrink: 0; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--teal); text-align: right; padding-top: 2px; }
+.milestone-text { font-size: 14px; color: rgba(255,252,250,0.65); line-height: 1.6; }
+.milestone-text strong { color: rgba(255,252,250,0.85); font-weight: 500; }
+
+/* ===== CLOSING ===== */
+.closing { position: relative; padding: 140px 56px 100px; text-align: center; overflow: hidden; min-height: 70vh; display: flex; align-items: center; justify-content: center; }
+.closing-bg { position: absolute; inset: 0; z-index: 0; }
+.closing-bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.15; }
+.closing-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,10,15,0.85) 0%, rgba(8,10,15,0.6) 40%, rgba(8,10,15,0.85) 100%); }
+.closing::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; z-index: 3; background: var(--pillar-gradient); opacity: 0.4; }
+.closing-content { position: relative; z-index: 2; max-width: 700px; margin: 0 auto; }
+.closing-title { font-size: clamp(26px, 4vw, 48px); font-weight: 200; line-height: 1.15; letter-spacing: -2px; color: var(--text-light); margin-bottom: 20px; }
+.closing-text { font-size: 16px; font-weight: 400; color: var(--text-light-2); line-height: 1.75; max-width: 560px; margin: 0 auto 32px; }
+.closing-thesis { list-style: none; padding: 0; margin: 0 auto 40px; max-width: 560px; text-align: left; }
+.closing-thesis li { font-size: 14px; color: rgba(255,252,250,0.6); line-height: 1.6; padding: 5px 0; padding-left: 18px; position: relative; }
+.closing-thesis li::before { content: ''; position: absolute; left: 0; top: 12px; width: 5px; height: 5px; border-radius: 50%; background: var(--teal); opacity: 0.6; }
+.closing-tagline { font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 32px; }
+.closing-bar { width: 160px; height: 2px; background: var(--pillar-gradient); margin: 0 auto; border-radius: 2px; opacity: 0.6; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) { .main { margin-left: 0; } .scroll-progress { left: 0; } .hero-phones { right: 32px; } .hero-phone.center { width: 150px; } .hero-phone.side { width: 120px; } }
+@media (max-width: 900px) { .founder-split { grid-template-columns: 1fr; gap: 40px; } .bio-photo { max-width: 360px; } .hero-content { padding: 0 40px; } .traction-hero { grid-template-columns: 1fr; gap: 32px; } .traction-phone-col { display: flex; justify-content: center; order: -1; } .traction-phone-frame { width: 180px; } .hero-phones { display: none; } }
+@media (max-width: 768px) { .s-light, .s-dark { padding: 72px 24px; } .thesis-bar { padding: 56px 24px; } .thesis-cards { grid-template-columns: 1fr 1fr; } .thesis-card:last-child { grid-column: 1 / -1; } .problem-grid { grid-template-columns: 1fr; } .market-grid { grid-template-columns: 1fr; } .why-now-grid { grid-template-columns: 1fr; } .founder-section { padding: 72px 24px; } .framework-section { padding: 72px 24px; } .pillar-grid { grid-template-columns: 1fr; } .engine-grid { grid-template-columns: 1fr; } .comp-grid { grid-template-columns: 1fr; } .rev-summary { grid-template-columns: 1fr; } .unit-econ { grid-template-columns: 1fr 1fr; } .funds-grid { grid-template-columns: 1fr; } .traction-wide-row { grid-template-columns: 1fr; } .hero-content { padding: 0 24px; } .closing { padding: 80px 24px 64px; } .app-mock.center { width: 160px; } .app-mock.side { width: 130px; } .comp-body { grid-template-columns: 1fr; } .photo-break { height: 40vh; min-height: 260px; max-height: 420px; } }
+@media (max-width: 480px) { .s-light, .s-dark { padding: 56px 20px; } .thesis-bar { padding: 40px 20px; } .thesis-cards { grid-template-columns: 1fr; } .thesis-card:last-child { grid-column: auto; } .founder-section { padding: 56px 20px; } .framework-section { padding: 56px 20px; } .hero-content { padding: 0 20px; } .hero h1 { letter-spacing: -1px; } .app-mock.center { width: 140px; } .app-mock.side { width: 110px; } .app-showcase { gap: 12px; } .closing { padding: 64px 20px 48px; } .unit-econ { grid-template-columns: 1fr; } .photo-break { height: 35vh; min-height: 200px; } }
+@media (max-width: 375px) { .s-light, .s-dark { padding: 48px 16px; } .hero-content { padding: 0 16px; } .closing { padding: 56px 16px 40px; } .app-mock.center { width: 120px; } .app-mock.side { width: 100px; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } .reveal, .reveal-scale { opacity: 1; transform: none; } }
+@media (hover: none) { .glass:hover, .glass-dark:hover, .pillar-block:hover, .engine-card:hover, .thesis-card:hover { transform: none; box-shadow: none; } }
+</style>
+</head>
+<body>
+
+<!-- Mobile Menu -->
+<button class="mob-burger" id="mobBurger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobOverlay"><span></span><span></span><span></span></button>
+<div class="mob-overlay" id="mobOverlay" role="dialog" aria-label="Navigation menu" aria-modal="true">
+  <div class="mob-menu">
+    <div class="mob-menu-section"><div class="mob-menu-label">The Thesis</div><a href="#hero" class="mob-link">Cover</a><a href="#problem" class="mob-link">The Problem</a><a href="#why-now" class="mob-link">Why Now</a></div>
+    <div class="mob-menu-section"><div class="mob-menu-label">The Proof</div><a href="#founder" class="mob-link">The Founder</a><a href="#traction" class="mob-link">Traction</a><a href="#framework" class="mob-link">The Framework</a></div>
+    <div class="mob-menu-section"><div class="mob-menu-label">The Business</div><a href="#product" class="mob-link">The Product</a><a href="#engines" class="mob-link">Three Engines</a><a href="#comps" class="mob-link">Comparable Set</a></div>
+    <div class="mob-menu-section"><div class="mob-menu-label">The Investment</div><a href="#revenue" class="mob-link">Revenue</a><a href="#ask" class="mob-link">The Ask</a></div>
+  </div>
+</div>
+
+<!-- Sidebar -->
+<nav class="sidebar" aria-label="Page navigation">
+  <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;"><img src="possibility-logo.svg" alt="" style="width:24px;height:24px; filter:drop-shadow(0 2px 8px rgba(51,163,163,0.2));"><span style="font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--teal);">The Possibility Co.</span></div>
+  <div class="sidebar-title">Investor Deck</div>
+  <div class="sidebar-group"><div class="sidebar-group-label">The Thesis</div><a href="#hero" class="nav-link active">Cover</a><a href="#problem" class="nav-link">The Problem</a><a href="#why-now" class="nav-link">Why Now</a></div>
+  <div class="sidebar-group"><div class="sidebar-group-label">The Proof</div><a href="#founder" class="nav-link">The Founder</a><a href="#traction" class="nav-link">Traction</a><a href="#framework" class="nav-link">The Framework</a></div>
+  <div class="sidebar-group"><div class="sidebar-group-label">The Business</div><a href="#product" class="nav-link">The Product</a><a href="#engines" class="nav-link">Three Engines</a><a href="#comps" class="nav-link">Comparable Set</a></div>
+  <div class="sidebar-group"><div class="sidebar-group-label">The Investment</div><a href="#revenue" class="nav-link">Revenue</a><a href="#ask" class="nav-link">The Ask</a></div>
+  <div class="sidebar-footer">Confidential<br>Jim Curtis, Founder &amp; CEO<br>2026</div>
+</nav>
+
+<div class="main">
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg"><img src="jim4.jpg" alt="Jim Curtis"></div>
+  <div class="hero-content">
+    <img src="possibility-logo.svg" alt="The Possibility Company" class="hero-logo">
+    <div class="hero-company">The Possibility Company</div>
+    <h1>Overcome to <em>Become.</em></h1>
+    <p class="hero-sub">A content, coaching, and education company built on the personal brand of Jim Curtis. One founder. Three revenue engines. A million people already listening.</p>
+    <div class="hero-badge"><span class="dot"></span> Seed Round &middot; $5,000,000</div>
+  </div>
+  <div class="hero-phones">
+    <div class="hero-phone side left"><img src="screenshots/app-sleep.jpg" alt="Sleep"></div>
+    <div class="hero-phone center"><img src="screenshots/app-jimai.jpg" alt="Jim AI"></div>
+    <div class="hero-phone side right"><img src="screenshots/app-player.jpg" alt="Player"></div>
+  </div>
+  <div class="hero-scroll"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"></polyline></svg></div>
+</section>
+
+<!-- THESIS: SHOWSTOPPER -->
+<div class="thesis-bar">
+  <div class="thesis-inner">
+    <div class="thesis-header reveal">
+      <div class="label">Investment Thesis</div>
+      <h2>What you need to <em>believe.</em></h2>
+    </div>
+    <div class="thesis-cards">
+      <div class="thesis-card reveal reveal-delay-1">
+        <div class="thesis-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/><path d="M2 17l10 5 10-5" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/><path d="M2 12l10 5 10-5" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/></svg></div>
+        <div class="thesis-stat">$9T</div>
+        <div class="thesis-card-label">Market</div>
+        <div class="thesis-card-text">Wellness market dominated by failing incumbents. 96% churn. 1.7/5 trust scores. Consumers seeking alternatives.</div>
+      </div>
+      <div class="thesis-card reveal reveal-delay-2">
+        <div class="thesis-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/><circle cx="9" cy="7" r="4" stroke="var(--teal)" stroke-width="1.5" opacity="0.55"/><path d="M22 21v-2a4 4 0 00-3-3.87" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/></svg></div>
+        <div class="thesis-stat">$100M+</div>
+        <div class="thesis-card-label">Proven Model</div>
+        <div class="thesis-card-text">Founder-led brands (Howes, Shetty, IIN) built $30M to $100M+ on this exact blueprint.</div>
+      </div>
+      <div class="thesis-card reveal reveal-delay-3">
+        <div class="thesis-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 18l5-7 4 3 5-8 4 6" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/></svg></div>
+        <div class="thesis-stat">1M+</div>
+        <div class="thesis-card-label">Followers</div>
+        <div class="thesis-card-text">Organic. Growing 1K/day. S&amp;S book deal. 25 years operating at $100M+/yr as CRO at IIN.</div>
+      </div>
+      <div class="thesis-card reveal reveal-delay-4">
+        <div class="thesis-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="var(--teal)" stroke-width="1.5" opacity="0.4"/><path d="M12 6v6l4 2" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/></svg></div>
+        <div class="thesis-stat">3</div>
+        <div class="thesis-card-label">Revenue Engines</div>
+        <div class="thesis-card-text">App, certification school, digital ecosystem. Interlocking. Each compounds the others.</div>
+      </div>
+      <div class="thesis-card reveal">
+        <div class="thesis-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 016.5 17H20" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" stroke="var(--teal)" stroke-width="1.5" opacity="0.55"/></svg></div>
+        <div class="thesis-stat">Sept '26</div>
+        <div class="thesis-card-label">Book Launch</div>
+        <div class="thesis-card-text">Simon &amp; Schuster. One-time deployment window. Infrastructure must be built before this catalyst.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- THE PROBLEM -->
+<section class="s-dark" id="problem">
+  <div class="wrap-w">
+    <div class="s-label-dark reveal"><span class="s-num">01</span> The Problem</div>
+    <h2 class="s-title reveal reveal-delay-1" style="color:var(--text-light);">The wellness market is massive.<br>The incumbents are failing.</h2>
+    <p class="s-desc reveal reveal-delay-2" style="color:var(--text-light-2);">87% of American adults report feeling overwhelmed by stress. The $5.7B meditation app market was supposed to help. Instead, deceptive billing, impossible cancellations, and impersonal content have eroded consumer trust. The market is ready for something different.</p>
+
+    <div class="problem-grid">
+      <div class="glass-dark problem-card reveal"><div class="problem-val">1.7<span>/5</span></div><div class="problem-lbl">Calm Trustpilot</div></div>
+      <div class="glass-dark problem-card reveal reveal-delay-1"><div class="problem-val">2.5<span>/5</span></div><div class="problem-lbl">Headspace Trustpilot</div></div>
+      <div class="glass-dark problem-card reveal reveal-delay-2"><div class="problem-val">96<span>%</span></div><div class="problem-lbl">12-Month Churn</div></div>
+    </div>
+
+    <div class="market-grid">
+      <div class="glass-dark market-card reveal"><div class="market-val"><span class="t">$9</span>T</div><div class="market-lbl">Global Wellness</div><div class="market-txt">Projected by 2030. <a href="https://globalwellnessinstitute.org/press-room/statistics-and-facts/" target="_blank" rel="noopener" class="src">GWI</a></div></div>
+      <div class="glass-dark market-card reveal reveal-delay-1"><div class="market-val"><span class="t">$5.7</span>B</div><div class="market-lbl">Mindfulness Apps</div><div class="market-txt">Proven, scalable consumer category. <a href="https://www.grandviewresearch.com/industry-analysis/meditation-market" target="_blank" rel="noopener" class="src">Grand View</a></div></div>
+      <div class="glass-dark market-card reveal reveal-delay-2"><div class="market-val"><span class="t">87</span>%</div><div class="market-lbl">Adults Overwhelmed</div><div class="market-txt">Structural demand. <a href="https://www.apa.org/news/press/releases/stress" target="_blank" rel="noopener" class="src">APA</a></div></div>
+    </div>
+
+    <ul class="problem-bullets reveal">
+      <li>Content overload without personal connection. Generic libraries with thousands of sessions but no coherent methodology or guiding voice.</li>
+      <li>80% of Jim's audience is women ages 30 to 60, navigating divorce, grief, anxiety, and the search for love. They are not served by a content vending machine.</li>
+      <li>The market is desperate for a trusted human voice. Not another library. A relationship.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- WHY NOW -->
+<section class="s-light" id="why-now">
+  <div class="wrap-w">
+    <div class="s-label reveal"><span class="s-num" style="color:var(--text-3);">02</span> Why Now</div>
+    <h2 class="s-title reveal reveal-delay-1" style="color:var(--text);">Four forces are converging<br>at this exact moment.</h2>
+    <div class="why-now-grid">
+      <div class="glass why-now-card reveal"><div class="why-now-num">01 Trust Vacuum</div><div class="why-now-title">Incumbents created the opening</div><div class="why-now-text">Calm and Headspace's trust scores are at historic lows. 96% annual churn means the market resets every year. Consumers are actively looking for alternatives.</div></div>
+      <div class="glass why-now-card reveal reveal-delay-1"><div class="why-now-num">02 Platform Built</div><div class="why-now-title">The audience is already here</div><div class="why-now-text">Jim's platform just crossed 1M followers, growing 1,000/day organically. By the time investors enter this company, the distribution is already real.</div></div>
+      <div class="glass why-now-card reveal reveal-delay-2"><div class="why-now-num">03 Book Catalyst</div><div class="why-now-title">Simon &amp; Schuster, September 2026</div><div class="why-now-text">The Book of Possibility creates a coordinated acquisition moment: app downloads, school awareness, media coverage, and speaking in one event. This capital must be deployed before that window.</div></div>
+      <div class="glass why-now-card reveal reveal-delay-3"><div class="why-now-num">04 Category Proof</div><div class="why-now-title">The playbook is proven</div><div class="why-now-text">Jay Shetty ($30M), Lewis Howes (8 figures), IIN ($100M+/yr), Waking Up ($10-15M ARR), Open ($14.5M raised). Founder-led wellness brands are the fastest growing segment.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section class="founder-section" id="founder">
+  <div style="text-align:center; margin-bottom:48px;">
+    <div class="s-label reveal"><span class="s-num" style="color:var(--text-3);">03</span> The Founder</div>
+    <h2 class="s-title reveal reveal-delay-1" style="color:var(--text); text-align:center;">Most founders in this space are creators<br>or coaches. Jim is an <em style="font-family:'Cormorant Garamond',Georgia,serif; font-weight:300; font-style:italic; color:var(--teal);">operator.</em></h2>
+  </div>
+  <div class="founder-split">
+    <div class="bio-photo reveal"><img src="jim-bio.jpg" alt="Jim Curtis"></div>
+    <div>
+      <p class="bio-lead reveal">Jim Curtis is the rare founder who has built this exact business model before, from the inside, at $100M+/year scale. He is not guessing.</p>
+      <div class="bio-creds">
+        <div class="bio-cred reveal"><div class="bio-dot"></div><p><strong>Global CRO and Head of Brand at IIN,</strong> the world's largest health coaching school. Led revenue across 30,000+ affiliates and 100+ countries. This is the model he is now building for himself.</p></div>
+        <div class="bio-cred reveal reveal-delay-1"><div class="bio-dot"></div><p><strong>Pioneer of Hypno-Coaching.</strong> A proprietary methodology combining hypnosis, neuroscience, and behavioral coaching. Clinically grounded and protectable IP.</p></div>
+        <div class="bio-cred reveal reveal-delay-2"><div class="bio-dot"></div><p><strong>Executive roles at WebMD and Everyday Health.</strong> Two decades of leadership in digital health and media at scale.</p></div>
+        <div class="bio-cred reveal reveal-delay-3"><div class="bio-dot"></div><p><strong>Author.</strong> The Book of Possibility, publishing through Simon &amp; Schuster in September 2026.</p></div>
+        <div class="bio-cred reveal reveal-delay-4"><div class="bio-dot"></div><p><strong>Private coaching practice</strong> with entrepreneurs, celebrities, and public figures. Demand consistently exceeds capacity.</p></div>
+        <div class="bio-cred reveal"><div class="bio-dot"></div><p><strong>Lived the work.</strong> Chronic illness and childhood trauma are the origin story, not a brand strategy. Everything Jim teaches comes from personal experience first.</p></div>
+      </div>
+      <div class="bio-quote reveal">
+        <blockquote>"I really believe there's a possibility for anything. It's how we focus our own minds and subconscious minds to jump into what we want."</blockquote>
+        <div class="attrib">Jim Curtis</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRACTION -->
+<section class="s-dark" id="traction">
+  <div class="wrap-w">
+    <div class="s-label-dark reveal"><span class="s-num">04</span> Traction</div>
+    <h2 class="s-title reveal reveal-delay-1" style="color:var(--text-light);">A founder with a running start.</h2>
+    <div class="traction-hero reveal reveal-delay-2">
+      <div>
+        <div class="traction-big">1M+</div>
+        <div class="traction-big-label">Instagram Followers</div>
+        <div class="traction-desc">Growing ~1,000 new followers per day. Entirely organic. No paid acquisition. By the time investors enter this company, the platform is already real.</div>
+        <div class="traction-mini-grid">
+          <div class="traction-mini"><div class="val">121K</div><div class="lbl">TikTok</div><div class="txt">Short form content and emotional resonance.</div></div>
+          <div class="traction-mini"><div class="val">28K</div><div class="lbl">Email List</div><div class="txt">48%+ open rate. Audience that reads.</div></div>
+        </div>
+      </div>
+      <div class="traction-phone-col">
+        <div class="traction-phone-frame"><img src="screenshots/instagram-profile.jpg" alt="Jim Curtis Instagram" loading="lazy"></div>
+      </div>
+    </div>
+    <div class="traction-wide-row">
+      <div class="traction-wide-card reveal"><div class="metric">350K+</div><div class="channel">Avg Views Per Video</div><div class="detail">1,800 shares per video. Multiple posts at 3.7M to 5.3M+ organic views.</div></div>
+      <div class="traction-wide-card reveal reveal-delay-1"><div class="metric">100M+</div><div class="channel">Celebrity Network Reach</div><div class="detail">Jennifer Aniston, Courtney Cox, Julianne Hough, Gabby Bernstein, Daniel Amen. Distribution and credibility in one network.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FRAMEWORK -->
+<section class="framework-section" id="framework">
+  <div class="framework-bg"><img src="photos/galaxy.jpg" alt="" loading="lazy"></div>
+  <div class="framework-overlay"></div>
+  <div style="position:relative; z-index:2;">
+    <div style="text-align:center;"><div class="s-label-dark reveal"><span class="s-num">05</span> The IP</div></div>
+    <h2 class="framework-title reveal reveal-delay-1">Release. Align. <em>Become.</em></h2>
+    <p class="framework-desc reveal reveal-delay-2">The proprietary framework that structures every product in the ecosystem. This is not just a tagline. It is the intellectual architecture of the company: the app, the certification school, the book, and every program Jim creates.</p>
+    <div class="pillar-grid">
+      <div class="pillar-block reveal"><div class="pillar-glow"></div><div class="pillar-name">Release</div><div class="pillar-tagline">"Fear lies. Most of the time, fear is lying."</div><div class="pillar-desc">Dissolve fear, limiting patterns, and subconscious blocks. Lower the inflammation in your energy field, your mind, and then your body.</div><div class="pillar-outcome">Freedom</div></div>
+      <div class="pillar-block reveal reveal-delay-1"><div class="pillar-glow"></div><div class="pillar-name">Align</div><div class="pillar-tagline">"I am what I want to be, whatever it is."</div><div class="pillar-desc">Rewrite the inner narrative. Step into flow, emotional regulation, and a felt sense of peace with where you are.</div><div class="pillar-outcome">Peace</div></div>
+      <div class="pillar-block reveal reveal-delay-2"><div class="pillar-glow"></div><div class="pillar-name">Become</div><div class="pillar-tagline">"If you were programmed with it, you can be programmed with something new."</div><div class="pillar-desc">Reprogram your identity, manifest clear goals, and take aligned action. Change the program.</div><div class="pillar-outcome">Expansion</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO BREAK -->
+<div class="photo-break">
+  <img src="photos/david-becker.jpg" alt="" loading="lazy" style="object-position:center 15%;">
+  <div class="scrim" style="background:rgba(8,10,15,0.55);"></div>
+  <div class="scrim" style="background:linear-gradient(to top, var(--bg) 0%, transparent 40%);"></div>
+  <div class="photo-break-quote"><blockquote>"If I was programmed with it, then I can be programmed with other things. Let's change the program."<span class="attrib">Jim Curtis</span></blockquote></div>
+</div>
+
+<!-- PRODUCT -->
+<section class="s-light" id="product">
+  <div class="wrap">
+    <div style="text-align:center;">
+      <div class="s-label reveal"><span class="s-num" style="color:var(--text-3);">06</span> The Product</div>
+      <h2 class="s-title reveal reveal-delay-1" style="color:var(--text); text-align:center;">The Possibility App</h2>
+      <p class="s-desc reveal reveal-delay-2" style="color:var(--text-2); text-align:center; margin:0 auto 0;">A daily coaching experience in Jim's voice, built on Release, Align, Become. Not a generic meditation library. A guided transformation system designed to meet users where they are.</p>
+    </div>
+    <div class="app-showcase reveal reveal-scale"><div class="app-mock side left"><img src="screenshots/app-sleep.jpg" alt="Sleep"></div><div class="app-mock center"><img src="screenshots/app-jimai.jpg" alt="Jim AI"></div><div class="app-mock side right"><img src="screenshots/app-player.jpg" alt="Player"></div></div>
+    <div class="app-pricing reveal">14-day free trial &nbsp;&bull;&nbsp; $19.99/month &nbsp;&bull;&nbsp; $199/year</div>
+  </div>
+</section>
+
+<!-- THREE ENGINES -->
+<section class="s-dark engines-section" id="engines">
+  <div class="wrap-w">
+    <div class="s-label-dark reveal"><span class="s-num">07</span> Business Model</div>
+    <h2 class="s-title reveal reveal-delay-1" style="color:var(--text-light);">Three engines. Each compounds the others.</h2>
+    <p class="s-desc reveal reveal-delay-2" style="color:var(--text-light-2);">The app builds reach. The school builds depth. The digital ecosystem builds proof. The certification school is the primary long-term financial engine. Each business strengthens the other two.</p>
+    <div class="engine-grid">
+      <div class="engine-card reveal"><div class="engine-glow"></div><div class="engine-inner"><div class="engine-num">Engine 01</div><div class="engine-title">The Possibility App</div><div class="engine-sub">2026 Launch</div><div class="engine-desc">Daily coaching in Jim's voice. Subscription entry point powered by the book launch and organic social. The front door to the ecosystem.</div><div class="engine-metric"><span class="t">$15K</span> content cost vs Calm's $1M+</div><div class="engine-comp">Comp: Waking Up at $10 to $15M ARR. Open raised $14.5M on a similar model.</div></div></div>
+      <div class="engine-card reveal reveal-delay-1"><div class="engine-glow"></div><div class="engine-inner"><div class="engine-num">Engine 02 &middot; Primary</div><div class="engine-title">The Institute for Hypno-Coaching</div><div class="engine-sub">2027 Launch</div><div class="engine-desc">The first professional certification in Hypno-Coaching. This is the long-term financial engine of the company, modeled directly on what Jim built at IIN.</div><div class="engine-metric"><span class="t">~$25M</span> potential at 2,500 students/yr</div><div class="engine-comp">Comp: IIN at $100M+/year. Jay Shetty's school drives a $30M brand.</div></div></div>
+      <div class="engine-card reveal reveal-delay-2"><div class="engine-glow"></div><div class="engine-inner"><div class="engine-num">Engine 03</div><div class="engine-title">Digital Ecosystem</div><div class="engine-sub">Ongoing</div><div class="engine-desc">Live programs, evergreen courses, and speaking. Proof of concept that feeds both the app and the school.</div><div class="engine-metric"><span class="t">$2,995</span> per cohort seat</div><div class="engine-comp">Speaking scales post-book. Corporate wellness, conferences, women's summits.</div></div></div>
+    </div>
+    <div class="glass-dark flywheel-inline reveal">
+      <div style="font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--teal); margin-bottom:16px;">Brand Flywheel</div>
+      <div class="fw-step"><div class="fw-num">1</div><div class="fw-text"><strong>Book Launch (Sept 2026)</strong> drives app downloads, school awareness, media coverage, and speaking in a single coordinated moment.</div></div>
+      <div class="fw-step"><div class="fw-num">2</div><div class="fw-text"><strong>Social + Podcast + Substack</strong> converts reach into subscribers, email list, and paying students.</div></div>
+      <div class="fw-step"><div class="fw-num">3</div><div class="fw-text"><strong>App to school pipeline.</strong> The app is the front door. The certification school captures the most committed community members.</div></div>
+      <div class="fw-step"><div class="fw-num">4</div><div class="fw-text"><strong>Graduates become distribution.</strong> Certified coaches and affiliates reduce acquisition costs. Each graduate is a channel.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARABLE SET -->
+<section class="s-dark" id="comps" style="padding-top:0;">
+  <div class="wrap-w">
+    <div class="section-divider" style="margin-bottom:100px;"></div>
+    <div class="s-label-dark reveal"><span class="s-num">08</span> Comparable Set</div>
+    <h2 class="s-title reveal reveal-delay-1" style="color:var(--text-light);">This playbook has been proven.<br>Jim is better positioned than most.</h2>
+    <p class="s-desc reveal reveal-delay-2" style="color:var(--text-light-2);">One founder. One ownable idea. A proprietary methodology. A content engine feeding a scalable education or subscription product. Jim has a larger platform than most of these founders had at the equivalent stage.</p>
+    <div class="comp-grid">
+      <div class="glass-dark comp-card reveal"><div class="comp-header"><div><div class="comp-name-h">Lewis Howes</div><div class="comp-sub">School of Greatness</div></div><div class="comp-tag">8 Figures</div></div><div class="comp-body"><div><div class="comp-col-label">Model</div><div class="comp-col-text">Podcast, books, courses, live events built around one word: Greatness.</div></div><div><div class="comp-col-label">Insight</div><div class="comp-col-text">Eight figure brand built entirely on owning a single concept across every medium.</div></div></div></div>
+      <div class="glass-dark comp-card reveal reveal-delay-1"><div class="comp-header"><div><div class="comp-name-h">Jay Shetty</div><div class="comp-sub">On Purpose</div></div><div class="comp-tag">~$30M</div></div><div class="comp-body"><div><div class="comp-col-label">Model</div><div class="comp-col-text">Books, podcast, and a professional certification school that anchors the business.</div></div><div><div class="comp-col-label">Insight</div><div class="comp-col-text">The certification school is the primary financial engine within a $30M personal brand.</div></div></div></div>
+      <div class="glass-dark comp-card reveal"><div class="comp-header"><div><div class="comp-name-h">Sam Harris</div><div class="comp-sub">Waking Up</div></div><div class="comp-tag">$10-15M ARR</div></div><div class="comp-body"><div><div class="comp-col-label">Model</div><div class="comp-col-text">Creator-led mindfulness subscription app. One founder's voice anchoring a paying base.</div></div><div><div class="comp-col-label">Insight</div><div class="comp-col-text">Proof that a single voice can sustain a subscription product at significant scale.</div></div></div></div>
+      <div class="glass-dark comp-card reveal reveal-delay-1"><div class="comp-header"><div><div class="comp-name-h">IIN</div><div class="comp-sub">Institute for Integrative Nutrition</div></div><div class="comp-tag">$100M+/yr</div></div><div class="comp-body"><div><div class="comp-col-label">Model</div><div class="comp-col-text">Founder-led health coaching certification. 30,000+ affiliates across 100+ countries.</div></div><div><div class="comp-col-label">Insight</div><div class="comp-col-text">Jim was Global CRO and Head of Brand. He knows this model from the inside.</div></div></div></div>
+      <div class="glass-dark comp-card reveal"><div class="comp-header"><div><div class="comp-name-h">Manoj Dias / Open</div><div class="comp-sub">Founder-Led Wellness App</div></div><div class="comp-tag">$14.5M Raised</div></div><div class="comp-body"><div><div class="comp-col-label">Model</div><div class="comp-col-text">Meditation, breathwork, coaching. New generation of personal brand wellness apps.</div></div><div><div class="comp-col-label">Insight</div><div class="comp-col-text">Funded by Founders Fund and Jack Dorsey. Validates the thesis at the earliest stages.</div></div></div></div>
+      <div class="glass-dark comp-card reveal reveal-delay-1"><div class="comp-header"><div><div class="comp-name-h">Gabby Bernstein</div><div class="comp-sub">The Universe Has Your Back</div></div><div class="comp-tag">$20M+</div></div><div class="comp-body"><div><div class="comp-col-label">Model</div><div class="comp-col-text">Books, courses, speaking, and a deeply loyal community anchored in spirituality.</div></div><div><div class="comp-col-label">Insight</div><div class="comp-col-text">Proof that spirituality meets self-help scales when the right voice carries it.</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO BREAK -->
+<div class="photo-break">
+  <img src="photos/cristian-palmer.jpg" alt="" loading="lazy" style="object-position:center 50%;">
+  <div class="scrim" style="background:rgba(8,10,15,0.55);"></div>
+  <div class="scrim" style="background:linear-gradient(to top, var(--dark) 0%, transparent 40%);"></div>
+  <div class="photo-break-quote"><blockquote>"My goal is only to just open up thought. Open up the potential for just some small shift to greater."<span class="attrib">Jim Curtis</span></blockquote></div>
+</div>
+
+<!-- REVENUE -->
+<section class="s-dark" id="revenue">
+  <div class="wrap-w">
+    <div class="s-label-dark reveal"><span class="s-num">09</span> Revenue</div>
+    <h2 class="s-title reveal reveal-delay-1" style="color:var(--text-light);">Three engines. Staggered launches.<br>Compounding returns.</h2>
+    <p class="s-desc reveal reveal-delay-2" style="color:var(--text-light-2);">Each engine launches into the momentum of the one before it. The book drives the app. The app builds the audience for the school. The school produces affiliates who restart the cycle.</p>
+    <div class="rev-summary">
+      <div class="glass-dark rev-card reveal"><div class="rev-year-label">Year 1 (2026)</div><div class="rev-figure">$500K+</div><div class="rev-context">App launch + book-driven organic acquisition. Live cohorts ($2,995/seat). Speaking revenue post-publication.</div></div>
+      <div class="glass-dark rev-card reveal reveal-delay-1"><div class="rev-year-label">Year 2 (2027)</div><div class="rev-figure">$2.5M+</div><div class="rev-context">App scaled with paid acquisition. Founding certification cohort ($10K/student). Evergreen course catalog.</div></div>
+      <div class="glass-dark rev-card reveal reveal-delay-2"><div class="rev-year-label">Year 3 (2028)</div><div class="rev-figure">$8M+</div><div class="rev-context">All three engines at scale. Certification school at 500+ students. Affiliate network activated. Second book restarts acquisition cycle.</div></div>
+    </div>
+    <div class="rev-bars-section reveal">
+      <div class="rev-year-block"><div class="rev-year-head">2026: Book Launch + App Launch</div><div class="rev-bars"><div class="rev-row"><div class="rev-label">App</div><div class="rev-track"><div class="rev-fill app" style="width:25%;">$150K</div></div></div><div class="rev-row"><div class="rev-label">School</div><div class="rev-track"><div class="rev-fill school" style="width:10%;">Build</div></div></div><div class="rev-row"><div class="rev-label">Ecosystem</div><div class="rev-track"><div class="rev-fill eco" style="width:30%;">$350K</div></div></div></div></div>
+      <div class="rev-year-block"><div class="rev-year-head">2027: Paid Acquisition + Founding Cohort</div><div class="rev-bars"><div class="rev-row"><div class="rev-label">App</div><div class="rev-track"><div class="rev-fill app" style="width:40%;">$600K</div></div></div><div class="rev-row"><div class="rev-label">School</div><div class="rev-track"><div class="rev-fill school" style="width:45%;">$1M</div></div></div><div class="rev-row"><div class="rev-label">Ecosystem</div><div class="rev-track"><div class="rev-fill eco" style="width:50%;">$900K</div></div></div></div></div>
+      <div class="rev-year-block"><div class="rev-year-head">2028+: All Three Engines at Scale</div><div class="rev-bars"><div class="rev-row"><div class="rev-label">App</div><div class="rev-track"><div class="rev-fill app" style="width:60%;">$2M</div></div></div><div class="rev-row"><div class="rev-label">School</div><div class="rev-track"><div class="rev-fill school" style="width:80%;">$5M</div></div></div><div class="rev-row"><div class="rev-label">Ecosystem</div><div class="rev-track"><div class="rev-fill eco" style="width:35%;">$1.2M</div></div></div></div></div>
+    </div>
+    <div class="unit-econ reveal">
+      <div class="unit-card"><div class="unit-val">$199</div><div class="unit-lbl">App Annual</div></div>
+      <div class="unit-card"><div class="unit-val">$10K</div><div class="unit-lbl">Cert / Student</div></div>
+      <div class="unit-card"><div class="unit-val">$15K</div><div class="unit-lbl">Content Cost</div></div>
+      <div class="unit-card"><div class="unit-val">$0</div><div class="unit-lbl">Paid Acq (Y1)</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- THE ASK -->
+<section class="s-dark" id="ask" style="padding-top:0;">
+  <div class="wrap-w">
+    <div class="section-divider" style="margin-bottom:100px;"></div>
+    <div style="text-align:center;">
+      <div class="s-label-dark reveal"><span class="s-num">10</span> The Ask</div>
+      <h2 class="s-title reveal reveal-delay-1" style="color:var(--text-light); text-align:center;">$5,000,000 before<br>September 2026.</h2>
+      <p class="s-desc reveal reveal-delay-2" style="color:var(--text-light-2); text-align:center; margin:0 auto 40px;">Simon &amp; Schuster publishes The Book of Possibility in September 2026. The app, the school infrastructure, and the acquisition engine must be built before that moment arrives. This capital has a deployment window and a clear catalyst.</p>
+    </div>
+    <div class="funds-grid">
+      <div class="glass-dark fund-card reveal"><div class="fund-pct">~40%</div><div class="fund-amt">~$2,000,000</div><div class="fund-title">Certification School</div><div class="fund-desc">Curriculum development, LMS build, accreditation, founding faculty. The long-term financial engine.</div></div>
+      <div class="glass-dark fund-card reveal reveal-delay-1"><div class="fund-pct">~35%</div><div class="fund-amt">~$1,750,000</div><div class="fund-title">The Possibility App</div><div class="fund-desc">Engineering, AI personalization, content production, email/CRM infrastructure. The front door to the ecosystem.</div></div>
+      <div class="glass-dark fund-card reveal reveal-delay-2"><div class="fund-pct">~15%</div><div class="fund-amt">~$750,000</div><div class="fund-title">Team and Operations</div><div class="fund-desc">Key executive hires to support Jim as the company scales beyond what one person can manage.</div></div>
+      <div class="glass-dark fund-card reveal reveal-delay-3"><div class="fund-pct">~10%</div><div class="fund-amt">~$500,000</div><div class="fund-title">Marketing and Book Launch</div><div class="fund-desc">Amplification, paid acquisition foundation, affiliate program activation around the September 2026 launch.</div></div>
+    </div>
+    <div class="glass-dark milestones reveal">
+      <div style="font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--teal); margin-bottom:16px;">Milestones This Capital Enables</div>
+      <div class="milestone-row"><div class="milestone-date">Q2 2026</div><div class="milestone-text"><strong>App v1 live on App Store.</strong> Core content library, AI coaching, subscription infrastructure.</div></div>
+      <div class="milestone-row"><div class="milestone-date">Sep 2026</div><div class="milestone-text"><strong>Book launch.</strong> Coordinated acquisition: app downloads, email capture, school waitlist, speaking tour.</div></div>
+      <div class="milestone-row"><div class="milestone-date">Q4 2026</div><div class="milestone-text"><strong>10,000+ app subscribers.</strong> Organic + book-driven. Email list at 50K+.</div></div>
+      <div class="milestone-row"><div class="milestone-date">Q1 2027</div><div class="milestone-text"><strong>Founding certification cohort.</strong> 100 students at $10K. School LMS and curriculum complete.</div></div>
+      <div class="milestone-row"><div class="milestone-date">Q2 2027</div><div class="milestone-text"><strong>Series A readiness.</strong> Three engines generating revenue. Clear path to $8M+ Year 3.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="closing" id="close">
+  <div class="closing-bg"><img src="photos/matt-paul-catalano-0QEG_xOoY7Y-unsplash.jpg" alt="" loading="lazy"></div>
+  <div class="closing-content">
+    <img src="possibility-logo.svg" alt="" style="width:48px;height:48px;display:block;margin:0 auto 20px;filter:drop-shadow(0 4px 16px rgba(51,163,163,0.15));opacity:0.7;" class="reveal">
+    <h2 class="closing-title reveal reveal-delay-1">This is the investment window.</h2>
+    <p class="closing-text reveal reveal-delay-2">The audience is built. The methodology works. The book deal is signed. The infrastructure must be ready before September 2026.</p>
+    <ul class="closing-thesis reveal reveal-delay-3">
+      <li>$9T wellness market with failing incumbents and a trust vacuum</li>
+      <li>Founder-led brands are the proven winning model ($30M to $100M+)</li>
+      <li>1M+ organic followers, Simon &amp; Schuster, 25 years operating this exact playbook</li>
+      <li>Three compounding revenue engines: app, certification school, digital ecosystem</li>
+      <li>September 2026 book launch: the deployment window for this capital</li>
+    </ul>
+    <div class="closing-tagline reveal reveal-delay-4">The Possibility Company &nbsp;&bull;&nbsp; Overcome to Become</div>
+    <div class="closing-bar reveal"></div>
+  </div>
+</section>
+
+<footer style="padding:32px; text-align:center; background:var(--dark);">
+  <p style="font-size:11px; color:rgba(255,252,250,0.55); line-height:1.6;">Confidential. For intended recipients only. &copy; 2026 The Possibility Company.</p>
+</footer>
+</div>
+
+<script>
+// Scroll progress
+(function(){var b=document.getElementById('scrollProgress');if(!b)return;var ticking=false;window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(function(){b.style.width=(window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100)+'%';ticking=false;});}},{passive:true});})();
+// Active nav
+(function(){var links=document.querySelectorAll('.nav-link');var map={};links.forEach(function(l){var id=l.getAttribute('href');if(id)map[id.replace('#','')]=l;});var o=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting&&e.intersectionRatio>0){links.forEach(function(l){l.classList.remove('active');});var l=map[e.target.id];if(l)l.classList.add('active');}});},{threshold:0,rootMargin:'-35% 0px -60% 0px'});document.querySelectorAll('section[id]').forEach(function(s){o.observe(s);});})();
+// Hero parallax fade
+(function(){var h=document.querySelector('.hero'),c=document.querySelector('.hero-content');if(!h||!c)return;var dead=false,ticking=false;var io=new IntersectionObserver(function(es){dead=!es[0].isIntersecting;},{threshold:0});io.observe(h);window.addEventListener('scroll',function(){if(dead||ticking)return;ticking=true;requestAnimationFrame(function(){var s=window.scrollY,pr=Math.min(s/(h.offsetHeight*0.6),1);c.style.opacity=1-pr;c.style.transform='translateY('+(s*0.3)+'px)';ticking=false;});},{passive:true});})();
+// Scroll reveals
+(function(){var els=document.querySelectorAll('.reveal, .reveal-scale');if(!els.length)return;var o=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');o.unobserve(e.target);}});},{threshold:0.1,rootMargin:'0px 0px -60px 0px'});els.forEach(function(el){o.observe(el);});})();
+// Mobile menu
+(function(){var b=document.getElementById('mobBurger'),o=document.getElementById('mobOverlay');if(!b||!o)return;b.addEventListener('click',function(){var open=o.classList.contains('open');o.classList.toggle('open',!open);b.classList.toggle('active',!open);b.setAttribute('aria-expanded',!open);document.body.style.overflow=open?'':'hidden';});o.querySelectorAll('a').forEach(function(l){l.addEventListener('click',function(){o.classList.remove('open');b.classList.remove('active');b.setAttribute('aria-expanded','false');document.body.style.overflow='';});});})();
+// Burger hero-mode
+(function(){var b=document.getElementById('mobBurger'),h=document.querySelector('.hero');if(!b||!h)return;function c(){b.classList.toggle('hero-mode',h.getBoundingClientRect().bottom>60);}window.addEventListener('scroll',c,{passive:true});c();})();
+</script>
+<link rel="stylesheet" href="visual-enhancements.css">
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+<script src="visual-enhancements.js"></script>
+<script>
+if(typeof gsap!=='undefined'&&typeof ScrollTrigger!=='undefined'){gsap.registerPlugin(ScrollTrigger);document.querySelectorAll('.rev-fill').forEach(function(bar){var w=bar.style.width;bar.style.width='0%';gsap.to(bar,{width:w,duration:1.2,ease:'power3.out',scrollTrigger:{trigger:bar,start:'top 80%',once:true}});});document.querySelectorAll('.engine-card').forEach(function(card,i){var glow=card.querySelector('.engine-glow');if(glow){gsap.fromTo(glow,{scaleX:0,opacity:0},{scaleX:1,opacity:0.7,duration:0.8,delay:i*0.15+0.6,ease:'power2.out',scrollTrigger:{trigger:card,start:'top 85%',once:true}});}});}
+</script>
+</body>
+</html>

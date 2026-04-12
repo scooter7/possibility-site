@@ -1,0 +1,148 @@
+/* ============================================================
+   VISUAL ENHANCEMENTS — Sitewide polish layer
+   Lenis smooth scroll, cursor glow, text reveals, ambient FX
+   ============================================================ */
+
+/* ===== LENIS SMOOTH SCROLL ===== */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ===== CUSTOM CURSOR GLOW ===== */
+.cursor-glow {
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9990;
+  background: radial-gradient(circle, rgba(51,163,163,0.06) 0%, rgba(51,163,163,0.02) 30%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: opacity 0.4s ease;
+  opacity: 0;
+  mix-blend-mode: screen;
+  will-change: left, top;
+}
+.cursor-glow.active {
+  opacity: 1;
+}
+/* Intensify on interactive elements */
+.cursor-glow.hovering {
+  background: radial-gradient(circle, rgba(51,163,163,0.1) 0%, rgba(51,163,163,0.04) 30%, transparent 70%);
+  width: 500px;
+  height: 500px;
+}
+/* Hide on mobile/touch */
+@media (hover: none), (max-width: 768px) {
+  .cursor-glow { display: none !important; }
+}
+
+/* ===== GSAP-POWERED REVEAL UPGRADES ===== */
+/* These replace the basic CSS transitions with GSAP-driven ones */
+.gs-reveal {
+  opacity: 0;
+  visibility: hidden;
+}
+.gs-split-reveal {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* ===== TEXT CHARACTER REVEAL ===== */
+.char-reveal .char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(18px);
+}
+.char-reveal .whitespace {
+  display: inline-block;
+  width: 0.3em;
+}
+
+/* ===== AMBIENT PARTICLE CANVAS ===== */
+.ambient-particles {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+.ambient-particles.loaded {
+  opacity: 1;
+}
+/* Only show on dark hero sections, portal page */
+@media (max-width: 480px) {
+  .ambient-particles { opacity: 0.5; }
+}
+
+/* ===== ENHANCED CARD HOVER DEPTH ===== */
+/* Subtle lift + glow on glass cards */
+.gc, .portal-card .card-inner, .ps-card, [class*="glass"] {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+/* ===== SCROLL PROGRESS SHIMMER ===== */
+@keyframes progressShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+#scrollProgress {
+  background: linear-gradient(90deg,
+    var(--release, #E8758A),
+    var(--align, #6366F1),
+    var(--become, #34D399),
+    var(--teal, #2E9E9E),
+    var(--release, #E8758A)
+  ) !important;
+  background-size: 200% 100% !important;
+  animation: progressShimmer 4s linear infinite !important;
+}
+
+/* ===== MAGNETIC BUTTON EFFECT ===== */
+.magnetic-target {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ===== SECTION DIVIDER GLOW ===== */
+.section-divider-glow {
+  position: relative;
+}
+.section-divider-glow::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 1px;
+  background: radial-gradient(ellipse, rgba(51,163,163,0.3) 0%, transparent 70%);
+}
+
+/* ===== IMAGE REVEAL CLIP ===== */
+.img-clip-reveal {
+  clip-path: inset(100% 0 0 0);
+}
+.img-clip-reveal.revealed {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+  .cursor-glow,
+  .ambient-particles { display: none !important; }
+  .gs-reveal, .gs-split-reveal { opacity: 1; visibility: visible; }
+  .char-reveal .char { opacity: 1; transform: none; }
+  #scrollProgress { animation: none !important; }
+}

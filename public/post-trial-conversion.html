@@ -1,0 +1,2110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+<meta name="view-transition" content="same-origin">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
+<title>The Possibility — Post-Trial Conversion Strategy</title>
+<meta name="description" content="Research-backed strategy for converting 14-day free trial users into paid subscribers. Competitive analysis, content gating, and the conversion playbook.">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+<link rel="icon" type="image/png" href="app-icon.png">
+<link rel="apple-touch-icon" href="app-icon.png">
+<link rel="preload" as="style" href="design-system.css">
+<link rel="stylesheet" href="design-system.css">
+<style>
+html { scroll-behavior: smooth; color-scheme: light; }
+.main { margin-left: var(--sidebar-w); overflow-x: clip; }
+
+/* Grain */
+.main::before {
+  content: ''; position: fixed; inset: 0; z-index: 9997; pointer-events: none; opacity: 0.018;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat; background-size: 200px;
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  min-height: 85vh; min-height: 85dvh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center; overflow: hidden;
+  background: var(--dark); padding: 80px 48px;
+}
+.hero-bg { position: absolute; inset: 0; z-index: 0; }
+.hero-bg img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 40%;
+  transform-origin: center center; opacity: 0;
+  animation: heroImgReveal 2.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards,
+             heroKenBurns 20s ease-out 2.5s forwards;
+  will-change: transform, opacity;
+}
+@keyframes heroImgReveal { 0% { opacity: 0; transform: scale(1.1); } 100% { opacity: 0.3; transform: scale(1.0); } }
+@keyframes heroKenBurns { 0% { transform: scale(1.0); } 100% { transform: scale(1.05); } }
+.hero-bg::after {
+  content: ''; position: absolute; inset: 0;
+  opacity: 0; animation: heroScrimFade 2s ease-out 0.3s forwards;
+  background:
+    linear-gradient(180deg, rgba(8,10,15,0.5) 0%, rgba(8,10,15,0.15) 35%, rgba(8,10,15,0.6) 70%, rgba(8,10,15,0.95) 100%),
+    radial-gradient(ellipse 600px 400px at 30% 70%, rgba(51,163,163,0.1) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 400px at 70% 60%, rgba(99,102,241,0.06) 0%, transparent 70%);
+}
+@keyframes heroScrimFade { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes heroFadeUp { 0% { opacity: 0; transform: translateY(24px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes dotPulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(51,163,163,0.6); }
+  50% { box-shadow: 0 0 20px rgba(51,163,163,0.9), 0 0 40px rgba(51,163,163,0.3); }
+}
+
+/* Hero particles */
+.hero::before {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.25), transparent),
+    radial-gradient(1px 1px at 25% 65%, rgba(255,255,255,0.2), transparent),
+    radial-gradient(1.5px 1.5px at 40% 35%, rgba(51,163,163,0.35), transparent),
+    radial-gradient(1px 1px at 55% 80%, rgba(255,255,255,0.15), transparent),
+    radial-gradient(1px 1px at 70% 15%, rgba(255,255,255,0.2), transparent),
+    radial-gradient(1.5px 1.5px at 85% 55%, rgba(51,163,163,0.3), transparent),
+    radial-gradient(1px 1px at 15% 85%, rgba(99,102,241,0.2), transparent),
+    radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,0.15), transparent);
+  animation: particleDrift 20s ease-in-out infinite alternate;
+}
+@keyframes particleDrift { 0% { transform: translate(0,0); } 50% { transform: translate(-8px,6px); } 100% { transform: translate(4px,-4px); } }
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 20px;
+  background: rgba(255,252,250,0.06);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border: 0.5px solid rgba(255,252,250,0.1);
+  border-radius: 100px;
+  font-size: 10px; font-weight: 600;
+  color: rgba(255,252,250,0.45);
+  letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 32px;
+  opacity: 0; animation: heroFadeUp 1s var(--zen) 0.3s forwards;
+  position: relative; z-index: 2;
+}
+.hero-badge .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 12px rgba(51,163,163,0.6);
+  animation: dotPulse 3s ease-in-out 2s infinite;
+}
+.hero h1 {
+  font-size: clamp(32px, 5vw, 60px);
+  font-weight: 200; line-height: 1.1;
+  letter-spacing: -2px;
+  color: rgba(255,252,250,0.95);
+  margin-bottom: 20px;
+  max-width: 750px;
+  opacity: 0; animation: heroFadeUp 1s var(--zen) 0.5s forwards;
+  position: relative; z-index: 2;
+}
+.hero h1 em {
+  font-style: normal; font-weight: 300;
+  color: var(--teal-bright);
+}
+.hero-sub {
+  font-size: 16px; font-weight: 400;
+  color: rgba(255,252,250,0.4);
+  max-width: 540px; line-height: 1.7;
+  opacity: 0; animation: heroFadeUp 1s var(--zen) 0.7s forwards;
+  position: relative; z-index: 2;
+}
+
+/* Hero stats bar */
+.hero-stats-bar {
+  position: relative; z-index: 2;
+  display: flex; justify-content: center; gap: 48px; flex-wrap: wrap;
+  padding: 100px 48px 0;
+  background: var(--bg);
+}
+.hero-stat { text-align: center; }
+.hero-stat .val {
+  font-size: 32px; font-weight: 300;
+  color: var(--text); letter-spacing: -1px;
+}
+.hero-stat .val .teal { color: var(--teal); }
+.hero-stat .lbl {
+  font-size: 11px; color: var(--text-3); margin-top: 4px;
+}
+
+/* Sections */
+section { padding: 110px 56px; position: relative; overflow-x: hidden; }
+section + section::before {
+  content: ''; position: absolute; top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: min(200px, 40%); height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(51,163,163,0.15), transparent);
+}
+
+/* TL;DR Callout */
+.tldr {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 20px 24px; margin: 32px 0 0;
+  background: rgba(51,163,163,0.04);
+  border-left: 3px solid var(--teal);
+  border-radius: 0 12px 12px 0;
+  transition: transform 0.3s var(--zen);
+}
+.tldr:hover { transform: translateX(4px); }
+.tldr-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--teal);
+  white-space: nowrap; padding-top: 2px;
+}
+.tldr p { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.6; margin: 0; }
+.dark-section .tldr { background: rgba(51,163,163,0.06); border-left-color: rgba(51,163,163,0.5); }
+.dark-section .tldr p { color: var(--text-light); }
+
+/* Section badges */
+.section-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 10px;
+  background: rgba(51,163,163,0.08);
+  border: 0.5px solid rgba(51,163,163,0.15);
+  font-size: 14px; font-weight: 600; color: var(--teal);
+  letter-spacing: -0.5px; margin-bottom: 16px;
+  position: relative;
+  transition: transform 0.3s var(--zen), box-shadow 0.3s var(--zen);
+}
+.section-badge:hover { transform: scale(1.1); box-shadow: 0 0 20px rgba(51,163,163,0.15); }
+.section-badge.visible { animation: badgePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+@keyframes badgePop { 0% { transform: scale(0.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+.dark-section .section-badge { background: rgba(51,163,163,0.1); border-color: rgba(51,163,163,0.2); }
+
+/* Key insight */
+.key-insight {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 24px 28px; margin: 32px 0;
+  background: linear-gradient(135deg, rgba(51,163,163,0.04) 0%, rgba(99,102,241,0.02) 100%);
+  border: 0.5px solid rgba(51,163,163,0.12);
+  border-radius: 16px;
+  position: relative; overflow: hidden;
+  transition: transform 0.3s var(--zen), box-shadow 0.3s var(--zen);
+}
+.key-insight:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(31,38,135,0.08); }
+.key-insight::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 3px; height: 100%; background: linear-gradient(to bottom, var(--teal), var(--align));
+  border-radius: 3px 0 0 3px;
+}
+.key-insight-icon {
+  min-width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+  background: rgba(51,163,163,0.08); display: flex; padding: 0 8px;
+  align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: var(--teal); letter-spacing: -0.5px;
+}
+.key-insight p { font-size: 14px; color: var(--text-2); line-height: 1.7; margin: 0; }
+.key-insight strong { color: var(--text); font-weight: 600; }
+.dark-section .key-insight { background: linear-gradient(135deg, rgba(51,163,163,0.06) 0%, rgba(99,102,241,0.03) 100%); border-color: rgba(51,163,163,0.15); }
+.dark-section .key-insight:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
+.dark-section .key-insight p { color: var(--text-light-2); }
+.dark-section .key-insight strong { color: var(--text-light); }
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--teal), #2DD4BF, var(--become));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* Infographic cards */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin: 40px 0;
+}
+.info-card {
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 0.5px solid rgba(26,20,16,0.08);
+  border-radius: 24px;
+  padding: 32px;
+  position: relative; overflow: hidden;
+  transition: transform 0.4s var(--zen), box-shadow 0.4s var(--zen);
+  box-shadow: 0 8px 32px rgba(31,38,135,0.08), 0 0 0 0.5px rgba(255,255,255,0.3) inset;
+}
+.info-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(31,38,135,0.12), 0 0 0 0.5px rgba(255,255,255,0.4) inset; }
+.info-card .ic-number {
+  font-size: 48px; font-weight: 200; letter-spacing: -2px;
+  color: var(--teal); line-height: 1; margin-bottom: 8px;
+}
+.info-card .ic-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--text-3); margin-bottom: 12px;
+}
+.info-card h3 {
+  font-size: 18px; font-weight: 500; letter-spacing: -0.3px;
+  color: var(--text); margin-bottom: 8px; line-height: 1.3;
+}
+.info-card p { font-size: 13px; color: var(--text-2); line-height: 1.65; }
+
+/* Dark info cards */
+.dark-section .info-card {
+  background: rgba(255,252,250,0.04);
+  border-color: rgba(255,252,250,0.08);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+.dark-section .info-card:hover { box-shadow: 0 16px 48px rgba(0,0,0,0.3); border-color: rgba(255,252,250,0.12); }
+.dark-section .info-card h3 { color: var(--text-light); }
+.dark-section .info-card p { color: var(--text-light-2); }
+.dark-section .info-card .ic-label { color: var(--text-light-3); }
+
+/* Competitor comparison table */
+.comp-table-wrap {
+  overflow-x: auto;
+  margin: 40px 0;
+  border-radius: 20px;
+  -webkit-overflow-scrolling: touch;
+}
+.comp-table {
+  width: 100%; min-width: 700px;
+  border-collapse: separate; border-spacing: 0;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(20px);
+  border: 0.5px solid rgba(26,20,16,0.08);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.comp-table thead th {
+  padding: 16px 20px;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--text-3);
+  background: rgba(26,20,16,0.025);
+  border-bottom: 1px solid rgba(26,20,16,0.06);
+  text-align: left;
+}
+.comp-table tbody td {
+  padding: 16px 20px;
+  font-size: 13px; color: var(--text-2);
+  line-height: 1.5;
+  border-bottom: 1px solid rgba(26,20,16,0.04);
+  vertical-align: top;
+}
+.comp-table tbody tr:last-child td { border-bottom: none; }
+.comp-table tbody td:first-child { font-weight: 600; color: var(--text); }
+.comp-table .highlight-row { background: rgba(51,163,163,0.03); }
+.comp-table .highlight-row td:first-child { color: var(--teal); }
+.comp-table .trust-score { font-weight: 600; }
+.trust-good { color: var(--become); }
+.trust-ok { color: #F59E0B; }
+.trust-bad { color: var(--release); }
+
+/* Dark section table overrides */
+.dark-section .comp-table-wrap { border-radius: 20px; }
+.dark-section .comp-table {
+  background: rgba(255,252,250,0.05);
+  border-color: rgba(255,252,250,0.1);
+}
+.dark-section .comp-table thead th {
+  color: rgba(255,252,250,0.7);
+  background: rgba(255,252,250,0.07);
+  border-bottom-color: rgba(255,252,250,0.1);
+  font-size: 10px;
+}
+.dark-section .comp-table tbody td {
+  color: rgba(255,252,250,0.75);
+  border-bottom-color: rgba(255,252,250,0.06);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.dark-section .comp-table tbody td:first-child {
+  color: rgba(255,252,250,0.92);
+  font-weight: 700;
+}
+.dark-section .comp-table .highlight-row { background: rgba(51,163,163,0.08); }
+.dark-section .comp-table .highlight-row td:first-child { color: var(--teal-bright); }
+.dark-section .comp-table .highlight-row td { color: rgba(255,252,250,0.85); }
+
+/* Timeline */
+.timeline {
+  position: relative;
+  padding-left: 40px;
+  margin: 40px 0;
+}
+.timeline::before {
+  content: '';
+  position: absolute; left: 15px; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--release), var(--align), var(--become), var(--teal));
+  border-radius: 2px;
+}
+.tl-item {
+  position: relative;
+  padding: 0 0 40px;
+}
+.tl-item:last-child { padding-bottom: 0; }
+.tl-dot {
+  position: absolute; left: -33px; top: 4px;
+  width: 12px; height: 12px; border-radius: 50%;
+  border: 2px solid var(--teal);
+  background: var(--bg);
+  z-index: 2;
+}
+.tl-item:nth-child(1) .tl-dot { border-color: var(--release); }
+.tl-item:nth-child(2) .tl-dot { border-color: var(--release); }
+.tl-item:nth-child(3) .tl-dot { border-color: var(--align); }
+.tl-item:nth-child(4) .tl-dot { border-color: var(--align); }
+.tl-item:nth-child(5) .tl-dot { border-color: var(--become); }
+.tl-item:nth-child(6) .tl-dot { border-color: var(--become); }
+.tl-item:nth-child(7) .tl-dot { border-color: var(--teal); background: var(--teal); }
+.tl-day {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--teal); margin-bottom: 6px;
+}
+.tl-title {
+  font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 4px;
+  letter-spacing: -0.3px;
+}
+.tl-desc { font-size: 13px; color: var(--text-2); line-height: 1.65; }
+
+/* Donut chart (CSS only) */
+.donut-row {
+  display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;
+  margin: 48px 0;
+}
+.donut-item { text-align: center; }
+.donut {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  position: relative;
+  margin: 0 auto 12px;
+}
+.donut::after {
+  content: attr(data-label);
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 300; color: var(--text);
+  letter-spacing: -1px;
+}
+.donut-label {
+  font-size: 11px; color: var(--text-3); font-weight: 500;
+  max-width: 120px; line-height: 1.4;
+}
+
+/* Bar chart (CSS only) */
+.bar-chart { margin: 40px 0; }
+.bar-row {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 16px;
+}
+.bar-label {
+  min-width: 120px; font-size: 13px; font-weight: 500;
+  color: var(--text); text-align: right;
+}
+.bar-track {
+  flex: 1; height: 32px; border-radius: 8px;
+  background: rgba(26,20,16,0.04);
+  overflow: hidden; position: relative;
+}
+.bar-fill {
+  height: 100%; border-radius: 8px;
+  display: flex; align-items: center;
+  padding: 0 12px;
+  font-size: 11px; font-weight: 700; color: white;
+  letter-spacing: -0.3px;
+  transition: width 1.5s var(--zen);
+}
+.bar-fill.teal { background: linear-gradient(90deg, var(--teal), #2DD4BF); }
+.bar-fill.release { background: linear-gradient(90deg, var(--release), #F9A8B8); }
+.bar-fill.align { background: linear-gradient(90deg, var(--align), #818CF8); }
+.bar-fill.become { background: linear-gradient(90deg, var(--become), #6EE7B7); }
+.bar-fill.neutral { background: linear-gradient(90deg, rgba(26,20,16,0.25), rgba(26,20,16,0.15)); }
+
+/* Dark section bar overrides */
+.dark-section .bar-label { color: var(--text-light); }
+.dark-section .bar-track { background: rgba(255,252,250,0.06); }
+.dark-section .bar-fill.neutral { background: linear-gradient(90deg, rgba(255,252,250,0.2), rgba(255,252,250,0.1)); }
+
+/* Versus comparison */
+.vs-grid {
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  gap: 0; align-items: stretch;
+  margin: 40px 0;
+}
+.vs-card {
+  padding: 32px; border-radius: 24px;
+  position: relative;
+}
+.vs-card.free {
+  background: rgba(26,20,16,0.025);
+  border: 0.5px solid rgba(26,20,16,0.08);
+}
+.vs-card.paid {
+  background: rgba(51,163,163,0.04);
+  border: 0.5px solid rgba(51,163,163,0.12);
+}
+.vs-divider {
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 16px;
+}
+.vs-divider span {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(26,20,16,0.06);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: var(--text-3);
+  letter-spacing: -0.3px;
+}
+.vs-title {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; margin-bottom: 20px;
+}
+.vs-card.free .vs-title { color: var(--text-3); }
+.vs-card.paid .vs-title { color: var(--teal); }
+.vs-list { list-style: none; padding: 0; }
+.vs-list li {
+  font-size: 13px; line-height: 1.65; color: var(--text-2);
+  padding: 8px 0;
+  border-bottom: 0.5px solid rgba(26,20,16,0.04);
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.vs-list li:last-child { border-bottom: none; }
+.vs-list .check { color: var(--become); flex-shrink: 0; font-size: 14px; }
+.vs-list .lock { color: var(--text-3); flex-shrink: 0; font-size: 13px; }
+
+/* Funnel infographic */
+.funnel {
+  max-width: 500px; margin: 48px auto;
+  text-align: center;
+}
+.funnel-stage {
+  margin: 0 auto;
+  padding: 16px 24px;
+  border-radius: 12px;
+  font-size: 13px; font-weight: 500;
+  color: white;
+  position: relative;
+  transition: transform 0.3s var(--zen);
+}
+.funnel-stage:hover { transform: scale(1.02); }
+.funnel-stage + .funnel-stage { margin-top: 4px; }
+.funnel-arrow {
+  text-align: center;
+  padding: 4px 0;
+  font-size: 16px;
+  color: var(--text-3);
+  line-height: 1;
+}
+.funnel-pct {
+  position: absolute; right: -80px; top: 50%; transform: translateY(-50%);
+  font-size: 11px; font-weight: 700; color: var(--teal);
+  white-space: nowrap;
+}
+
+/* Photo break */
+.photo-break {
+  position: relative; width: 100%;
+  min-height: 50vh;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.photo-break img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.photo-break-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(8,10,15,0.3) 0%, rgba(8,10,15,0.6) 100%);
+}
+.photo-break-content {
+  position: relative; z-index: 2;
+  text-align: center; max-width: 600px; padding: 0 24px;
+}
+.photo-break-content blockquote {
+  font-family: 'New York', 'Georgia', 'Times New Roman', serif;
+  font-size: clamp(20px, 2.8vw, 28px);
+  font-weight: 400; line-height: 1.5;
+  color: rgba(255,252,250,0.9);
+  font-style: italic; letter-spacing: -0.3px;
+}
+.photo-break-content .attrib {
+  margin-top: 16px;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(255,252,250,0.35);
+}
+
+/* Email sequence cards */
+.email-seq {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px; margin: 40px 0;
+}
+.email-card {
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(20px);
+  border: 0.5px solid rgba(26,20,16,0.08);
+  border-radius: 16px;
+  padding: 20px;
+  transition: transform 0.3s var(--zen);
+}
+.email-card:hover { transform: translateY(-3px); }
+.email-card .ec-day {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--teal); margin-bottom: 8px;
+}
+.email-card .ec-subject {
+  font-size: 14px; font-weight: 500; color: var(--text);
+  margin-bottom: 6px; line-height: 1.3;
+}
+.email-card .ec-type {
+  font-size: 11px; color: var(--text-3);
+}
+
+/* Metric highlight */
+.metric-row {
+  display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;
+  margin: 40px 0;
+}
+.metric-card {
+  text-align: center;
+  padding: 24px 32px;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(20px);
+  border: 0.5px solid rgba(26,20,16,0.08);
+  border-radius: 20px;
+  min-width: 160px;
+  transition: transform 0.3s var(--zen);
+}
+.metric-card:hover { transform: translateY(-3px); }
+.metric-val {
+  font-size: 36px; font-weight: 200;
+  color: var(--teal); letter-spacing: -2px;
+  line-height: 1;
+}
+.metric-lbl {
+  font-size: 11px; color: var(--text-3);
+  margin-top: 8px; line-height: 1.3;
+}
+.dark-section .metric-card {
+  background: rgba(255,252,250,0.04);
+  border-color: rgba(255,252,250,0.08);
+}
+.dark-section .metric-lbl { color: var(--text-light-3); }
+
+/* Warning callout */
+.warning-callout {
+  padding: 24px 28px;
+  background: rgba(239,68,68,0.04);
+  border: 0.5px solid rgba(239,68,68,0.12);
+  border-radius: 16px;
+  margin: 32px 0;
+}
+.warning-callout .wc-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--release); margin-bottom: 8px;
+}
+.warning-callout p { font-size: 14px; color: var(--text-2); line-height: 1.7; }
+.warning-callout strong { color: var(--text); }
+
+/* Success callout */
+.success-callout {
+  padding: 24px 28px;
+  background: rgba(34,197,94,0.04);
+  border: 0.5px solid rgba(34,197,94,0.12);
+  border-radius: 16px;
+  margin: 32px 0;
+}
+.success-callout .sc-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--become); margin-bottom: 8px;
+}
+.success-callout p { font-size: 14px; color: var(--text-2); line-height: 1.7; }
+.success-callout strong { color: var(--text); }
+
+/* Section headers (page-specific) */
+.s-label {
+  display: inline-block;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 16px;
+  padding: 5px 14px;
+  background: rgba(51,163,163,0.05);
+  border-radius: 100px;
+  border: 0.5px solid rgba(51,163,163,0.1);
+}
+.dark-section .s-label {
+  background: rgba(51,163,163,0.08);
+  border-color: rgba(51,163,163,0.15);
+}
+.s-title {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 200; line-height: 1.1;
+  letter-spacing: -1px; color: var(--text);
+  margin-bottom: 16px;
+}
+.dark-section .s-title { color: var(--text-light); }
+.s-title em { font-style: normal; font-weight: 300; color: var(--teal); }
+.s-desc {
+  font-size: 16px; color: var(--text-2);
+  max-width: 620px; line-height: 1.75;
+  margin-bottom: 48px;
+}
+.dark-section .s-desc { color: var(--text-light-2); }
+
+/* Body text */
+.body-text {
+  font-size: 15px; color: var(--text-2);
+  line-height: 1.75; max-width: 720px;
+  margin-bottom: 24px;
+}
+.body-text strong { color: var(--text); font-weight: 600; }
+.dark-section .body-text { color: var(--text-light-2); }
+.dark-section .body-text strong { color: var(--text-light); }
+
+/* Inline link */
+.ilink { color: var(--teal); text-decoration: none; font-weight: 500; border-bottom: 1px solid rgba(51,163,163,0.2); transition: border-color 0.2s; }
+.ilink:hover { border-color: var(--teal); }
+
+/* Pillar tag */
+.pillar-tag {
+  display: inline-block; font-size: 10px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 4px;
+}
+.pillar-tag.release { color: var(--release); background: var(--release-soft); }
+.pillar-tag.align { color: var(--align); background: var(--align-soft); }
+.pillar-tag.become { color: var(--become); background: var(--become-soft); }
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .main { margin-left: 0; }
+  section { padding: 80px 32px; }
+  .hero { padding: 80px 32px; }
+  .hero h1 br { display: none; }
+  .hero-stats-bar { padding: 80px 32px 0; gap: 32px; }
+  .vs-grid { grid-template-columns: 1fr !important; gap: 16px; }
+  .vs-divider { padding: 8px 0; }
+  .vs-divider span { width: 32px; height: 32px; font-size: 11px; }
+  .funnel-pct { position: static; transform: none; display: block; margin-top: 4px; }
+  /* Override inline grid-template-columns on info-grid */
+  .info-grid[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; }
+  .info-grid[style*="grid-template-columns: repeat(3"] { grid-template-columns: 1fr 1fr !important; }
+}
+@media (max-width: 768px) {
+  section { padding: 64px 24px; }
+  .hero { padding: 72px 24px; min-height: 75vh; min-height: 75dvh; }
+  .hero h1 { font-size: clamp(28px, 7vw, 48px); letter-spacing: -1.5px; }
+  .hero-sub { font-size: 15px; line-height: 1.6; }
+  .hero-stats-bar {
+    padding: 56px 24px 0; gap: 0;
+    display: grid; grid-template-columns: 1fr 1fr;
+  }
+  .hero-stat {
+    padding: 16px 12px;
+    border-bottom: 0.5px solid rgba(26,20,16,0.06);
+  }
+  .hero-stat:nth-child(odd) { border-right: 0.5px solid rgba(26,20,16,0.06); }
+  .hero-stat .val { font-size: 28px; }
+  .hero-stat .lbl { font-size: 10px; line-height: 1.3; }
+  .info-grid { grid-template-columns: 1fr !important; }
+  .info-card .ic-number { font-size: 40px; }
+  .email-seq { grid-template-columns: 1fr 1fr; }
+  .metric-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .metric-card { min-width: 0; padding: 20px 16px; }
+  .metric-val { font-size: 28px; }
+  .metric-lbl { font-size: 10px; }
+  .bar-label { min-width: 80px; font-size: 11px; }
+  .bar-fill { font-size: 10px; padding: 0 8px; }
+  .bar-track { height: 28px; }
+  .timeline { padding-left: 32px; }
+  .tl-dot { left: -25px; width: 10px; height: 10px; }
+  .tl-title { font-size: 15px; }
+  .tl-desc { font-size: 12px; }
+  .key-insight { padding: 20px 22px; gap: 12px; }
+  .key-insight-icon { min-width: 36px; height: 36px; font-size: 10px; }
+  .key-insight p { font-size: 13px; }
+  .tldr { padding: 16px 20px; gap: 10px; }
+  .tldr p { font-size: 13px; }
+  .warning-callout, .success-callout { padding: 20px 22px; }
+  .warning-callout p, .success-callout p { font-size: 13px; }
+  .vs-card { padding: 24px; border-radius: 20px; }
+  .vs-list li { font-size: 12px; padding: 6px 0; }
+  .s-title { font-size: clamp(24px, 5vw, 36px) !important; letter-spacing: -1px !important; }
+  .s-desc { font-size: 14px; margin-bottom: 32px; }
+  .body-text { font-size: 14px; }
+  .photo-break { min-height: 40vh; }
+  .photo-break-content blockquote { font-size: clamp(18px, 4.5vw, 24px); }
+  .comp-table thead th { padding: 12px 14px; font-size: 9px; }
+  .comp-table tbody td { padding: 12px 14px; font-size: 12px; }
+  .donut-row { gap: 24px; }
+  .donut { width: 100px; height: 100px; }
+  .donut::after { font-size: 18px; }
+  .closing-links { flex-direction: column; align-items: center; }
+  .closing-link { width: 100%; max-width: 280px; justify-content: center; }
+}
+@media (max-width: 480px) {
+  section { padding: 48px 20px; }
+  .hero { padding: 56px 20px; min-height: 70vh; min-height: 70dvh; }
+  .hero h1 { font-size: clamp(26px, 8vw, 36px); letter-spacing: -1px; margin-bottom: 16px; }
+  .hero-sub { font-size: 14px; }
+  .hero-badge { font-size: 9px; padding: 6px 16px; margin-bottom: 24px; }
+  .hero-stats-bar { padding: 40px 20px 0; }
+  .hero-stat { padding: 14px 8px; }
+  .hero-stat .val { font-size: 22px; }
+  .hero-stat .lbl { font-size: 9px; }
+  .s-label { font-size: 9px; padding: 4px 12px; }
+  .section-badge { width: 32px; height: 32px; font-size: 13px; }
+  .info-card { padding: 22px; border-radius: 18px; }
+  .info-card .ic-number { font-size: 36px; }
+  .info-card h3 { font-size: 16px; }
+  .info-card p { font-size: 12px; }
+  .email-seq { grid-template-columns: 1fr !important; gap: 10px; }
+  .email-card { padding: 16px; border-radius: 14px; }
+  .email-card .ec-subject { font-size: 13px; }
+  .email-card .ec-type { font-size: 10px; }
+  .metric-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .metric-card { padding: 16px 12px; border-radius: 16px; }
+  .metric-val { font-size: 24px; letter-spacing: -1px; }
+  .metric-lbl { font-size: 9px; margin-top: 6px; }
+  .bar-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .bar-label { min-width: auto; text-align: left; font-size: 11px; }
+  .bar-track { width: 100%; height: 28px; }
+  .bar-fill { font-size: 10px; min-width: 40px; }
+  .timeline { padding-left: 28px; }
+  .timeline::before { left: 11px; }
+  .tl-dot { left: -22px; width: 8px; height: 8px; top: 6px; }
+  .tl-item { padding-bottom: 28px; }
+  .tl-day { font-size: 9px; letter-spacing: 1px; }
+  .tl-title { font-size: 14px; }
+  .tl-desc { font-size: 12px; line-height: 1.55; }
+  .pillar-tag { font-size: 9px; padding: 2px 6px; }
+  .key-insight { padding: 16px 18px; gap: 10px; margin: 24px 0; flex-direction: column; }
+  .key-insight-icon { min-width: auto; width: fit-content; padding: 0 10px; height: 32px; font-size: 10px; }
+  .key-insight p { font-size: 12px; line-height: 1.6; }
+  .tldr { padding: 14px 16px; gap: 8px; margin-top: 24px; flex-direction: column; }
+  .tldr-label { padding-top: 0; }
+  .tldr p { font-size: 12px; }
+  .warning-callout, .success-callout { padding: 16px 18px; margin: 20px 0; }
+  .warning-callout .wc-label, .success-callout .sc-label { font-size: 9px; margin-bottom: 6px; }
+  .warning-callout p, .success-callout p { font-size: 12px; }
+  .vs-card { padding: 20px; border-radius: 16px; }
+  .vs-title { font-size: 9px; margin-bottom: 14px; }
+  .vs-list li { font-size: 12px; gap: 8px; padding: 5px 0; }
+  .vs-list .check { font-size: 12px; }
+  .body-text { font-size: 13px; line-height: 1.65; }
+  .comp-table-wrap { margin: 24px -20px; border-radius: 0; }
+  .comp-table { border-radius: 0; }
+  .comp-table thead th { padding: 10px 10px; font-size: 8px; letter-spacing: 1px; }
+  .comp-table tbody td { padding: 10px 10px; font-size: 11px; }
+  .photo-break { min-height: 35vh; }
+  .photo-break-content blockquote { font-size: 18px; line-height: 1.45; }
+  .photo-break-content .attrib { font-size: 10px; }
+  .closing-link { padding: 12px 24px; font-size: 13px; }
+}
+@media (max-width: 375px) {
+  section { padding: 40px 16px; }
+  .hero { padding: 48px 16px; min-height: 65vh; min-height: 65dvh; }
+  .hero h1 { font-size: 24px; letter-spacing: -0.8px; }
+  .hero-sub { font-size: 13px; }
+  .hero-badge { font-size: 8px; padding: 5px 12px; letter-spacing: 1.5px; }
+  .hero-stats-bar { padding: 32px 16px 0; }
+  .hero-stat { padding: 12px 6px; }
+  .hero-stat .val { font-size: 20px; }
+  .hero-stat .lbl { font-size: 8px; }
+  .s-title { font-size: clamp(20px, 6vw, 28px) !important; }
+  .s-desc { font-size: 13px; line-height: 1.65; margin-bottom: 28px; }
+  .info-card { padding: 18px; border-radius: 16px; }
+  .info-card .ic-number { font-size: 32px; }
+  .info-card h3 { font-size: 15px; }
+  .info-card p { font-size: 11px; line-height: 1.55; }
+  .metric-card { padding: 14px 10px; border-radius: 14px; }
+  .metric-val { font-size: 22px; }
+  .metric-lbl { font-size: 8px; }
+  .timeline { padding-left: 24px; }
+  .timeline::before { left: 9px; }
+  .tl-dot { left: -19px; width: 7px; height: 7px; }
+  .tl-title { font-size: 13px; }
+  .tl-desc { font-size: 11px; }
+  .key-insight { padding: 14px 16px; }
+  .key-insight p { font-size: 11px; }
+  .vs-card { padding: 16px; }
+  .vs-list li { font-size: 11px; }
+  .email-card { padding: 14px; }
+  .email-card .ec-subject { font-size: 12px; }
+  .comp-table-wrap { margin: 20px -16px; }
+  .comp-table thead th { padding: 8px 8px; font-size: 7px; }
+  .comp-table tbody td { padding: 8px 8px; font-size: 10px; line-height: 1.4; }
+  .photo-break { min-height: 30vh; }
+  .photo-break-content blockquote { font-size: 16px; }
+  .closing-link { padding: 11px 20px; font-size: 12px; }
+}
+@media (max-width: 320px) {
+  section { padding: 32px 12px; }
+  .hero { padding: 40px 12px; }
+  .hero h1 { font-size: 22px; }
+  .hero-sub { font-size: 12px; }
+  .hero-stats-bar { padding: 24px 12px 0; }
+  .hero-stat .val { font-size: 18px; }
+  .hero-stat .lbl { font-size: 8px; }
+  .s-title { font-size: 20px !important; }
+  .info-card { padding: 16px; }
+  .comp-table-wrap { margin: 16px -12px; }
+  .metric-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .metric-card { padding: 12px 8px; }
+  .metric-val { font-size: 20px; }
+  .vs-card { padding: 14px; }
+  .timeline { padding-left: 22px; }
+}
+/* Disable hover effects on touch */
+@media (hover: none) {
+  .info-card:hover { transform: none; box-shadow: 0 8px 32px rgba(31,38,135,0.08), 0 0 0 0.5px rgba(255,255,255,0.3) inset; }
+  .dark-section .info-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.2); transform: none; }
+  .email-card:hover { transform: none; }
+  .metric-card:hover { transform: none; }
+  .key-insight:hover { transform: none; box-shadow: none; }
+  .tldr:hover { transform: none; }
+  .section-badge:hover { transform: none; box-shadow: none; }
+  .funnel-stage:hover { transform: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar">
+  <div class="nav-cross-group">
+    <div class="sidebar-group-label">Strategy Hub</div>
+    <a href="index.html" class="nav-cross-link">
+      <span class="nc-icon">⬡</span> Portal Home <span class="nc-arrow">→</span>
+    </a>
+  </div>
+  <div class="sidebar-brand">The Possibility</div>
+  <div class="sidebar-title">Post-Trial Conversion</div>
+  <nav>
+    <div class="sidebar-group">
+      <div class="sidebar-group-label">Strategy</div>
+      <a href="#problem" class="nav-link">The 96% Problem</a>
+      <a href="#competitive" class="nav-link">Competitive Landscape</a>
+      <a href="#trial-arc" class="nav-link">14-Day Trial Arc</a>
+      <a href="#conversion-moment" class="nav-link">The Conversion Moment</a>
+    </div>
+    <div class="sidebar-group">
+      <div class="sidebar-group-label">Post-Trial</div>
+      <a href="#free-vs-paid" class="nav-link">Free vs. Paid Access</a>
+      <a href="#content-strategy" class="nav-link">Content Gating</a>
+      <a href="#content-duration" class="nav-link">Session Duration</a>
+      <a href="#win-back" class="nav-link">90-Day Win-Back</a>
+    </div>
+    <div class="sidebar-group">
+      <div class="sidebar-group-label">Conversion Engine</div>
+      <a href="#email-sequence" class="nav-link">Email Sequence</a>
+      <a href="#push-strategy" class="nav-link">Push Notifications</a>
+      <a href="#trust-architecture" class="nav-link">Trust Architecture</a>
+      <a href="#targets" class="nav-link">Target Metrics</a>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    Post-Trial Conversion Strategy<br>
+    The Possibility &middot; 2026
+  </div>
+</aside>
+
+<!-- ===== MOBILE BURGER ===== -->
+<button class="mob-burger hero-mode" aria-label="Menu">
+  <span></span><span></span><span></span>
+</button>
+<div class="mob-overlay">
+  <div class="mob-menu">
+    <div class="mob-menu-cross">
+      <a href="index.html">⬡ Strategy Hub <span>→</span></a>
+    </div>
+    <div class="mob-menu-label">Strategy</div>
+    <div class="mob-menu-section">
+      <a href="#problem">The 96% Problem</a>
+      <a href="#competitive">Competitive Landscape</a>
+      <a href="#trial-arc">14-Day Trial Arc</a>
+      <a href="#conversion-moment">The Conversion Moment</a>
+    </div>
+    <div class="mob-menu-label">Post-Trial</div>
+    <div class="mob-menu-section">
+      <a href="#free-vs-paid">Free vs. Paid Access</a>
+      <a href="#content-strategy">Content Gating</a>
+      <a href="#content-duration">Session Duration</a>
+      <a href="#win-back">90-Day Win-Back</a>
+    </div>
+    <div class="mob-menu-label">Conversion Engine</div>
+    <div class="mob-menu-section">
+      <a href="#email-sequence">Email Sequence</a>
+      <a href="#push-strategy">Push Notifications</a>
+      <a href="#trust-architecture">Trust Architecture</a>
+      <a href="#targets">Target Metrics</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCROLL PROGRESS ===== -->
+<div class="scroll-progress"></div>
+
+<!-- ===== MAIN ===== -->
+<div class="main">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg">
+    <img src="marita-kavelashvili.jpg" alt="Contemplative landscape">
+  </div>
+  <div class="hero-badge"><span class="dot"></span> Post-Trial Strategy</div>
+  <h1>Turn <em>transformation</em> into<br>lasting commitment</h1>
+  <p class="hero-sub">A research-backed conversion strategy for what happens after the 14-day free trial, why users should pay, and how to make the decision effortless.</p>
+</div>
+
+<!-- HERO STATS -->
+<div class="hero-stats-bar">
+  <div class="hero-stat reveal">
+    <div class="val"><span class="teal">96%</span></div>
+    <div class="lbl">Industry churn at 12 months</div>
+  </div>
+  <div class="hero-stat reveal reveal-delay-1">
+    <div class="val"><span class="teal">45.7%</span></div>
+    <div class="lbl">14-day trial conversion rate</div>
+  </div>
+  <div class="hero-stat reveal reveal-delay-2">
+    <div class="val"><span class="teal">258%</span></div>
+    <div class="lbl">Achievement-based conversion lift</div>
+  </div>
+  <div class="hero-stat reveal reveal-delay-3">
+    <div class="val"><span class="teal">50%</span></div>
+    <div class="lbl">Conversions happen after trial ends</div>
+  </div>
+</div>
+
+
+<!-- ===================== SECTION 1: THE PROBLEM ===================== -->
+<section id="problem">
+  <div class="container">
+    <div class="section-badge reveal">1</div>
+    <div class="s-label">The Industry Problem</div>
+    <h2 class="s-title reveal">The meditation app graveyard</h2>
+    <p class="s-desc reveal">The average meditation app user completes 4.3 sessions across their entire lifetime. The industry loses 96% of subscribers within 12 months. This is not a content problem. It is a relationship problem.</p>
+
+    <div class="tldr reveal">
+      <span class="tldr-label">TL;DR</span>
+      <p>Nobody leaves because the content was not good enough. People churn because no one built a relationship with them. The Possibility solves this through structured transformation, not an open library.</p>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card reveal">
+        <div class="ic-number">4.3</div>
+        <div class="ic-label">Sessions per lifetime</div>
+        <h3>The average user gives you 4.3 sessions</h3>
+        <p>Across their entire relationship with a meditation app. That is not enough time to form a habit, build trust, or demonstrate value. The industry is losing people before they even start.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-1">
+        <div class="ic-number">66</div>
+        <div class="ic-label">Days to form a habit</div>
+        <h3>It takes 66 days to build a meditation habit</h3>
+        <p>Research confirms a 7-day trial is insufficient. A 14-day trial gives users enough time to experience neurological change (13 min/day for 8 weeks is the threshold) and build genuine commitment.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-2">
+        <div class="ic-number">40%</div>
+        <div class="ic-label">Top churn reason</div>
+        <h3>"I never formed a habit"</h3>
+        <p>The number one reason users cancel their meditation app subscription. Not price, not content quality, not missing features. They simply never integrated it into their life.</p>
+      </div>
+    </div>
+
+    <h3 class="s-title reveal" style="font-size: clamp(22px, 3vw, 32px); margin-top: 64px;">Industry retention reality</h3>
+
+    <div class="bar-chart reveal">
+      <div class="bar-row">
+        <div class="bar-label">Day 1</div>
+        <div class="bar-track">
+          <div class="bar-fill neutral" style="width: 27%;">27%</div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Day 7</div>
+        <div class="bar-track">
+          <div class="bar-fill neutral" style="width: 12%;">12%</div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Day 30</div>
+        <div class="bar-track">
+          <div class="bar-fill neutral" style="width: 8.5%;">4.7%</div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">12 Months</div>
+        <div class="bar-track">
+          <div class="bar-fill neutral" style="width: 6%;">4%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="key-insight reveal">
+      <div class="key-insight-icon">KEY</div>
+      <p><strong>Only 3.9% of users remain by Day 15</strong> without structured engagement. The industry treats meditation like a content library. Users need a guided journey with a teacher they trust, not 50,000 minutes of content they will never find.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== SECTION 2: COMPETITIVE LANDSCAPE ===================== -->
+<section id="competitive" class="dark-section" style="background: var(--dark); color: var(--text-light);">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 700px 500px at 20% 30%, rgba(232,117,138,0.04) 0%, transparent 70%),radial-gradient(ellipse 600px 500px at 80% 70%, rgba(99,102,241,0.035) 0%, transparent 70%);pointer-events:none;"></div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="section-badge reveal">2</div>
+    <div class="s-label">Competitive Analysis</div>
+    <h2 class="s-title reveal">What the competition does<br>after the trial ends</h2>
+    <p class="s-desc reveal">Every major meditation app handles the post-trial transition differently. Their results tell the story of what works and what destroys trust.</p>
+
+    <div class="comp-table-wrap reveal">
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>App</th>
+            <th>Trial</th>
+            <th>Post-Trial Model</th>
+            <th>Annual Price</th>
+            <th>Trust Score</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Calm</td>
+            <td>7 days</td>
+            <td>Limited free content remains. Most features locked behind paywall.</td>
+            <td>$79.99/yr</td>
+            <td class="trust-score trust-bad">1.7/5 Trustpilot</td>
+            <td>BBB F rating. Unauthorized charges and cancellation complaints dominate reviews.</td>
+          </tr>
+          <tr>
+            <td>Headspace</td>
+            <td>7-14 days</td>
+            <td>Near-total paywall. Minimal free content post-trial.</td>
+            <td>$69.99/yr</td>
+            <td class="trust-score trust-bad">~40% 1-star</td>
+            <td>Valuation dropped ~90% ($3B to ~$300M). Multiple layoffs. Pivoted to B2B enterprise.</td>
+          </tr>
+          <tr>
+            <td>Waking Up</td>
+            <td>30 days</td>
+            <td>Scholarship model. Free annual access for anyone who asks, no questions.</td>
+            <td>$129.99/yr</td>
+            <td class="trust-score trust-good">Positive (limited data)</td>
+            <td>~$12M/yr revenue. $0 ad spend. Bootstrapped. Highest retention in category.</td>
+          </tr>
+          <tr>
+            <td>Open</td>
+            <td>7-14 days</td>
+            <td>Visible-but-locked content. Hard upsell after trial.</td>
+            <td>$149.99/yr</td>
+            <td class="trust-score trust-bad">1.7/5 Trustpilot</td>
+            <td>Surprise $150 charges. Unresponsive cancellation. Emails flagged as spam.</td>
+          </tr>
+          <tr>
+            <td>Endel</td>
+            <td>7 days</td>
+            <td>Upgrade nag on every app launch. Lifetime plan holders re-billed annually.</td>
+            <td>$49.99/yr</td>
+            <td class="trust-score trust-bad">2.6/5 Trustpilot</td>
+            <td>"Lifetime" purchases did not cancel existing subscriptions. Double-billing documented.</td>
+          </tr>
+          <tr class="highlight-row">
+            <td>The Possibility</td>
+            <td>14 days</td>
+            <td>Generous free tier. Achievement conversion. Scholarship available.</td>
+            <td>$149.99/yr</td>
+            <td class="trust-score trust-good">Target: 4.5+</td>
+            <td>Target: 50%+ 12-month retention. Trust-first model. Zero dark patterns.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="warning-callout reveal" style="background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.15);">
+      <div class="wc-label" style="color: var(--release);">Industry Warning</div>
+      <p style="color: var(--text-light-2);"><strong style="color:var(--text-light);">Every competitor that used visible-but-locked content has an F rating on the BBB or sub-2.0 on Trustpilot.</strong> Zero exceptions. The FTC has studied 642 apps and found 76% use dark patterns. $7.5M in Automatic Renewal Law settlements have been documented. The post-trial experience is a trust moment, not a sales moment.</p>
+    </div>
+
+    <div class="success-callout reveal" style="background: rgba(34,197,94,0.06); border-color: rgba(34,197,94,0.15);">
+      <div class="sc-label" style="color: var(--become);">The Model to Follow</div>
+      <p style="color: var(--text-light-2);"><strong style="color:var(--text-light);">Waking Up proves the trust-first model works.</strong> Sam Harris charges the highest price in the category ($129.99/yr), offers the longest trial (30 days), gives free access to anyone who asks, spends $0 on advertising, and generates ~$12M+ annual revenue with the highest retention in the category. Single voice. Single relationship. Zero dark patterns.</p>
+    </div>
+
+    <h3 class="s-title reveal" style="font-size: clamp(22px, 3vw, 32px); margin-top: 64px; color: var(--text-light);">Post-trial trust scores</h3>
+    <p class="body-text reveal">Trustpilot and review scores mapped against post-trial strategy. The correlation is clear.</p>
+
+    <div class="bar-chart reveal">
+      <div class="bar-row">
+        <div class="bar-label">Endel</div>
+        <div class="bar-track">
+          <div class="bar-fill release" style="width: 52%;">2.6 / 5</div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Calm</div>
+        <div class="bar-track">
+          <div class="bar-fill release" style="width: 34%;">1.7 / 5</div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Open</div>
+        <div class="bar-track">
+          <div class="bar-fill release" style="width: 34%;">1.7 / 5</div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Headspace</div>
+        <div class="bar-track">
+          <div class="bar-fill neutral" style="width: 28%;">~40% 1-star</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="key-insight reveal" style="margin-top: 24px;">
+      <div class="key-insight-icon">NOTE</div>
+      <p><strong>Waking Up has limited Trustpilot data</strong> (21 reviews, generally positive) because its trust-first model generates fewer complaint-driven reviews. The absence of negative reviews is itself a data point. Apps with aggressive post-trial tactics accumulate hundreds of one-star reviews documenting the same patterns: surprise charges, difficult cancellation, and locked content.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- Photo Break -->
+<div class="photo-break">
+  <img src="photos/EY-025.jpg" alt="Reflective nature scene">
+  <div class="photo-break-overlay"></div>
+  <div class="photo-break-content">
+    <blockquote>"The trial did not show them the product. It showed them themselves."</blockquote>
+    <div class="attrib">Conversion Design Principle</div>
+  </div>
+</div>
+
+
+<!-- ===================== SECTION 3: 14-DAY TRIAL ARC ===================== -->
+<section id="trial-arc">
+  <div class="container">
+    <div class="section-badge reveal">3</div>
+    <div class="s-label">The 14-Day Trial</div>
+    <h2 class="s-title reveal">A transformation, not a countdown</h2>
+    <p class="s-desc reveal">The trial is not a preview of the product. It is the first complete journey through Release, Align, and Become. By Day 14, users have data about themselves they did not have on Day 1.</p>
+
+    <div class="key-insight reveal">
+      <div class="key-insight-icon">DATA</div>
+      <p><strong>14-day trials convert at 45.7%</strong> versus 27% for 7-day trials (RevenueCat analysis of 30,000+ apps). That equals <strong>18,700 additional paid subscribers per 100,000 trial starts.</strong> The longer trial is not generosity. It is strategy.</p>
+    </div>
+
+    <div class="timeline reveal">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-day">Days 1-5 &middot; <span class="pillar-tag release">Release</span></div>
+        <div class="tl-title">Surface what you are carrying</div>
+        <div class="tl-desc">5-minute sessions. Hypno-meditation, breathwork, body scan. Morning anchor strategy delivers 3x higher retention versus unstructured access. Critical: 80% of users drop off within 30 minutes without structure.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-day">Day 5 Milestone</div>
+        <div class="tl-title">Advance to Align</div>
+        <div class="tl-desc">Complete 5 of 6 Release sessions to progress. Pillar transition is celebrated with Jim AI reflection and personalized message. This is an earned achievement, not a time gate.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-day">Days 6-10 &middot; <span class="pillar-tag align">Align</span></div>
+        <div class="tl-title">Build cumulative intelligence</div>
+        <div class="tl-desc">10-minute sessions. Jim AI remembers early conversations and weaves them into later sessions. Day 7: streak celebration. Day 8: push notification permission soft-ask (+157% opt-in uplift versus asking at install).</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-day">Day 10 Milestone</div>
+        <div class="tl-title">The retention threshold</div>
+        <div class="tl-desc">10 consecutive days of practice = 80% probability of 30-day retention. This is the single most important metric in the entire trial. Everything before this point exists to reach this moment.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-day">Days 11-13 &middot; <span class="pillar-tag become">Become</span></div>
+        <div class="tl-title">Identity shift begins</div>
+        <div class="tl-desc">15-minute sessions. Visualization, affirmation, purpose work. Day 13: transparent preview of what stays free versus what requires subscription. No surprises. No hidden gates.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-day">Day 13 Transparency Moment</div>
+        <div class="tl-title">Show the full picture</div>
+        <div class="tl-desc">Clear, honest preview of the free tier versus paid experience. Both options presented with equal visual dignity. No grayed-out text, no guilt language, no countdown timers. The user sees exactly what each path offers.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-day">Day 14 &middot; Conversion</div>
+        <div class="tl-title">"Do you want to continue becoming?"</div>
+        <div class="tl-desc">Achievement-based conversion. Jim celebrates the user's actual journey data: mood trends, sessions completed, longest streak, pillar progress. The conversion prompt is framed as "here is what you built, and here is what comes next."</div>
+      </div>
+    </div>
+
+    <div class="metric-row reveal">
+      <div class="metric-card">
+        <div class="metric-val">80%</div>
+        <div class="metric-lbl">Retention probability<br>after 10 days</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">3x</div>
+        <div class="metric-lbl">Retention lift from<br>morning anchoring</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">258%</div>
+        <div class="metric-lbl">Achievement vs. expiration<br>conversion lift</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">91%</div>
+        <div class="metric-lbl">Push opt-in when asked<br>after value delivery</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== SECTION 4: THE CONVERSION MOMENT ===================== -->
+<section id="conversion-moment" class="dark-section" style="background: var(--dark); color: var(--text-light);">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 600px 400px at 50% 50%, rgba(51,163,163,0.06) 0%, transparent 70%);pointer-events:none;"></div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="section-badge reveal">4</div>
+    <div class="s-label">The Conversion Moment</div>
+    <h2 class="s-title reveal">Achievement, not <em>expiration</em></h2>
+    <p class="s-desc reveal">The single most important design decision in the entire monetization strategy: how Day 14 feels to the user.</p>
+
+    <div class="info-grid">
+      <div class="info-card reveal" style="border: 0.5px solid rgba(239,68,68,0.15);">
+        <div class="ic-label" style="color: var(--release);">What the industry does</div>
+        <h3 style="color: var(--text-light);">"Your trial expires today"</h3>
+        <p style="color: var(--text-light-2);">Fear-based. Countdown timers. "Last chance" language. Visible-but-locked content. Guilt screens. Auto-charging without clear warning. This approach converts initially but tanks 90-day retention and generates 1-star reviews.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-1" style="border: 0.5px solid rgba(51,163,163,0.2);">
+        <div class="ic-label" style="color: var(--teal);">What The Possibility does</div>
+        <h3 style="color: var(--text-light);">"You completed the full program"</h3>
+        <p style="color: var(--text-light-2);">Celebration-based. Jim presents the user's actual journey data: mood trend visualization, sessions completed, longest streak, full pillar journey summary. The conversion question is: "Do you want to continue becoming?"</p>
+      </div>
+    </div>
+
+    <p class="body-text reveal" style="margin-top: 40px;">The Day 14 screen shows the user a data visualization of their transformation. Not a sales pitch. Not a warning. A mirror. The user sees their own mood trends, their consistency, their breakthroughs. Jim AI references specific moments from their sessions.</p>
+
+    <p class="body-text reveal">Then the choice is presented clearly. Two paths. Both celebrated. Choosing the free tier triggers the same congratulatory animation as choosing premium. There is no punishment path.</p>
+
+    <div class="key-insight reveal">
+      <div class="key-insight-icon">258%</div>
+      <p><strong>Achievement-based conversion triggers convert 258% higher</strong> than expiration-based triggers. When users feel they have accomplished something, they want to continue. When they feel something is being taken away, they resist. The psychology is clear. The data is overwhelming.</p>
+    </div>
+
+    <h3 class="s-title reveal" style="font-size: clamp(22px, 3vw, 32px); margin-top: 64px; color: var(--text-light);">Bifurcated engagement tracks</h3>
+    <p class="body-text reveal">Not all trial users behave the same. The conversion engine serves two distinct paths based on behavior, not demographics.</p>
+
+    <div class="info-grid" style="grid-template-columns: 1fr 1fr;">
+      <div class="info-card reveal">
+        <div class="ic-label" style="color: var(--become);">Active Track</div>
+        <h3 style="color: var(--text-light);">Completed 1+ sessions</h3>
+        <p style="color: var(--text-light-2);">Post-session reflections with Jim AI. Pillar transition celebrations. Streak milestones. Session recommendations based on completed content. Achievement-based conversion at Day 14 with full data visualization.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-1">
+        <div class="ic-label" style="color: var(--release);">Inactive Track</div>
+        <h3 style="color: var(--text-light);">Downloaded but not engaged</h3>
+        <p style="color: var(--text-light-2);">Gentle re-engagement nudges. Quick-win session offers (3 minutes). Empathetic check-ins. Different messaging cadence. Never guilt. A "come back to stillness" approach that respects the user's pace.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== SECTION 5: FREE VS PAID ===================== -->
+<section id="free-vs-paid">
+  <div class="container">
+    <div class="section-badge reveal">5</div>
+    <div class="s-label">Post-Trial Access</div>
+    <h2 class="s-title reveal">What users get <em>after</em> the trial</h2>
+    <p class="s-desc reveal">The free tier is not a punishment. It is the long game. 50% of eventual conversions happen after the trial ends. The free experience must maintain the relationship until the user is ready.</p>
+
+    <div class="vs-grid reveal">
+      <div class="vs-card free">
+        <div class="vs-title">Free Tier (Forever)</div>
+        <ul class="vs-list">
+          <li><span class="check">✓</span> 17 curated sessions (1-2 per pillar, ~28% of library)</li>
+          <li><span class="check">✓</span> Daily Jim wisdom quote + micro-reflection</li>
+          <li><span class="check">✓</span> Jim AI coaching (3 messages per day)</li>
+          <li><span class="check">✓</span> Basic session history</li>
+          <li><span class="check">✓</span> Streak tracking + milestone celebrations</li>
+          <li><span class="check">✓</span> Sleep mode (limited selection)</li>
+          <li><span class="check">✓</span> Push notifications with standalone value</li>
+          <li><span class="check">✓</span> Jim's voice, every single day</li>
+        </ul>
+      </div>
+      <div class="vs-divider"><span>vs</span></div>
+      <div class="vs-card paid">
+        <div class="vs-title">Premium Subscriber</div>
+        <ul class="vs-list">
+          <li><span class="check">✓</span> Full session library (72+ at launch, 2-4 new per week)</li>
+          <li><span class="check">✓</span> All 9 signature hypno-meditations</li>
+          <li><span class="check">✓</span> Unlimited Jim AI coaching (no daily cap)</li>
+          <li><span class="check">✓</span> Program Two + future multi-day journeys</li>
+          <li><span class="check">✓</span> Specialized tracks: Pain, Anxiety, Sleep deep-dives</li>
+          <li><span class="check">✓</span> Full Release/Align/Become engine re-runs</li>
+          <li><span class="check">✓</span> Advanced progress analytics + mood trends</li>
+          <li><span class="check">✓</span> Intelligence loop: AI-powered recommendations</li>
+          <li><span class="check">✓</span> All content types: breathwork, visualizations, affirmations</li>
+          <li><span class="check">✓</span> Binaural beats layered with sessions</li>
+          <li><span class="check">✓</span> Full sleep story library (12+ at launch)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tldr reveal">
+      <span class="tldr-label">Principle</span>
+      <p>"Give away the habit. Charge for the depth." Free users still hear Jim's voice daily. They still have a relationship. They just have not gone deeper yet.</p>
+    </div>
+
+    <h3 class="s-title reveal" style="font-size: clamp(22px, 3vw, 32px); margin-top: 64px;">The content gating sweet spot</h3>
+
+    <div class="bar-chart reveal" style="margin-top: 32px;">
+      <div class="bar-row">
+        <div class="bar-label">Evernote</div>
+        <div class="bar-track">
+          <div class="bar-fill release" style="width: 90%;">90% free</div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label" style="font-size: 11px; color: var(--text-3);">Result</div>
+        <div class="bar-track" style="height: 20px; background: transparent;">
+          <span style="font-size: 12px; color: var(--text-3);">75M users, 1% conversion. Gave away too much.</span>
+        </div>
+      </div>
+      <div class="bar-row" style="margin-top: 16px;">
+        <div class="bar-label">Headspace</div>
+        <div class="bar-track">
+          <div class="bar-fill release" style="width: 6%;">0%</div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label" style="font-size: 11px; color: var(--text-3);">Result</div>
+        <div class="bar-track" style="height: 20px; background: transparent;">
+          <span style="font-size: 12px; color: var(--text-3);">Trustpilot 1.4/5. Took away too much.</span>
+        </div>
+      </div>
+      <div class="bar-row" style="margin-top: 16px;">
+        <div class="bar-label" style="color: var(--teal); font-weight: 600;">The Possibility</div>
+        <div class="bar-track">
+          <div class="bar-fill teal" style="width: 28%;">28% free</div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label" style="font-size: 11px; color: var(--text-3);">Strategy</div>
+        <div class="bar-track" style="height: 20px; background: transparent;">
+          <span style="font-size: 12px; color: var(--teal);">Enough to maintain the habit. Not enough to replace the depth.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="warning-callout reveal" style="margin-top: 40px;">
+      <div class="wc-label">Competitive Lessons</div>
+      <p><strong>Calm</strong> reduced free content from 90% to 5%, triggering "bait and switch" complaints in 25% of reviews. <strong>Headspace</strong> removed all free content and their Trustpilot dropped to 1.4/5. <strong>Open</strong> used visible-but-locked content at $20/month and earned a 1.7/5. The conversion driver is desire, not frustration.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== SECTION 6: CONTENT GATING PHILOSOPHY ===================== -->
+<section id="content-strategy" class="dark-section" style="background: var(--dark); color: var(--text-light);">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 700px 500px at 80% 30%, rgba(52,211,153,0.04) 0%, transparent 70%),radial-gradient(ellipse 600px 500px at 20% 70%, rgba(51,163,163,0.04) 0%, transparent 70%);pointer-events:none;"></div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="section-badge reveal">6</div>
+    <div class="s-label">Content Strategy</div>
+    <h2 class="s-title reveal">Why <em>this</em> content stays free</h2>
+    <p class="s-desc reveal">Every piece of free content serves a strategic purpose. Nothing is free by accident. Nothing is locked arbitrarily.</p>
+
+    <div class="info-grid">
+      <div class="info-card reveal">
+        <div class="ic-label">Free: Daily Jim Quote</div>
+        <h3 style="color: var(--text-light);">Maintains the relationship</h3>
+        <p style="color: var(--text-light-2);">Every day, the user hears Jim's voice. This is not promotional content. It is a genuine micro-moment of presence. The notification IS the practice. Waking Up proved this model drives the highest retention in the category.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-1">
+        <div class="ic-label">Free: Curated Sessions</div>
+        <h3 style="color: var(--text-light);">Preserves the habit</h3>
+        <p style="color: var(--text-light-2);">17 sessions across all three pillars. Enough to maintain a daily practice. Research shows practice consistency (4-7 days/week) predicts improvement more than session length or content volume.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-2">
+        <div class="ic-label">Free: Jim AI (Limited)</div>
+        <h3 style="color: var(--text-light);">Keeps the conversation alive</h3>
+        <p style="color: var(--text-light-2);">3 messages per day. Enough to feel supported. Not enough to replace the depth of unlimited coaching. When users hit the limit, they experience the value of what lies beyond.</p>
+      </div>
+    </div>
+
+    <h3 class="s-title reveal" style="font-size: clamp(22px, 3vw, 32px); margin-top: 64px; color: var(--text-light);">Premium exclusives and why they convert</h3>
+
+    <div class="info-grid" style="margin-top: 32px;">
+      <div class="info-card reveal">
+        <div class="ic-label" style="color: var(--teal);">Hypno-Meditations</div>
+        <h3 style="color: var(--text-light);">Jim's signature differentiator</h3>
+        <p style="color: var(--text-light-2);">9 signature sessions blending clinical hypnotherapy with guided meditation. No competitor has this. This is the content type users experience during the trial and immediately miss on the free tier.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-1">
+        <div class="ic-label" style="color: var(--teal);">Specialized Tracks</div>
+        <h3 style="color: var(--text-light);">Depth over breadth</h3>
+        <p style="color: var(--text-light-2);">Pain management, anxiety deep-dives, sleep programs. These are the journeys that require commitment and deliver measurable results. Sleep is the #1 use case (78% of Calm users) and a primary conversion driver.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-2">
+        <div class="ic-label" style="color: var(--teal);">Unlimited Jim AI</div>
+        <h3 style="color: var(--text-light);">The intelligence loop</h3>
+        <p style="color: var(--text-light-2);">Unlimited coaching means Jim AI detects patterns, anticipates needs, and delivers proactive check-ins. After 3+ days inactive, Jim reaches out. After mood dips, Jim adjusts recommendations. This is the relationship at scale.</p>
+      </div>
+    </div>
+
+    <div class="key-insight reveal" style="margin-top: 40px;">
+      <div class="key-insight-icon">RULE</div>
+      <p><strong>No visible-but-locked content.</strong> The free tier shows only what is available to free users. Locked content is never displayed with a gray overlay or a lock icon. The user browses their library, and when they are ready, discovers more exists. This is the anti-Headspace approach, and the data says it works.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- Photo Break 2 -->
+<div class="photo-break">
+  <img src="photos/EY-080.jpg" alt="Mountain at sunrise">
+  <div class="photo-break-overlay"></div>
+  <div class="photo-break-content">
+    <blockquote>"Three minutes of presence is worth more than thirty minutes of distraction."</blockquote>
+    <div class="attrib">Session Design Principle</div>
+  </div>
+</div>
+
+
+<!-- ===================== SECTION 7: CONTENT DURATION STRATEGY ===================== -->
+<section id="content-duration">
+  <div class="container">
+    <div class="section-badge reveal">7</div>
+    <div class="s-label">Session Design</div>
+    <h2 class="s-title reveal">Should post-trial content<br>be <em>bite-sized</em>?</h2>
+    <p class="s-desc reveal">Research is unambiguous: shorter sessions retain users. But depth builds perceived subscription value. The answer is not one or the other. It is a progression.</p>
+
+    <div class="tldr reveal">
+      <div class="tldr-label">TL;DR</div>
+      <p>Start short (3-5 min) to build the habit. Progress to depth (15-25 min) to justify the subscription. Frequency beats duration for outcomes. Duration builds perceived value.</p>
+    </div>
+
+    <h3 class="s-title reveal" style="font-size: clamp(22px, 3vw, 32px); margin-top: 64px;">Completion rates by session length</h3>
+    <p class="body-text reveal">Data from meditation app analytics and academic research (Scientific Reports, 2023). Completion rate is the strongest predictor of habit formation and long-term retention.</p>
+
+    <div class="bar-chart reveal" style="margin-top: 32px;">
+      <div class="bar-row">
+        <div class="bar-label">3 min</div>
+        <div class="bar-track">
+          <div class="bar-fill become" style="width: 95%;">95%</div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">5 min</div>
+        <div class="bar-track">
+          <div class="bar-fill become" style="width: 88%;">88%</div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">10 min</div>
+        <div class="bar-track">
+          <div class="bar-fill teal" style="width: 72%;">72%</div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">15 min</div>
+        <div class="bar-track">
+          <div class="bar-fill align" style="width: 58%;">58%</div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">20 min</div>
+        <div class="bar-track">
+          <div class="bar-fill release" style="width: 45%;">45%</div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">30 min</div>
+        <div class="bar-track">
+          <div class="bar-fill release" style="width: 32%;">32%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="key-insight reveal" style="margin-top: 32px;">
+      <div class="key-insight-icon">DATA</div>
+      <p><strong>5-minute sessions outperform 20-minute sessions</strong> for both habit formation and reported well-being (Scientific Reports, 2023). Session abandonment dropped 22% when one major app reduced its default from 12 to 6 minutes. The average persistent meditation app user meditates 3.93 minutes per session.</p>
+    </div>
+
+    <h3 class="s-title reveal" style="font-size: clamp(22px, 3vw, 32px); margin-top: 64px;">What each competitor does with session length</h3>
+
+    <div class="info-grid" style="margin-top: 32px;">
+      <div class="info-card reveal">
+        <div class="ic-label">Calm</div>
+        <h3>10-minute anchor</h3>
+        <p>Daily Calm is a fixed 10-minute format. Signature sessions run 15-30 minutes. Sleep Stories are 30-45 minutes. No progressive model. Users either commit to 10+ minutes or do not use the app.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-1">
+        <div class="ic-label">Headspace</div>
+        <h3>Progressive 3-5-10 model</h3>
+        <p>Basics course starts at 3 minutes and scales to 10 minutes across 30 sessions. This is the best onboarding ramp in the category. Advanced content jumps to 15-20 minutes. The gap between intro and advanced causes drop-off.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-2">
+        <div class="ic-label">Waking Up</div>
+        <h3>10-minute standard</h3>
+        <p>Introductory Course sessions are ~10 minutes. Daily meditations run 10-15 minutes. Conversations and theory lessons extend to 30-60 minutes. No bite-sized content. Targets committed practitioners willing to invest time.</p>
+      </div>
+    </div>
+
+    <div class="info-grid" style="margin-top: 24px;">
+      <div class="info-card reveal">
+        <div class="ic-label">Open</div>
+        <h3>Short-form variety</h3>
+        <p>Breathwork sessions run 3-15 minutes. Guided meditations start at 5 minutes. Sound baths and longer sessions extend to 30+ minutes. Offers the widest range but no structured progression between lengths.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-1">
+        <div class="ic-label">Endel</div>
+        <h3>Continuous ambient (no sessions)</h3>
+        <p>No discrete session lengths. Endel generates adaptive soundscapes that run continuously. Users set their own duration. This model eliminates completion tracking entirely, which removes a key retention lever.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-2">
+        <div class="ic-label" style="color: var(--teal);">The Possibility</div>
+        <h3 style="color: var(--teal);">Progressive depth model</h3>
+        <p>Tier 1 (habit): 3-5 min daily wisdom and quick practices. Tier 2 (growth): 8-13 min guided sessions. Tier 3 (transformation): 15-25 min hypno-meditations and deep dives. Users naturally progress from short to deep.</p>
+      </div>
+    </div>
+
+    <h3 class="s-title reveal" style="font-size: clamp(22px, 3vw, 32px); margin-top: 64px;">The Possibility progressive duration model</h3>
+    <p class="body-text reveal">Free tier anchors on short-form to preserve the daily habit. Premium unlocks depth. This creates a natural conversion trigger: users who complete Tier 1 sessions consistently want to go deeper.</p>
+
+    <div class="timeline reveal" style="margin-top: 32px;">
+      <div class="tl-item">
+        <div class="tl-dot" style="border-color: var(--become);"></div>
+        <div class="tl-day">Tier 1 &middot; Habit (Free + Paid)</div>
+        <div class="tl-title">3-5 minute sessions</div>
+        <div class="tl-desc">Daily Jim wisdom quotes, breathing exercises, micro-practices. Available to all users. Completion rate: 88-95%. Purpose: maintain the daily touchpoint and the relationship with Jim's voice.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="border-color: var(--align);"></div>
+        <div class="tl-day">Tier 2 &middot; Growth (Paid)</div>
+        <div class="tl-title">8-13 minute sessions</div>
+        <div class="tl-desc">Guided meditations, pillar-specific journeys, sleep preparation. The sweet spot where depth meets accessibility. Completion rate: 65-75%. Purpose: deliver measurable transformation that justifies the subscription.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="border-color: var(--teal); background: var(--teal);"></div>
+        <div class="tl-day">Tier 3 &middot; Transformation (Paid)</div>
+        <div class="tl-title">15-25 minute sessions</div>
+        <div class="tl-desc">Hypno-meditations, clinical deep dives, pain management protocols, extended sleep programs. Jim's signature differentiator. Completion rate: 50-60%. Purpose: deliver the experiences no competitor can match.</div>
+      </div>
+    </div>
+
+    <div class="key-insight reveal" style="margin-top: 32px;">
+      <div class="key-insight-icon">RULE</div>
+      <p><strong>Frequency beats duration for retention, but depth builds perceived subscription value.</strong> The free tier must prioritize frequency (short sessions, daily touchpoints). The paid tier must deliver depth (hypno-meditations, specialized tracks). The progression from short to deep creates a natural conversion arc: "I do this every day. I want to go further."</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- Photo Break 2b -->
+<div class="photo-break">
+  <img src="photos/EY-080.jpg" alt="Mountain at sunrise">
+  <div class="photo-break-overlay"></div>
+  <div class="photo-break-content">
+    <blockquote>"The conversion driver is not frustration. It is desire."</blockquote>
+    <div class="attrib">Core Philosophy</div>
+  </div>
+</div>
+
+
+<!-- ===================== SECTION 8: 90-DAY WIN-BACK ===================== -->
+<section id="win-back">
+  <div class="container">
+    <div class="section-badge reveal">8</div>
+    <div class="s-label">The Long Game</div>
+    <h2 class="s-title reveal">90-day win-back window</h2>
+    <p class="s-desc reveal">Half of all eventual conversions happen after the trial ends. The free tier is the patience that competitors lack. Here is the cadence.</p>
+
+    <div class="timeline reveal">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-day">Day 15+ &middot; Free Tier Begins</div>
+        <div class="tl-title">Daily Jim wisdom continues</div>
+        <div class="tl-desc">The relationship does not end. Free users receive Jim's daily quote, can access their 17 curated sessions, and interact with Jim AI three times per day. There is no downgrade messaging. The free tier is presented as a genuine, complete experience.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-day">Day 30 &middot; Progress Summary</div>
+        <div class="tl-title">Personalized journey reflection</div>
+        <div class="tl-desc">An automated, personalized email showing sessions completed, streak data, and Jim AI insights from their trial. No pricing. No upsell. Pure value delivery that reminds the user what they built.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-day">Day 45 &middot; First Gentle Mention</div>
+        <div class="tl-title">Pricing introduced with context</div>
+        <div class="tl-desc">The first time pricing is mentioned post-trial. Framed alongside new content they cannot access and a reminder of what their practice looked like during the full trial. Scholarship link included.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-day">Day 60 &middot; Social Proof</div>
+        <div class="tl-title">Community and new content</div>
+        <div class="tl-desc">Social proof from other subscribers. New content announcements. What has been added since their trial. A "here is what you are missing" framing that creates desire, not guilt. Still no discounts. No FOMO language.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-day">Day 90 &middot; Final Outreach</div>
+        <div class="tl-title">Then stop selling. Permanently.</div>
+        <div class="tl-desc">After Day 90, promotional outreach ends. The user transitions to the long-term relationship layer: quarterly new content emails, annual practice anniversary, seasonal wisdom. Max 1 email per month. No competitor does this. That is exactly why it works.</div>
+      </div>
+    </div>
+
+    <div class="success-callout reveal">
+      <div class="sc-label">The Long-Term Layer</div>
+      <p>After the 90-day win-back window closes, users enter the "dormant relationship" segment. No discounts, no "come back" language, no push notifications. Only standalone value: quarterly content updates, Jim's book milestones, annual practice anniversaries, and seasonal wisdom. Target reactivation: <strong>2-5% per touchpoint</strong>. Over time, this compounds into significant revenue that competitors abandon entirely.</p>
+    </div>
+
+    <div class="key-insight reveal">
+      <div class="key-insight-icon">KEY</div>
+      <p><strong>Never offer discounts to win back churned users.</strong> This trains users to churn strategically for deals. Calm's 40-60% off win-back campaigns created a gaming cycle. Waking Up offers $0 scholarship to anyone who needs it, but never discounts the actual price. The difference: one rewards churning, the other rewards honesty.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== SECTION 9: EMAIL SEQUENCE ===================== -->
+<section id="email-sequence" class="dark-section" style="background: var(--dark); color: var(--text-light);">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 700px 500px at 30% 50%, rgba(99,102,241,0.04) 0%, transparent 70%);pointer-events:none;"></div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="section-badge reveal">9</div>
+    <div class="s-label">Conversion Engine</div>
+    <h2 class="s-title reveal">The email sequence that <em>converts</em></h2>
+    <p class="s-desc reveal">15 days, 8 emails, all personalized through Jim AI data. Bifurcated for active and inactive users. Calm compressed their sequence from 27 to 15 days and saw a 4x revenue lift.</p>
+
+    <div class="email-seq reveal">
+      <div class="email-card" style="background: rgba(255,252,250,0.04); border-color: rgba(255,252,250,0.08);">
+        <div class="ec-day">Day 0</div>
+        <div class="ec-subject" style="color: var(--text-light);">Welcome to Possibility</div>
+        <div class="ec-type" style="color: var(--text-light-3);">Onboarding &middot; From Jim</div>
+      </div>
+      <div class="email-card" style="background: rgba(255,252,250,0.04); border-color: rgba(255,252,250,0.08);">
+        <div class="ec-day">Day 1 (no return)</div>
+        <div class="ec-subject" style="color: var(--text-light);">Stillness is waiting</div>
+        <div class="ec-type" style="color: var(--text-light-3);">Re-engagement nudge</div>
+      </div>
+      <div class="email-card" style="background: rgba(255,252,250,0.04); border-color: rgba(255,252,250,0.08);">
+        <div class="ec-day">Day 3</div>
+        <div class="ec-subject" style="color: var(--text-light);">Your streak is growing</div>
+        <div class="ec-type" style="color: var(--text-light-3);">Celebration or encouragement</div>
+      </div>
+      <div class="email-card" style="background: rgba(255,252,250,0.04); border-color: rgba(255,252,250,0.08);">
+        <div class="ec-day">Day 7</div>
+        <div class="ec-subject" style="color: var(--text-light);">One week of releasing</div>
+        <div class="ec-type" style="color: var(--text-light-3);">Milestone &middot; Pillar transition</div>
+      </div>
+      <div class="email-card" style="background: rgba(255,252,250,0.04); border-color: rgba(255,252,250,0.08);">
+        <div class="ec-day">Day 10</div>
+        <div class="ec-subject" style="color: var(--text-light);">Your progress report</div>
+        <div class="ec-type" style="color: var(--text-light-3);">Data + Jim's note</div>
+      </div>
+      <div class="email-card" style="background: rgba(255,252,250,0.04); border-color: rgba(255,252,250,0.08);">
+        <div class="ec-day">Day 12</div>
+        <div class="ec-subject" style="color: var(--text-light);">Your trial status</div>
+        <div class="ec-type" style="color: var(--text-light-3);">Transparent reminder (trust)</div>
+      </div>
+      <div class="email-card" style="background: rgba(255,252,250,0.04); border-color: rgba(255,252,250,0.08);">
+        <div class="ec-day">Day 14</div>
+        <div class="ec-subject" style="color: var(--text-light);">You completed the journey</div>
+        <div class="ec-type" style="color: var(--text-light-3);">Achievement &middot; Conversion</div>
+      </div>
+      <div class="email-card" style="background: rgba(255,252,250,0.04); border-color: rgba(255,252,250,0.08);">
+        <div class="ec-day">Day 21</div>
+        <div class="ec-subject" style="color: var(--text-light);">What's new in Possibility</div>
+        <div class="ec-type" style="color: var(--text-light-3);">Post-trial value (free users)</div>
+      </div>
+    </div>
+
+    <div class="key-insight reveal" style="margin-top: 32px;">
+      <div class="key-insight-icon">4x</div>
+      <p><strong>Calm compressed onboarding emails from 27 days to 15 days and saw a 4x revenue lift.</strong> Shorter, more intentional sequences outperform long drip campaigns. Every email must deliver standalone value. All non-transactional emails come from jim@thepossibility.app in Jim's voice. One CTA per email. Max two screens on mobile.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== SECTION 10: PUSH STRATEGY ===================== -->
+<section id="push-strategy">
+  <div class="container">
+    <div class="section-badge reveal">10</div>
+    <div class="s-label">Push Notifications</div>
+    <h2 class="s-title reveal">Notifications that <em>are</em> the practice</h2>
+    <p class="s-desc reveal">The industry uses push notifications as reminders. The Possibility uses them as content delivery. The notification itself is the value.</p>
+
+    <div class="info-grid">
+      <div class="info-card reveal">
+        <div class="ic-number">91%</div>
+        <div class="ic-label">Opt-in rate</div>
+        <h3>Ask after value, not during onboarding</h3>
+        <p>Permission request after the first completed session. Industry baseline: 43.9% when asked cold during onboarding. Asking after value delivery: 91.1%. That is a +157% uplift from one timing change.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-1">
+        <div class="ic-number">7x</div>
+        <div class="ic-label">Retention multiplier</div>
+        <h3>Personalized + intelligent timing</h3>
+        <p>ML-powered send-time optimization per user. Notifications sent at each user's peak engagement hour. Max 1 push per day. Granular opt-in by category (8 configurable types). Quiet hours: 10PM to 7AM.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-2">
+        <div class="ic-number">35%</div>
+        <div class="ic-label">Churn reduction</div>
+        <h3>Streaks with empathy</h3>
+        <p>Streak system reduces 30-day churn by 35%. But streak breaks are handled with "continuation, not failure" framing. After a break: suppress streak pushes for 3 days. Offer a 3-minute restart session. Never shame.</p>
+      </div>
+    </div>
+
+    <h3 class="s-title reveal" style="font-size: clamp(22px, 3vw, 32px); margin-top: 64px;">The 8 notification types</h3>
+    <p class="body-text reveal">Users control each type independently. This granular control allows higher total volume without fatigue.</p>
+
+    <div class="email-seq reveal" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));">
+      <div class="email-card">
+        <div class="ec-day">Type 1</div>
+        <div class="ec-subject">Daily Practice</div>
+        <div class="ec-type">Session reminder at peak hour</div>
+      </div>
+      <div class="email-card">
+        <div class="ec-day">Type 2</div>
+        <div class="ec-subject">Daily Wisdom</div>
+        <div class="ec-type">Jim's quote (standalone value)</div>
+      </div>
+      <div class="email-card">
+        <div class="ec-day">Type 3</div>
+        <div class="ec-subject">Streak Nudge</div>
+        <div class="ec-type">8PM if no session today</div>
+      </div>
+      <div class="email-card">
+        <div class="ec-day">Type 4</div>
+        <div class="ec-subject">Program Progress</div>
+        <div class="ec-type">Completion + next steps</div>
+      </div>
+      <div class="email-card">
+        <div class="ec-day">Type 5</div>
+        <div class="ec-subject">New Content</div>
+        <div class="ec-type">Fresh sessions available</div>
+      </div>
+      <div class="email-card">
+        <div class="ec-day">Type 6</div>
+        <div class="ec-subject">Jim's Insights</div>
+        <div class="ec-type">AI-powered personal notes</div>
+      </div>
+      <div class="email-card">
+        <div class="ec-day">Type 7</div>
+        <div class="ec-subject">Weekly Reflection</div>
+        <div class="ec-type">Practice summary + trends</div>
+      </div>
+      <div class="email-card">
+        <div class="ec-day">Type 8</div>
+        <div class="ec-subject">Milestones</div>
+        <div class="ec-type">3, 7, 14, 30, 60, 100 days</div>
+      </div>
+    </div>
+
+    <div class="tldr reveal" style="margin-top: 32px;">
+      <span class="tldr-label">Rule</span>
+      <p>Notification fatigue detection: if 5+ notifications are dismissed without opening in 7 days, automatically reduce to 1/day for 14 days. Hard cap: max 3 push/day, max 1 email/day. Max 15 push/week, 5 email/week.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== SECTION 11: TRUST ARCHITECTURE ===================== -->
+<section id="trust-architecture" class="dark-section" style="background: var(--dark); color: var(--text-light);">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 600px 400px at 50% 50%, rgba(51,163,163,0.06) 0%, transparent 70%);pointer-events:none;"></div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="section-badge reveal">11</div>
+    <div class="s-label">Trust Architecture</div>
+    <h2 class="s-title reveal">The rules we never break</h2>
+    <p class="s-desc reveal">The industry has a 3.4-star trust gap between App Store ratings and Trustpilot reviews. Every rule below exists because a competitor violated it and paid the price.</p>
+
+    <div class="info-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+      <div class="info-card reveal">
+        <h3 style="color: var(--text-light);">No credit card for trial</h3>
+        <p style="color: var(--text-light-2);">CC-required trials have higher initial conversion but 90-day retention tanks. 81% of consumers have encountered hidden charges from free trials. We start clean.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-1">
+        <h3 style="color: var(--text-light);">Show pricing before signup</h3>
+        <p style="color: var(--text-light-2);">Never hide the price. Annual pricing shown as monthly equivalent. Transparent on the website, in the app, and in every email. Open's $150 surprise charges earned them a 1.7/5.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-2">
+        <h3 style="color: var(--text-light);">48-hour charge warning</h3>
+        <p style="color: var(--text-light-2);">Email reminders before any charge. 48-hour warning notification, 24-hour reminder email. One-tap cancellation link in both. Users should never be surprised by a bill.</p>
+      </div>
+      <div class="info-card reveal">
+        <h3 style="color: var(--text-light);">Scholarship access</h3>
+        <p style="color: var(--text-light-2);">Modeled after Waking Up. Anyone who cannot afford gets free access, no questions asked. "Can't afford this?" link on every paywall. This eliminates price as a churn reason and builds extraordinary loyalty.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-1">
+        <h3 style="color: var(--text-light);">One-tap cancellation</h3>
+        <p style="color: var(--text-light-2);">No hidden cancel buttons. No phone-only cancellation. No 5-page retention flow. If a user wants to leave, they leave with dignity. Access continues until the end of their paid period.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-2">
+        <h3 style="color: var(--text-light);">No guilt screens</h3>
+        <p style="color: var(--text-light-2);">Both free and paid paths trigger celebration animation. Choosing free is not a "downgrade." It is choosing a different pace. The free option has the same visual dignity as premium.</p>
+      </div>
+      <div class="info-card reveal">
+        <h3 style="color: var(--text-light);">No auto-upgrade, ever</h3>
+        <p style="color: var(--text-light-2);">Never auto-charge from free to paid without explicit consent. Never change existing subscriber pricing without notice + grandfather period. Endel switched lifetime plans to annual. Their reviews tell the story.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-1">
+        <h3 style="color: var(--text-light);">No discount win-backs</h3>
+        <p style="color: var(--text-light-2);">Never offer discounts to win back churned users. This trains churn-for-deal behavior. Calm's 40-60% off campaigns created a gaming cycle. We offer scholarship, not sales.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-2">
+        <h3 style="color: var(--text-light);">Refund window honored</h3>
+        <p style="color: var(--text-light-2);">No friction on refunds. If a user feels they made a mistake, they get their money back. The long-term cost of a hostile refund process vastly exceeds the cost of the refund itself.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== SECTION 12: PRICING ===================== -->
+<section style="background: var(--bg);">
+  <div class="container">
+    <div class="section-badge reveal">12</div>
+    <div class="s-label">Pricing</div>
+    <h2 class="s-title reveal">Three tiers, one philosophy</h2>
+    <p class="s-desc reveal">Priced above Waking Up to signal premium quality. The highest tier in the category because the product justifies it. Founding member rate rewards early believers.</p>
+
+    <div class="info-grid" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="info-card reveal" style="text-align: center;">
+        <div class="ic-label">Monthly</div>
+        <div class="ic-number" style="margin: 12px 0;">$19.99</div>
+        <h3>Per month</h3>
+        <p>No commitment. Cancel anytime. For users who want flexibility.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-1" style="text-align: center; border-color: rgba(51,163,163,0.2); box-shadow: 0 8px 32px rgba(51,163,163,0.08), 0 0 0 0.5px rgba(255,255,255,0.3) inset;">
+        <div class="ic-label" style="color: var(--teal);">Annual &middot; Recommended</div>
+        <div class="ic-number" style="margin: 12px 0;">$149.99</div>
+        <h3>Per year ($12.49/mo)</h3>
+        <p>Over three months free versus monthly. Shown first on every paywall. The default choice.</p>
+      </div>
+      <div class="info-card reveal reveal-delay-2" style="text-align: center;">
+        <div class="ic-label" style="color: var(--become);">Founding Member</div>
+        <div class="ic-number" style="margin: 12px 0;">$119.99</div>
+        <h3>First year only</h3>
+        <p>Early adopter reward. Launch window exclusive. Creates belonging.</p>
+      </div>
+    </div>
+
+    <div class="key-insight reveal" style="margin-top: 40px;">
+      <div class="key-insight-icon">WHY</div>
+      <p><strong>Waking Up charges $129.99/yr with zero discounts and achieves the highest retention in the meditation app category.</strong> Premium pricing signals premium value. The Possibility at $149.99/yr is positioned as the premium alternative with clinical hypnotherapy and AI intelligence that Waking Up lacks. Higher price signals higher value.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- Photo Break 3 -->
+<div class="photo-break">
+  <img src="photos/EY-092.jpg" alt="Serene landscape">
+  <div class="photo-break-overlay"></div>
+  <div class="photo-break-content">
+    <blockquote>"One realization, one aha moment, one unlock and everything opens up for you."</blockquote>
+    <div class="attrib">Jim Curtis</div>
+  </div>
+</div>
+
+
+<!-- ===================== SECTION 13: TARGETS ===================== -->
+<section id="targets" class="dark-section" style="background: var(--dark); color: var(--text-light);">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 700px 500px at 50% 30%, rgba(51,163,163,0.06) 0%, transparent 70%);pointer-events:none;"></div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="section-badge reveal">13</div>
+    <div class="s-label">Target Metrics</div>
+    <h2 class="s-title reveal">The numbers we are <em>building toward</em></h2>
+    <p class="s-desc reveal">Every metric has a specific lever. Every lever maps to a feature, a message, or a design decision documented in this strategy.</p>
+
+    <h3 style="font-size: 18px; font-weight: 500; color: var(--text-light); margin-bottom: 24px;" class="reveal">Retention: The Possibility vs. Industry</h3>
+
+    <div class="bar-chart reveal">
+      <div class="bar-row">
+        <div class="bar-label">Day 1</div>
+        <div class="bar-track">
+          <div class="bar-fill teal" style="width: 40%;">40% target</div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label" style="color: var(--text-light-3);">Industry</div>
+        <div class="bar-track">
+          <div class="bar-fill neutral" style="width: 27%;">27%</div>
+        </div>
+      </div>
+      <div class="bar-row" style="margin-top: 8px;">
+        <div class="bar-label">Day 7</div>
+        <div class="bar-track">
+          <div class="bar-fill teal" style="width: 30%;">30% target</div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label" style="color: var(--text-light-3);">Industry</div>
+        <div class="bar-track">
+          <div class="bar-fill neutral" style="width: 12%;">12%</div>
+        </div>
+      </div>
+      <div class="bar-row" style="margin-top: 8px;">
+        <div class="bar-label">Day 30</div>
+        <div class="bar-track">
+          <div class="bar-fill teal" style="width: 20%;">20% target</div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label" style="color: var(--text-light-3);">Industry</div>
+        <div class="bar-track">
+          <div class="bar-fill neutral" style="width: 8%;">4.7%</div>
+        </div>
+      </div>
+      <div class="bar-row" style="margin-top: 8px;">
+        <div class="bar-label">12 Months</div>
+        <div class="bar-track">
+          <div class="bar-fill teal" style="width: 50%;">50%+ target</div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label" style="color: var(--text-light-3);">Industry</div>
+        <div class="bar-track">
+          <div class="bar-fill neutral" style="width: 6%;">4%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="metric-row reveal" style="margin-top: 56px;">
+      <div class="metric-card">
+        <div class="metric-val">45%+</div>
+        <div class="metric-lbl">Trial-to-paid<br>conversion</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">50%+</div>
+        <div class="metric-lbl">Post-trial<br>conversions</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">91%+</div>
+        <div class="metric-lbl">Push notification<br>opt-in</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">10+</div>
+        <div class="metric-lbl">Sessions per user<br>(vs. 4.3 industry)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">60%+</div>
+        <div class="metric-lbl">Jim AI interaction<br>rate post-session</div>
+      </div>
+    </div>
+
+    <div class="key-insight reveal" style="margin-top: 40px;">
+      <div class="key-insight-icon">ROI</div>
+      <p><strong>With 50,000 projected Year 1 downloads:</strong> Without the intelligence automation system, ~2,000 subscribers at $150/yr = ~$300K. With the full conversion engine described in this document, ~6,000 subscribers at $150/yr = ~$900K. That is <strong>$600,000 in incremental revenue</strong> from the conversion strategy alone.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== CLOSING ===================== -->
+<div class="closing" style="text-align: center;">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 600px 400px at 50% 50%, rgba(51,163,163,0.06) 0%, transparent 70%);pointer-events:none;"></div>
+  <img src="possibility-logo.svg" alt="The Possibility" class="closing-logo" style="position:relative;z-index:2;">
+  <h2 class="closing-title" style="max-width: 600px; margin: 0 auto 24px;">Structure beats content.<br><span class="teal">A teacher beats a library.</span></h2>
+  <p class="closing-text">The post-trial experience is not a monetization event. It is a continuation of the relationship that started on Day 1. When users feel they have been transformed, they do not need to be sold. They choose to stay.</p>
+  <div class="closing-links">
+    <a href="free-trial-flow.html" class="closing-link primary">Free Trial Flow →</a>
+    <a href="retention-playbook.html" class="closing-link secondary">Retention Playbook →</a>
+    <a href="pricing-strategy.html" class="closing-link secondary">Pricing Strategy →</a>
+  </div>
+  <div class="closing-gradient-bar"></div>
+  <p class="closing-sign" style="position:relative;z-index:2;">The Possibility &middot; Post-Trial Conversion Strategy &middot; 2026</p>
+</div>
+
+</div><!-- /.main -->
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+/* Scroll progress */
+(function(){
+  const bar = document.querySelector('.scroll-progress');
+  if (!bar) return;
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = h > 0 ? (window.scrollY / h * 100) + '%' : '0%';
+  }, { passive: true });
+})();
+
+/* Reveal on scroll */
+(function(){
+  const els = document.querySelectorAll('.reveal');
+  if (!els.length) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(el => io.observe(el));
+})();
+
+/* Sidebar active state */
+(function(){
+  const links = document.querySelectorAll('.sidebar .nav-link');
+  const sections = [];
+  links.forEach(l => {
+    const id = l.getAttribute('href');
+    if (id && id.startsWith('#')) {
+      const el = document.querySelector(id);
+      if (el) sections.push({ el, link: l });
+    }
+  });
+  if (!sections.length) return;
+  window.addEventListener('scroll', () => {
+    let current = sections[0];
+    sections.forEach(s => {
+      if (s.el.getBoundingClientRect().top <= 200) current = s;
+    });
+    links.forEach(l => l.classList.remove('active'));
+    current.link.classList.add('active');
+  }, { passive: true });
+})();
+
+/* Mobile menu */
+(function(){
+  const burger = document.querySelector('.mob-burger');
+  const overlay = document.querySelector('.mob-overlay');
+  if (!burger || !overlay) return;
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('active');
+    overlay.classList.toggle('open');
+    document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
+  });
+  overlay.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      burger.classList.remove('active');
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+  /* Switch burger mode on scroll */
+  const hero = document.querySelector('.hero');
+  if (hero) {
+    window.addEventListener('scroll', () => {
+      const inHero = window.scrollY < hero.offsetHeight - 100;
+      burger.classList.toggle('hero-mode', inHero);
+    }, { passive: true });
+  }
+})();
+
+/* Section badge pop */
+(function(){
+  const badges = document.querySelectorAll('.section-badge');
+  if (!badges.length) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.5 });
+  badges.forEach(b => io.observe(b));
+})();
+</script>
+<script src="chat-widget.js" defer></script>
+
+</body>
+</html>

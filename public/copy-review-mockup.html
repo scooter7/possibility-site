@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Copy Review — Mockup</title>
+<style>
+  :root{
+    --teal:#2E9E9E;
+    --teal-bright:#33A3A3;
+    --teal-soft:rgba(51,163,163,0.08);
+    --teal-glow:rgba(51,163,163,0.14);
+    --ink:#1a1410;
+    --ink-soft:rgba(26,20,16,0.6);
+    --ink-faint:rgba(26,20,16,0.4);
+    --line:rgba(26,20,16,0.08);
+    --line-strong:rgba(26,20,16,0.16);
+    --cream:#faf7f2;
+    --card:#ffffff;
+    --open:#d97706;
+    --open-soft:rgba(217,119,6,0.1);
+    --progress:#2563eb;
+    --progress-soft:rgba(37,99,235,0.1);
+    --resolved:#16a34a;
+    --resolved-soft:rgba(22,163,74,0.1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--cream);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5;height:100%}
+  body{display:flex;flex-direction:column;overflow:hidden}
+
+  /* Header */
+  header{flex-shrink:0;background:rgba(250,247,242,0.92);backdrop-filter:saturate(140%) blur(12px);border-bottom:1px solid var(--line);z-index:50}
+  .header-inner{max-width:1600px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--teal),var(--teal-bright));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;letter-spacing:-.02em}
+  .brand-title{font-size:17px;font-weight:600;letter-spacing:-.01em}
+  .brand-sub{font-size:12px;color:var(--ink-soft);margin-top:2px}
+  .header-right{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--ink-soft)}
+  .user-chip{display:flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff}
+  .avatar{width:22px;height:22px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600}
+
+  .tabs-row{max-width:1600px;margin:0 auto;padding:0 28px;display:flex;align-items:center;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+  .tabs-row::-webkit-scrollbar{display:none}
+  .tab{padding:12px 18px;font-size:14px;font-weight:500;color:var(--ink-soft);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:8px}
+  .tab:hover{color:var(--ink)}
+  .tab.active{color:var(--ink);border-bottom-color:var(--teal)}
+  .tab-count{background:var(--line);color:var(--ink-soft);font-size:11px;padding:2px 7px;border-radius:999px;font-weight:600;min-width:20px;text-align:center}
+  .tab.active .tab-count{background:var(--teal-soft);color:var(--teal)}
+  .tab-count.has-open{background:var(--open-soft);color:var(--open)}
+
+  /* Workspace */
+  .workspace{flex:1;display:grid;grid-template-columns:1fr 420px;min-height:0;max-width:1600px;width:100%;margin:0 auto}
+
+  /* Stage (left side, screenshot) */
+  .stage{position:relative;display:flex;align-items:center;justify-content:center;padding:32px 24px;background:linear-gradient(180deg,#f4f0ea 0%,#ece7de 100%);border-right:1px solid var(--line);min-height:0;overflow:hidden}
+  .stage-inner{position:relative;height:100%;max-height:880px;display:flex;align-items:center;justify-content:center}
+  .phone{height:100%;aspect-ratio:9/19.5;background:#1a1410;border-radius:38px;padding:8px;box-shadow:0 30px 80px rgba(26,20,16,0.18),0 8px 20px rgba(26,20,16,0.08)}
+  .phone-inner{width:100%;height:100%;background:linear-gradient(180deg,#f7f2eb,#eae3d6);border-radius:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink-faint);font-size:12px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;position:relative;overflow:hidden}
+  .phone-inner img{width:100%;height:100%;object-fit:cover;display:block}
+
+  .nav-btn{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.95);border:1px solid var(--line);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink);box-shadow:0 4px 14px rgba(26,20,16,0.08);transition:all .15s;z-index:5}
+  .nav-btn:hover{background:#fff;transform:translateY(-50%) scale(1.05);border-color:var(--line-strong)}
+  .nav-btn:disabled{opacity:.3;cursor:not-allowed;transform:translateY(-50%)}
+  .nav-btn svg{width:20px;height:20px}
+  .nav-prev{left:24px}
+  .nav-next{right:24px}
+
+  .stage-overlay-top{position:absolute;top:20px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-size:12px;color:var(--ink-soft);box-shadow:0 4px 14px rgba(26,20,16,0.06);z-index:5}
+  .stage-overlay-top strong{color:var(--ink);font-weight:600}
+  .stage-overlay-top .sep{color:var(--ink-faint)}
+
+  .stage-overlay-bottom{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;z-index:5}
+  .dot-nav{width:7px;height:7px;border-radius:50%;background:rgba(26,20,16,0.18);cursor:pointer;transition:all .15s;border:none;padding:0}
+  .dot-nav:hover{background:rgba(26,20,16,0.35)}
+  .dot-nav.active{background:var(--teal);width:22px;border-radius:4px}
+
+  /* Sidebar (right, comments) */
+  .sidebar{display:flex;flex-direction:column;background:#fff;min-height:0;border-left:1px solid var(--line)}
+  .side-head{padding:22px 24px 16px;border-bottom:1px solid var(--line);flex-shrink:0}
+  .side-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+  .side-title{font-size:18px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
+  .side-filename{font-size:11px;color:var(--ink-faint);margin-top:3px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .side-status{display:flex;gap:6px;flex-wrap:wrap}
+  .status-pill{font-size:11px;font-weight:600;padding:6px 11px;border-radius:999px;border:1px solid var(--line);background:#fff;cursor:pointer;color:var(--ink-soft);display:flex;align-items:center;gap:6px;transition:all .15s}
+  .status-pill .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+  .status-pill:hover{border-color:var(--line-strong)}
+  .status-pill.active.open{background:var(--open-soft);color:var(--open);border-color:var(--open)}
+  .status-pill.active.progress{background:var(--progress-soft);color:var(--progress);border-color:var(--progress)}
+  .status-pill.active.resolved{background:var(--resolved-soft);color:var(--resolved);border-color:var(--resolved)}
+
+  .comments-scroll{flex:1;overflow-y:auto;padding:16px 24px}
+  .comments-scroll::-webkit-scrollbar{width:6px}
+  .comments-scroll::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:3px}
+  .comments-empty{text-align:center;padding:40px 20px;color:var(--ink-faint);font-size:13px}
+
+  .comment{display:flex;gap:11px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
+  .comment:last-child{border-bottom:none}
+  .comment-check{margin-top:5px;width:15px;height:15px;cursor:pointer;accent-color:var(--teal);flex-shrink:0}
+  .comment .avatar{width:28px;height:28px;font-size:11px;flex-shrink:0;margin-top:1px}
+  .avatar.alt{background:#7c3aed}
+  .avatar.alt2{background:#db2777}
+  .comment-body{flex:1;min-width:0}
+  .comment-head{display:flex;align-items:baseline;gap:8px;font-size:12px;margin-bottom:2px}
+  .comment-name{font-weight:600;color:var(--ink)}
+  .comment-time{color:var(--ink-faint);font-size:11px}
+  .comment-text{font-size:13.5px;color:var(--ink);line-height:1.5;word-wrap:break-word}
+  .comment.done .comment-text{text-decoration:line-through;color:var(--ink-faint)}
+
+  .composer{flex-shrink:0;padding:16px 24px 20px;border-top:1px solid var(--line);background:#fff}
+  .composer-inner{display:flex;gap:8px;align-items:flex-end}
+  .composer textarea{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;font-size:13.5px;resize:none;background:var(--cream);color:var(--ink);min-height:42px;max-height:120px;font-family:inherit}
+  .composer textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-glow);background:#fff}
+  .send-btn{background:var(--teal);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;height:42px;flex-shrink:0;transition:background .15s}
+  .send-btn:hover{background:var(--teal-bright)}
+  .composer-hint{font-size:11px;color:var(--ink-faint);margin-top:8px;display:flex;gap:14px}
+  kbd{background:var(--line);border-radius:4px;padding:1px 6px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;color:var(--ink-soft)}
+
+  @media (max-width:980px){
+    .workspace{grid-template-columns:1fr;grid-template-rows:55vh 1fr}
+    .stage{border-right:none;border-bottom:1px solid var(--line);padding:20px 16px}
+    .sidebar{border-left:none}
+    .nav-btn{width:42px;height:42px}
+    .nav-prev{left:12px}
+    .nav-next{right:12px}
+  }
+  @media (max-width:768px){
+    .header-inner{padding:12px 18px}
+    .tabs-row{padding:0 18px}
+    .side-head,.comments-scroll,.composer{padding-left:18px;padding-right:18px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-mark">CR</div>
+      <div>
+        <div class="brand-title">Copy Review</div>
+        <div class="brand-sub">iPhone screenshots, comments, and copy fixes</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="user-chip"><div class="avatar">EY</div><span>Eric</span></div>
+    </div>
+  </div>
+  <div class="tabs-row">
+    <button class="tab active" data-flow="onboarding">Onboarding <span class="tab-count has-open">5</span></button>
+    <button class="tab" data-flow="home">Home <span class="tab-count has-open">3</span></button>
+    <button class="tab" data-flow="paywall">Paywall <span class="tab-count has-open">1</span></button>
+    <button class="tab" data-flow="profile">Profile <span class="tab-count">0</span></button>
+  </div>
+</header>
+
+<div class="workspace">
+  <div class="stage" id="stage">
+    <button class="nav-btn nav-prev" id="prevBtn" aria-label="Previous">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+
+    <div class="stage-overlay-top">
+      <strong id="shotIndex">1</strong>
+      <span class="sep">of</span>
+      <span id="shotTotal">6</span>
+      <span class="sep">·</span>
+      <span id="shotLabel">Welcome</span>
+    </div>
+
+    <div class="stage-inner">
+      <div class="phone"><div class="phone-inner" id="phoneInner">Screenshot placeholder</div></div>
+    </div>
+
+    <div class="stage-overlay-bottom" id="dotNav"></div>
+
+    <button class="nav-btn nav-next" id="nextBtn" aria-label="Next">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+
+  <aside class="sidebar">
+    <div class="side-head">
+      <div class="side-title-row">
+        <div>
+          <div class="side-title" id="sideTitle">Welcome</div>
+          <div class="side-filename" id="sideFilename">onboarding/01-welcome.png</div>
+        </div>
+      </div>
+      <div class="side-status" id="sideStatus">
+        <button class="status-pill open" data-status="open"><span class="dot"></span>Open</button>
+        <button class="status-pill progress" data-status="progress"><span class="dot"></span>In progress</button>
+        <button class="status-pill resolved" data-status="resolved"><span class="dot"></span>Resolved</button>
+      </div>
+    </div>
+    <div class="comments-scroll" id="commentsScroll"></div>
+    <div class="composer">
+      <div class="composer-inner">
+        <textarea id="composerText" placeholder="Suggest a copy change…" rows="1"></textarea>
+        <button class="send-btn" id="sendBtn">Post</button>
+      </div>
+      <div class="composer-hint">
+        <span><kbd>←</kbd> <kbd>→</kbd> navigate</span>
+        <span><kbd>⌘</kbd>+<kbd>↵</kbd> post</span>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+  const FLOWS = {
+    onboarding: {
+      title: 'Onboarding',
+      shots: [
+        { file:'01-welcome.png', label:'Welcome', status:'open', comments:[
+          { name:'Eric', initials:'EY', cls:'', time:'2h ago', text:"\"Welcome to Possibility\" feels generic. Try \"Your next chapter starts here.\"", done:false },
+          { name:'Jim', initials:'JC', cls:'alt', time:'1h ago', text:"Agree. Also the subhead is too long. Cut it in half.", done:false },
+        ]},
+        { file:'02-name.png', label:'Name', status:'progress', comments:[
+          { name:'Eric', initials:'EY', cls:'', time:'3h ago', text:"\"What should we call you?\" reads better than \"Enter your name\"", done:true },
+          { name:'Sara', initials:'SL', cls:'alt2', time:'45m ago', text:"Button copy: \"Continue\" → \"Next\". Less corporate.", done:false },
+        ]},
+        { file:'03-goals.png', label:'Goals', status:'open', comments:[
+          { name:'Jim', initials:'JC', cls:'alt', time:'5h ago', text:"Goal options need rewording. \"Reduce stress\" is clinical. Try \"Feel calmer\".", done:false },
+        ]},
+        { file:'04-permissions.png', label:'Permissions', status:'open', comments:[
+          { name:'Eric', initials:'EY', cls:'', time:'1d ago', text:"Notifications ask is too aggressive. Soften the framing.", done:false },
+        ]},
+        { file:'05-paywall-intro.png', label:'Paywall intro', status:'resolved', comments:[
+          { name:'Eric', initials:'EY', cls:'', time:'2d ago', text:"Updated headline lands well. Ship it.", done:true },
+        ]},
+        { file:'06-success.png', label:'Success', status:'open', comments:[] },
+      ]
+    },
+    home: { title:'Home', shots:[
+      { file:'01-feed.png', label:'Feed', status:'open', comments:[
+        { name:'Jim', initials:'JC', cls:'alt', time:'30m ago', text:"\"Today's possibility\" → \"For you today\". Warmer.", done:false },
+      ]},
+      { file:'02-empty-state.png', label:'Empty state', status:'open', comments:[
+        { name:'Sara', initials:'SL', cls:'alt2', time:'2h ago', text:"Empty state needs a real CTA, not just an illustration.", done:false },
+      ]},
+      { file:'03-card-detail.png', label:'Card detail', status:'progress', comments:[
+        { name:'Eric', initials:'EY', cls:'', time:'4h ago', text:"Reading time should be \"3 min read\" not \"3 minutes\"", done:false },
+      ]},
+      { file:'04-search.png', label:'Search', status:'resolved', comments:[] },
+    ]},
+    paywall: { title:'Paywall', shots:[
+      { file:'01-trial-offer.png', label:'Trial offer', status:'open', comments:[
+        { name:'Jim', initials:'JC', cls:'alt', time:'1h ago', text:"\"Start your free trial\" is everywhere. We need our own voice. Maybe \"Step into Possibility, free for 7 days\"?", done:false },
+      ]},
+      { file:'02-pricing.png', label:'Pricing', status:'resolved', comments:[] },
+      { file:'03-features.png', label:'Features', status:'resolved', comments:[] },
+    ]},
+    profile: { title:'Profile', shots:[
+      { file:'01-settings.png', label:'Settings', status:'resolved', comments:[] },
+    ]},
+  };
+
+  let currentFlow = 'onboarding';
+  let currentIdx = 0;
+
+  const phoneInner = document.getElementById('phoneInner');
+  const shotIndex = document.getElementById('shotIndex');
+  const shotTotal = document.getElementById('shotTotal');
+  const shotLabel = document.getElementById('shotLabel');
+  const sideTitle = document.getElementById('sideTitle');
+  const sideFilename = document.getElementById('sideFilename');
+  const commentsScroll = document.getElementById('commentsScroll');
+  const dotNav = document.getElementById('dotNav');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const sideStatus = document.getElementById('sideStatus');
+
+  function currentShot(){ return FLOWS[currentFlow].shots[currentIdx]; }
+
+  function render(){
+    const flow = FLOWS[currentFlow];
+    const shot = currentShot();
+    shotIndex.textContent = currentIdx+1;
+    shotTotal.textContent = flow.shots.length;
+    shotLabel.textContent = shot.label;
+    sideTitle.textContent = shot.label;
+    sideFilename.textContent = `${currentFlow}/${shot.file}`;
+    phoneInner.textContent = shot.file;
+
+    prevBtn.disabled = currentIdx===0;
+    nextBtn.disabled = currentIdx===flow.shots.length-1;
+
+    sideStatus.querySelectorAll('.status-pill').forEach(p=>{
+      p.classList.toggle('active', p.dataset.status===shot.status);
+    });
+
+    dotNav.innerHTML = flow.shots.map((s,i)=>
+      `<button class="dot-nav ${i===currentIdx?'active':''}" data-i="${i}" title="${s.label}"></button>`
+    ).join('');
+    dotNav.querySelectorAll('.dot-nav').forEach(d=>{
+      d.addEventListener('click',()=>{ currentIdx=parseInt(d.dataset.i);render(); });
+    });
+
+    if(!shot.comments.length){
+      commentsScroll.innerHTML = `<div class="comments-empty">No feedback yet. Be the first.</div>`;
+    } else {
+      commentsScroll.innerHTML = shot.comments.map((c,i)=>`
+        <div class="comment ${c.done?'done':''}">
+          <input type="checkbox" class="comment-check" data-i="${i}" ${c.done?'checked':''}>
+          <div class="avatar ${c.cls}">${c.initials}</div>
+          <div class="comment-body">
+            <div class="comment-head"><span class="comment-name">${c.name}</span><span class="comment-time">${c.time}</span></div>
+            <div class="comment-text">${c.text}</div>
+          </div>
+        </div>
+      `).join('');
+      commentsScroll.querySelectorAll('.comment-check').forEach(cb=>{
+        cb.addEventListener('change',()=>{
+          shot.comments[parseInt(cb.dataset.i)].done = cb.checked;
+          render();
+        });
+      });
+    }
+  }
+
+  document.querySelectorAll('.tab').forEach(t=>{
+    t.addEventListener('click',()=>{
+      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      currentFlow = t.dataset.flow;
+      currentIdx = 0;
+      render();
+    });
+  });
+
+  sideStatus.querySelectorAll('.status-pill').forEach(p=>{
+    p.addEventListener('click',()=>{ currentShot().status = p.dataset.status; render(); });
+  });
+
+  prevBtn.addEventListener('click',()=>{ if(currentIdx>0){currentIdx--;render();} });
+  nextBtn.addEventListener('click',()=>{ if(currentIdx<FLOWS[currentFlow].shots.length-1){currentIdx++;render();} });
+
+  document.addEventListener('keydown',e=>{
+    if(e.target.tagName==='TEXTAREA'){
+      if((e.metaKey||e.ctrlKey)&&e.key==='Enter'){ document.getElementById('sendBtn').click(); }
+      return;
+    }
+    if(e.key==='ArrowLeft') prevBtn.click();
+    if(e.key==='ArrowRight') nextBtn.click();
+  });
+
+  // touch swipe
+  let touchX=null;
+  document.getElementById('stage').addEventListener('touchstart',e=>{ touchX=e.touches[0].clientX; });
+  document.getElementById('stage').addEventListener('touchend',e=>{
+    if(touchX===null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if(Math.abs(dx)>50){ dx<0 ? nextBtn.click() : prevBtn.click(); }
+    touchX=null;
+  });
+
+  document.getElementById('sendBtn').addEventListener('click',()=>{
+    const ta = document.getElementById('composerText');
+    const text = ta.value.trim();
+    if(!text) return;
+    currentShot().comments.push({ name:'Eric', initials:'EY', cls:'', time:'just now', text, done:false });
+    ta.value='';
+    render();
+  });
+
+  render();
+</script>
+</body>
+</html>

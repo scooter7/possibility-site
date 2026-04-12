@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+<meta name="view-transition" content="same-origin">
+<title>The Possibility - Onboarding Teardown</title>
+<meta name="description" content="Side-by-side teardown of competitor onboarding flows vs. The Possibility's approach.">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+<link rel="icon" type="image/png" href="app-icon.png">
+<link rel="apple-touch-icon" href="app-icon.png">
+<link rel="preload" as="style" href="design-system.css">
+<link rel="stylesheet" href="design-system.css">
+<style>
+/* ===== MAIN CONTENT ===== */
+.main { margin-left: var(--sidebar-w); overflow-x: clip; }
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  min-height: 75vh; min-height: 75dvh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center; overflow: hidden;
+  background: var(--dark); padding: 80px 48px;
+}
+.hero-bg { position: absolute; inset: 0; z-index: 0; }
+.hero-bg img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 40%;
+  transform-origin: center center; opacity: 0;
+  animation: heroImgReveal 2.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards,
+             heroKenBurns 20s ease-out 2.5s forwards;
+  will-change: transform, opacity;
+}
+@keyframes heroImgReveal {
+  0% { opacity: 0; transform: scale(1.1); }
+  100% { opacity: 0.35; transform: scale(1.0); }
+}
+@keyframes heroKenBurns {
+  0% { transform: scale(1.0); }
+  100% { transform: scale(1.05); }
+}
+.hero-bg::after {
+  content: ''; position: absolute; inset: 0;
+  opacity: 0; animation: heroScrimFade 2s ease-out 0.3s forwards;
+  background:
+    linear-gradient(180deg, rgba(8,10,15,0.5) 0%, rgba(8,10,15,0.2) 35%, rgba(8,10,15,0.65) 70%, rgba(8,10,15,0.97) 100%),
+    radial-gradient(ellipse 600px 400px at 30% 70%, rgba(232,117,138,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 400px at 70% 60%, rgba(99,102,241,0.06) 0%, transparent 70%);
+}
+@keyframes heroScrimFade { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes heroFadeUp {
+  0% { opacity: 0; transform: translateY(24px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes dotPulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(51,163,163,0.6); }
+  50% { box-shadow: 0 0 20px rgba(51,163,163,0.9), 0 0 40px rgba(51,163,163,0.3); }
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 20px; background: rgba(255,252,250,0.06);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border: 0.5px solid rgba(255,252,250,0.1); border-radius: 100px;
+  font-size: 10px; font-weight: 600; color: rgba(255,252,250,0.45);
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 32px;
+  opacity: 0; animation: heroFadeUp 1s var(--zen) 0.3s forwards;
+  position: relative; z-index: 2;
+}
+.hero-badge .dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--teal);
+  box-shadow: 0 0 12px rgba(51,163,163,0.6);
+  animation: dotPulse 3s ease-in-out 2s infinite;
+}
+.hero h1 {
+  font-size: clamp(32px, 5vw, 60px); font-weight: 200; line-height: 1.1;
+  letter-spacing: -2px; color: rgba(255,252,250,0.95);
+  margin-bottom: 20px; max-width: 740px;
+  opacity: 0; animation: heroFadeUp 1s var(--zen) 0.5s forwards;
+  position: relative; z-index: 2;
+}
+.hero h1 em {
+  font-style: normal; font-weight: 300;
+  background: linear-gradient(135deg, var(--teal-bright), #2DD4BF, #A7F3D0);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  font-size: 16px; font-weight: 400; color: rgba(255,252,250,0.4);
+  max-width: 500px; line-height: 1.7;
+  opacity: 0; animation: heroFadeUp 1s var(--zen) 0.7s forwards;
+  position: relative; z-index: 2;
+}
+
+/* Floating orbs behind hero content */
+.hero-orb {
+  position: absolute; border-radius: 50%; filter: blur(80px);
+  pointer-events: none; z-index: 1; opacity: 0;
+  animation: orbFloat 8s ease-in-out infinite alternate, heroFadeUp 2s var(--zen) 1s forwards;
+}
+.hero-orb.orb-1 {
+  width: 300px; height: 300px; background: rgba(51,163,163,0.12);
+  top: 20%; left: 15%; animation-delay: 0s;
+}
+.hero-orb.orb-2 {
+  width: 250px; height: 250px; background: rgba(99,102,241,0.08);
+  bottom: 15%; right: 10%; animation-delay: 2s;
+}
+.hero-orb.orb-3 {
+  width: 200px; height: 200px; background: rgba(52,211,153,0.06);
+  top: 50%; left: 55%; animation-delay: 4s;
+}
+@keyframes orbFloat {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(20px, -15px) scale(1.05); }
+  66% { transform: translate(-10px, 10px) scale(0.95); }
+  100% { transform: translate(15px, -20px) scale(1.02); }
+}
+
+/* Hero stats */
+.hero-stats-bar {
+  position: relative; z-index: 2; display: flex;
+  justify-content: center; gap: 48px;
+  padding: 100px 48px 0; background: var(--bg);
+}
+.hero-stat { text-align: center; }
+.hero-stat .val { font-size: 32px; font-weight: 300; color: var(--text); letter-spacing: -1px; }
+.hero-stat .lbl { font-size: 11px; color: var(--text-3); margin-top: 4px; }
+.hero-stat { transition: transform 0.5s var(--zen); }
+.hero-stat:hover { transform: translateY(-3px); }
+
+/* ===== SECTIONS ===== */
+section { padding: 110px 56px; position: relative; overflow-x: hidden; }
+section + section::before {
+  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: min(260px, 50%); height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(51,163,163,0.2), rgba(99,102,241,0.15), transparent);
+  animation: shimmerLine 4s ease-in-out infinite;
+}
+@keyframes shimmerLine {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* ===== GLASS CARDS ===== */
+.gc {
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 0.5px solid rgba(26,20,16,0.08); border-radius: 24px;
+  padding: 32px; position: relative; overflow: hidden;
+  transition: transform 0.4s var(--zen), box-shadow 0.4s var(--zen);
+  box-shadow: 0 8px 32px rgba(31,38,135,0.08), 0 0 0 0.5px rgba(255,255,255,0.3) inset;
+}
+.gc::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 40%; border-radius: inherit;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.45) 0%, transparent 100%);
+  pointer-events: none; z-index: 0;
+}
+.gc:hover { box-shadow: 0 16px 48px rgba(31,38,135,0.12), 0 0 40px rgba(51,163,163,0.08), 0 0 0 0.5px rgba(255,255,255,0.4) inset; transform: translateY(-4px); }
+
+/* ===== COMPETITOR FLOW CARDS ===== */
+.comp-flow {
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 0.5px solid rgba(26,20,16,0.08); border-radius: 24px;
+  overflow: hidden; margin-bottom: 20px;
+  transition: transform 0.4s var(--zen), box-shadow 0.4s var(--zen);
+  box-shadow: 0 8px 32px rgba(31,38,135,0.08), 0 0 0 0.5px rgba(255,255,255,0.3) inset;
+}
+.comp-flow::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 40%; border-radius: inherit;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.45) 0%, transparent 100%);
+  pointer-events: none;
+}
+.comp-flow:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(31,38,135,0.12), 0 0 40px rgba(51,163,163,0.08), 0 0 0 0.5px rgba(51,163,163,0.15) inset; }
+.comp-flow { position: relative; }
+.comp-flow-logo { transition: transform 0.4s var(--zen); }
+.comp-flow:hover .comp-flow-logo { transform: scale(1.08); }
+.comp-flow-header {
+  display: flex; align-items: center; gap: 16px;
+  padding: 24px 28px; cursor: pointer;
+}
+.comp-flow-logo {
+  width: 40px; height: 40px; border-radius: 10px;
+  object-fit: contain; flex-shrink: 0;
+}
+.comp-flow-info { flex: 1; min-width: 0; }
+.comp-flow-name { font-size: 18px; font-weight: 700; color: var(--text); }
+.comp-flow-meta { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+.comp-flow-pills { display: flex; gap: 6px; flex-shrink: 0; }
+.comp-flow-pill {
+  padding: 6px 12px; border-radius: 8px; text-align: center;
+  background: rgba(26,20,16,0.025); min-width: 60px;
+}
+.comp-flow-pill .pv { font-size: 16px; font-weight: 700; line-height: 1.2; }
+.comp-flow-pill .pv.bad { color: var(--release); }
+.comp-flow-pill .pv.ok { color: #F59E0B; }
+.comp-flow-pill .pv.good { color: var(--become); }
+.comp-flow-pill .pl { font-size: 8px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-3); margin-top: 1px; }
+.comp-flow-body { padding: 0 28px 28px; }
+
+/* Step flow visualization */
+.step-flow { display: flex; gap: 4px; margin-bottom: 20px; align-items: center; flex-wrap: wrap; }
+.step-dot {
+  height: 28px; border-radius: 6px; display: flex; align-items: center;
+  justify-content: center; font-size: 9px; font-weight: 600;
+  letter-spacing: 0.5px; padding: 0 10px; white-space: nowrap;
+}
+.step-dot.neutral { background: rgba(26,20,16,0.04); color: var(--text-3); }
+.step-dot.paywall { background: rgba(232,117,138,0.1); color: var(--release); box-shadow: 0 2px 8px rgba(232,117,138,0.15); }
+.step-dot.value { background: rgba(52,211,153,0.08); color: var(--become); box-shadow: 0 2px 8px rgba(52,211,153,0.15); }
+.step-dot.signup { background: rgba(99,102,241,0.08); color: var(--align); box-shadow: 0 2px 8px rgba(99,102,241,0.1); }
+.step-dot { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.step-dot:hover { transform: scale(1.12); }
+.step-arrow { color: var(--text-3); font-size: 10px; opacity: 0.3; }
+
+/* Issues list */
+.issue-list { list-style: none; padding: 0; margin: 0; }
+.issue-list li {
+  position: relative; padding-left: 18px; margin-bottom: 8px;
+  font-size: 13px; color: var(--text-2); line-height: 1.65;
+}
+.issue-list li::before {
+  content: ''; position: absolute; left: 0; top: 8px;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--release); opacity: 0.6;
+}
+.issue-list li strong { color: var(--text); }
+
+/* ===== POSSIBILITY FLOW ===== */
+.poss-phase {
+  padding: 32px; border-radius: 20px; margin-bottom: 16px;
+}
+.poss-phase.release { background: rgba(26,20,16,0.025); }
+.poss-phase.align-phase { background: rgba(99,102,241,0.03); }
+.poss-phase.become-phase { background: rgba(52,211,153,0.03); }
+.phase-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 16px;
+}
+.poss-phase.release .phase-label { color: var(--release); }
+.poss-phase.align-phase .phase-label { color: var(--align); }
+.poss-phase.become-phase .phase-label { color: var(--become); }
+.screen-row {
+  display: flex; gap: 16px; align-items: start; margin-bottom: 16px;
+}
+.screen-row:last-child { margin-bottom: 0; }
+.screen-num {
+  width: 28px; height: 28px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+.poss-phase.release .screen-num { background: rgba(232,117,138,0.08); color: var(--release); }
+.poss-phase.align-phase .screen-num { background: rgba(99,102,241,0.08); color: var(--align); }
+.poss-phase.become-phase .screen-num { background: rgba(52,211,153,0.08); color: var(--become); }
+.screen-content { flex: 1; }
+.screen-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.screen-desc { font-size: 13px; color: var(--text-2); line-height: 1.6; }
+
+/* ===== STAT CARDS ===== */
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 28px 0; }
+.stat-card {
+  text-align: center; padding: 28px 14px;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 0.5px solid rgba(26,20,16,0.08); border-radius: 24px;
+  position: relative; overflow: hidden;
+  transition: transform 0.4s var(--zen), box-shadow 0.4s var(--zen);
+  box-shadow: 0 8px 32px rgba(31,38,135,0.08), 0 0 0 0.5px rgba(255,255,255,0.3) inset;
+}
+.stat-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 40%; border-radius: inherit;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.45) 0%, transparent 100%); pointer-events: none;
+}
+.stat-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(31,38,135,0.12), 0 0 40px rgba(51,163,163,0.08); }
+.stat-card::before {
+  content: ''; position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+  width: 40px; height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--teal), var(--become));
+  opacity: 0; transition: opacity 0.4s ease, width 0.4s ease;
+}
+.stat-card:hover::before { opacity: 1; width: 60px; }
+.stat-val { font-size: 32px; font-weight: 200; letter-spacing: -1px; line-height: 1.2; }
+.stat-label { font-size: 11px; color: var(--text-3); margin-top: 6px; line-height: 1.4; }
+
+/* ===== VERDICT ===== */
+.verdict {
+  background: var(--teal-soft); border: 1px solid rgba(51,163,163,0.12);
+  border-radius: var(--r); padding: 28px 32px; margin: 24px 0;
+}
+.verdict-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 10px; display: flex; align-items: center; gap: 8px; color: var(--become);
+}
+.verdict-label::before {
+  content: ''; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--become); box-shadow: 0 0 8px rgba(52,211,153,0.5);
+}
+
+/* ===== COMPARISON TABLE (dark) ===== */
+.dark-inset {
+  border-radius: 28px; background: var(--dark);
+  padding: 48px 40px; position: relative; overflow: hidden;
+  border: 0.5px solid rgba(51,163,163,0.1);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.15), 0 0 60px rgba(51,163,163,0.04);
+}
+.dark-inset::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 500px 400px at 20% 30%, rgba(51,163,163,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 300px at 80% 70%, rgba(99,102,241,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+.dark-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.dark-table th {
+  text-align: left; font-size: 10px; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(255,252,250,0.3); padding: 14px 16px;
+  border-bottom: 1px solid rgba(255,252,250,0.08);
+}
+.dark-table td {
+  padding: 14px 16px; color: rgba(255,252,250,0.6);
+  border-bottom: 1px solid rgba(255,252,250,0.05);
+}
+.dark-table td strong { color: rgba(255,252,250,0.9); }
+.dark-table .app-cell { display: flex; align-items: center; gap: 10px; }
+.dark-table .app-cell img { width: 28px; height: 28px; border-radius: 7px; object-fit: contain; }
+.dark-table .bad { color: var(--release); font-weight: 600; }
+.dark-table .good { color: var(--become); font-weight: 600; }
+.dark-table tr:last-child td { border-bottom: none; }
+.dark-table tr.highlight td {
+  background: rgba(51,163,163,0.05);
+  border-bottom-color: rgba(51,163,163,0.1);
+}
+.dark-table tr.highlight td:first-child { border-radius: 8px 0 0 8px; }
+.dark-table tr.highlight td:last-child { border-radius: 0 8px 8px 0; }
+.dark-table tr { transition: background 0.3s ease; }
+.dark-table tr:hover td { background: rgba(255,252,250,0.02); }
+
+/* ===== PRINCIPLES ===== */
+.principle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.principle-card {
+  padding: 28px; border-radius: 20px;
+  background: rgba(255,255,255,0.5); border: 0.5px solid rgba(26,20,16,0.06);
+  transition: transform 0.4s var(--zen), box-shadow 0.4s var(--zen), border-color 0.4s ease;
+  position: relative; overflow: hidden;
+}
+.principle-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(31,38,135,0.08);
+  border-color: rgba(51,163,163,0.12);
+}
+.principle-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--teal), rgba(99,102,241,0.3), transparent);
+  opacity: 0; transition: opacity 0.4s ease;
+}
+.principle-card:hover::before { opacity: 1; }
+.principle-num {
+  font-size: 11px; font-weight: 700; color: var(--teal);
+  letter-spacing: 1.5px; margin-bottom: 8px;
+  text-shadow: 0 0 20px rgba(51,163,163,0.2);
+}
+.principle-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.principle-desc { font-size: 13px; color: var(--text-2); line-height: 1.65; }
+
+/* ===== RISK CALLOUT ===== */
+.risk-card {
+  background: rgba(26,20,16,0.025); border: 1px solid rgba(232,117,138,0.12);
+  border-radius: var(--r); padding: 24px 28px; margin: 24px 0;
+}
+.risk-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--release);
+  margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+}
+.risk-label::before {
+  content: ''; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--release); box-shadow: 0 0 8px rgba(232,117,138,0.4);
+}
+
+/* ===== COMPARISON BARS ===== */
+.bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.bar-label { width: 110px; font-size: 13px; font-weight: 500; color: var(--text-2); flex-shrink: 0; }
+.bar-track { flex: 1; height: 32px; background: rgba(26,20,16,0.03); border-radius: 8px; overflow: hidden; }
+.bar-fill {
+  height: 100%; border-radius: 8px; display: flex; align-items: center;
+  justify-content: flex-end; padding-right: 12px;
+  font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.9);
+  width: 0; transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+}
+.bar-fill.teal {
+  background: linear-gradient(90deg, var(--teal), #2DD4BF);
+  position: relative; overflow: hidden;
+}
+.bar-fill.teal::after {
+  content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  animation: barShimmer 2.5s ease-in-out 1.5s;
+}
+@keyframes barShimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+.bar-fill.muted { background: linear-gradient(90deg, rgba(26,20,16,0.08), rgba(26,20,16,0.18)); color: var(--text-3); }
+.bar-fill.red { background: linear-gradient(90deg, rgba(232,117,138,0.5), var(--release)); }
+
+/* ===== FLOW OPTIONS ===== */
+.option-card {
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 0.5px solid rgba(26,20,16,0.08); border-radius: 24px;
+  padding: 28px 32px; margin-bottom: 16px; overflow: hidden;
+  transition: transform 0.4s var(--zen), box-shadow 0.4s var(--zen), border-color 0.3s ease;
+  box-shadow: 0 8px 32px rgba(31,38,135,0.08), 0 0 0 0.5px rgba(255,255,255,0.3) inset;
+  position: relative; cursor: pointer;
+}
+.option-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 40%; border-radius: inherit;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.45) 0%, transparent 100%);
+  pointer-events: none; z-index: 0;
+}
+.option-card:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(31,38,135,0.1), 0 0 40px rgba(51,163,163,0.06); border-color: rgba(51,163,163,0.12); }
+.option-card.recommended { border-color: rgba(51,163,163,0.2); box-shadow: 0 8px 32px rgba(31,38,135,0.08), 0 0 0 0.5px rgba(51,163,163,0.15) inset; }
+.option-top {
+  display: flex; align-items: center; gap: 16px;
+  position: relative; z-index: 1;
+}
+.option-letter {
+  width: 40px; height: 40px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 800; flex-shrink: 0;
+  background: rgba(26,20,16,0.04); color: var(--text-3);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.option-card.recommended .option-letter { background: var(--teal-soft); color: var(--teal); }
+.option-card:hover .option-letter { background: var(--teal-soft); color: var(--teal); }
+.option-meta { flex: 1; min-width: 0; }
+.option-name { font-size: 17px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.option-pill {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.5px;
+  text-transform: uppercase; padding: 3px 10px; border-radius: 6px;
+  display: inline-flex; white-space: nowrap;
+}
+.option-pill.rec { background: var(--teal-soft); color: var(--teal); }
+.option-pill.safe { background: rgba(52,211,153,0.06); color: var(--become); }
+.option-pill.bold { background: rgba(99,102,241,0.08); color: var(--align); }
+.option-sub { font-size: 13px; color: var(--text-3); margin-top: 3px; line-height: 1.5; }
+.option-stats {
+  display: flex; gap: 20px; flex-shrink: 0; align-items: center;
+}
+.option-stat { text-align: center; }
+.option-stat .os-val { font-size: 20px; font-weight: 300; color: var(--text); letter-spacing: -0.5px; line-height: 1.2; }
+.option-stat .os-lbl { font-size: 9px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+.option-expand-icon {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(26,20,16,0.03); flex-shrink: 0;
+  transition: transform 0.35s var(--zen), background 0.3s ease;
+}
+.option-card.expanded .option-expand-icon { transform: rotate(180deg); }
+.option-card:hover .option-expand-icon { background: rgba(51,163,163,0.08); }
+.option-flow-bar {
+  margin-top: 16px; position: relative; z-index: 1;
+}
+.option-detail-drawer {
+  max-height: 0; overflow: hidden; position: relative; z-index: 1;
+  transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, margin 0.3s ease;
+  opacity: 0; margin-top: 0;
+}
+.option-card.expanded .option-detail-drawer {
+  max-height: 600px; opacity: 1; margin-top: 20px;
+}
+.option-detail-inner {
+  padding-top: 20px; border-top: 1px solid rgba(26,20,16,0.06);
+}
+.option-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.option-detail h4 {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; margin: 0 0 8px;
+}
+.option-detail.pros h4 { color: var(--become); }
+.option-detail.cons h4 { color: var(--release); }
+.option-detail ul {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.option-detail li {
+  font-size: 12.5px; color: var(--text-2); line-height: 1.55;
+  padding-left: 12px; position: relative;
+}
+.option-detail li::before {
+  content: ''; position: absolute; left: 0; top: 7px;
+  width: 4px; height: 4px; border-radius: 50%;
+}
+.option-detail.pros li::before { background: var(--become); opacity: 0.5; }
+.option-detail.cons li::before { background: var(--release); opacity: 0.5; }
+.option-logic {
+  margin-top: 14px; font-size: 12.5px; color: var(--text-3);
+  line-height: 1.6; font-style: italic;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .main { margin-left: 0; }
+  section { padding: 80px 32px; }
+  .hero { padding: 60px 32px; }
+  .hero-stats-bar { padding-top: 72px; gap: 32px; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .principle-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  section { padding: 72px 24px; }
+  .hero { min-height: 60vh; padding: 56px 24px; }
+  .hero-stats-bar { gap: 24px; padding: 56px 24px 0; }
+  .hero-stat .val { font-size: 28px; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .principle-grid { grid-template-columns: 1fr; }
+  .summary-grid { grid-template-columns: 1fr !important; }
+  .comp-flow-pills { display: none; }
+  .dark-inset { padding: 32px 24px; border-radius: 20px; }
+  .step-flow { gap: 3px; }
+  .step-dot { height: 24px; font-size: 8px; padding: 0 6px; }
+  .bar-label { width: 80px; font-size: 12px; }
+  .option-detail-grid { grid-template-columns: 1fr; gap: 16px; }
+  .option-card { padding: 24px; }
+  .option-stats { gap: 14px; }
+  .option-stat .os-val { font-size: 17px; }
+}
+@media (max-width: 480px) {
+  section { padding: 56px 20px; }
+  .hero { padding: 48px 20px; min-height: 55vh; }
+  .hero h1 { font-size: clamp(26px, 7vw, 40px); letter-spacing: -1px; }
+  .hero-sub { font-size: 14px; max-width: 100%; }
+  .hero-stats-bar { gap: 16px; padding: 48px 20px 0; flex-wrap: wrap; justify-content: center; }
+  .hero-stat { min-width: 80px; }
+  .hero-stat .val { font-size: 24px; }
+  .stat-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat-val { font-size: 26px; }
+  .stat-card { padding: 22px 12px; border-radius: 18px; }
+  .comp-flow-header { padding: 20px; gap: 12px; }
+  .comp-flow-body { padding: 0 20px 20px; }
+  .comp-flow-name { font-size: 16px; }
+  .comp-flow-meta { font-size: 11px; }
+  .dark-inset { padding: 24px 12px; border-radius: 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .dark-table { font-size: 11px; min-width: 580px; }
+  .dark-table th { padding: 10px 10px; font-size: 9px; }
+  .dark-table td { padding: 10px 10px; }
+  .dark-table .app-cell img { width: 22px; height: 22px; }
+  .screen-row { gap: 12px; }
+  .principle-grid { gap: 12px; }
+  .principle-card { padding: 20px; border-radius: 16px; }
+  .principle-title { font-size: 14px; }
+  .principle-desc { font-size: 12px; }
+  .poss-phase { padding: 24px; border-radius: 16px; }
+  .screen-title { font-size: 13px; }
+  .screen-desc { font-size: 12px; }
+  .bar-row { flex-direction: column; gap: 4px; align-items: stretch; }
+  .bar-label { width: auto; font-size: 12px; font-weight: 600; }
+  .bar-track { height: 28px; }
+  .bar-fill { font-size: 10px; }
+  .risk-card { padding: 20px; }
+  .verdict { padding: 20px 24px; }
+  .hero-orb { display: none; }
+  .option-card { padding: 20px; border-radius: 18px; }
+  .option-top { gap: 12px; flex-wrap: wrap; }
+  .option-name { font-size: 15px; }
+  .option-sub { font-size: 12px; }
+  .option-stats { display: none; }
+  .option-letter { width: 34px; height: 34px; font-size: 14px; }
+}
+@media (max-width: 375px) {
+  section { padding: 48px 16px; }
+  .hero { padding: 40px 16px; }
+  .hero h1 { font-size: clamp(24px, 7vw, 36px); }
+  .hero-stats-bar { padding: 40px 16px 0; gap: 12px; }
+  .hero-stat .val { font-size: 22px; }
+  .stat-grid { gap: 10px; }
+  .stat-val { font-size: 22px; }
+  .stat-card { padding: 18px 10px; }
+  .comp-flow-header { padding: 16px; }
+  .comp-flow-body { padding: 0 16px 16px; }
+  .step-dot { height: 22px; font-size: 7px; padding: 0 5px; border-radius: 5px; }
+  .poss-phase { padding: 20px; }
+  .principle-card { padding: 16px; }
+}
+@media (max-width: 320px) {
+  section { padding: 40px 14px; }
+  .hero { padding: 36px 14px; }
+  .hero h1 { font-size: 22px; }
+  .hero-stats-bar { padding: 36px 14px 0; }
+  .stat-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Scroll Progress -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Mobile Burger -->
+<button class="mob-burger" id="mobBurger" aria-label="Menu">
+  <span></span><span></span><span></span>
+</button>
+
+<!-- Mobile Overlay -->
+<div class="mob-overlay" id="mobOverlay">
+  <div class="mob-menu">
+    <div class="mob-menu-cross">
+      <a href="index.html">Hub <span>&rarr;</span></a>
+      <a href="jim-strategy-briefing.html">Strategic Briefing <span>&rarr;</span></a>
+      <a href="jim-marketing-playbook.html">Marketing Playbook <span>&rarr;</span></a>
+      <a href="pricing-strategy.html">Pricing Strategy <span>&rarr;</span></a>
+    </div>
+    <div class="mob-menu-label">Onboarding Teardown</div>
+    <div class="mob-menu-section">
+      <a href="#hero">Overview</a>
+      <a href="#cost">The Cost of Every Step</a>
+      <a href="#competitors">Competitor Flows</a>
+      <a href="#comparison">Side-by-Side</a>
+      <a href="#options">Flow Options</a>
+      <a href="#principles">Design Principles</a>
+      <a href="#metrics">Target Metrics</a>
+    </div>
+  </div>
+</div>
+
+<!-- Sidebar -->
+<nav class="sidebar" aria-label="Page navigation">
+  <a href="index.html" class="sidebar-brand" style="text-decoration:none; display:block;">Agency OS</a>
+  <div class="sidebar-title">Onboarding Teardown</div>
+
+  <div class="nav-cross-group">
+    <a href="index.html" class="nav-cross-link"><span class="nc-icon">&#127968;</span> Hub <span class="nc-arrow">&rarr;</span></a>
+    <a href="jim-strategy-briefing.html" class="nav-cross-link"><span class="nc-icon">&#127919;</span> Strategic Briefing <span class="nc-arrow">&rarr;</span></a>
+    <a href="jim-marketing-playbook.html" class="nav-cross-link"><span class="nc-icon">&#128640;</span> Marketing Playbook <span class="nc-arrow">&rarr;</span></a>
+    <a href="pricing-strategy.html" class="nav-cross-link"><span class="nc-icon">&#128176;</span> Pricing Strategy <span class="nc-arrow">&rarr;</span></a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Analysis</div>
+    <a href="#hero" class="nav-link active">Overview</a>
+    <a href="#cost" class="nav-link">Cost of Every Step</a>
+    <a href="#competitors" class="nav-link">Competitor Flows</a>
+    <a href="#comparison" class="nav-link">Side-by-Side</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Our Approach</div>
+    <a href="#options" class="nav-link">Flow Options</a>
+    <a href="#principles" class="nav-link">Design Principles</a>
+    <a href="#metrics" class="nav-link">Target Metrics</a>
+  </div>
+
+  <div class="sidebar-footer">
+    Confidential<br>
+    Eric Yerke &amp; Dr. James Vineburgh<br>
+    March 2026
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="main">
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <img src="photos/matt-paul-catalano-0QEG_xOoY7Y-unsplash.jpg" alt="Atmospheric landscape" loading="eager" onerror="this.parentElement.style.background='var(--dark)'">
+  </div>
+  <div class="hero-orb orb-1"></div>
+  <div class="hero-orb orb-2"></div>
+  <div class="hero-orb orb-3"></div>
+  <div class="hero-badge"><span class="dot"></span> Onboarding Teardown &middot; March 2026</div>
+  <h1>Every step costs you<br><em>20% of your users.</em></h1>
+  <p class="hero-sub">Five competitors. Five onboarding flows. Every mistake mapped. Then five strategic options for how The Possibility could do it differently.</p>
+</section>
+
+<!-- Stats Bridge -->
+<div class="hero-stats-bar">
+  <div class="hero-stat reveal"><div class="val">20%</div><div class="lbl">Lost Per Step</div></div>
+  <div class="hero-stat reveal reveal-delay-1"><div class="val">75%</div><div class="lbl">Gone by Day 1</div></div>
+  <div class="hero-stat reveal reveal-delay-2"><div class="val">14</div><div class="lbl">Steps (Open's Flow)</div></div>
+  <div class="hero-stat reveal reveal-delay-3"><div class="val">5</div><div class="lbl">Options to Consider</div></div>
+</div>
+
+<!-- ===== COST OF EVERY STEP ===== -->
+<section id="cost">
+  <div class="container">
+    <div class="section-label reveal">The Math</div>
+    <div class="section-title reveal">Every step costs 20% of users.</div>
+    <p class="section-desc reveal">Research from Gabor Cselle and product analytics across thousands of apps: each additional onboarding step loses roughly one in five users. The math is unforgiving.</p>
+
+    <div class="gc reveal" style="margin-bottom: 28px;">
+      <div style="font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-3); margin-bottom: 20px;">User Survival by Onboarding Length</div>
+      <div class="bar-row">
+        <div class="bar-label">5 steps</div>
+        <div class="bar-track"><div class="bar-fill teal" data-width="33%">33% survive</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">7 steps</div>
+        <div class="bar-track"><div class="bar-fill teal" data-width="21%" style="background: linear-gradient(90deg, var(--teal), var(--become));">21% survive</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">9 steps</div>
+        <div class="bar-track"><div class="bar-fill teal" data-width="13%">13% survive</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">14 steps (Open)</div>
+        <div class="bar-track"><div class="bar-fill red" data-width="4%">4.4%</div></div>
+      </div>
+      <div class="bar-row" style="margin-bottom: 0;">
+        <div class="bar-label">20 steps (Endel)</div>
+        <div class="bar-track"><div class="bar-fill red" data-width="2%">1.2%</div></div>
+      </div>
+    </div>
+
+    <div class="risk-card reveal">
+      <div class="risk-label">THE CATCH</div>
+      <p style="font-size: 14px; color: var(--text-2); line-height: 1.75; margin: 0;">Step count alone doesn't determine survival. <strong style="color: var(--text);">Perceived relevance is what matters.</strong> Endel's 20 steps work ($750K/mo revenue) because each question visibly connects to the personalized soundscape the user receives. Our 9 steps work because each one earns the next. Open's 14 steps fail because 11 of them are brand narrative the user didn't ask for.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== KEY INSIGHT ===== -->
+<section style="padding: 80px 56px;">
+  <div class="container" style="max-width: 720px;">
+    <div class="gc reveal" style="padding: 40px; text-align: center; border: 0.5px solid rgba(51,163,163,0.1);">
+      <div style="font-size: 10px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--teal); margin-bottom: 16px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 12px rgba(51,163,163,0.5);"></span>
+        The Insight
+      </div>
+      <p style="font-size: 20px; font-weight: 300; line-height: 1.6; color: var(--text); margin: 0; letter-spacing: -0.3px;">Every competitor treats onboarding as a <strong style="font-weight: 600;">funnel to optimize.</strong> The question is whether we treat it as the <strong style="font-weight: 600; color: var(--teal);">first meditation to experience.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COMPETITOR FLOWS ===== -->
+<section id="competitors">
+  <div class="container-wide">
+    <div class="section-label reveal">Competitor Flows</div>
+    <div class="section-title reveal">Five flows. Five problems.</div>
+    <p class="section-desc reveal">Every competitor's onboarding, mapped step by step. Where they collect data, where the paywall sits, and where users leave.</p>
+
+    <!-- CALM -->
+    <div class="comp-flow reveal">
+      <div class="comp-flow-header">
+        <img src="competitor-logos/Calm_(company)_logo.svg.png" alt="Calm" class="comp-flow-logo">
+        <div class="comp-flow-info">
+          <div class="comp-flow-name">Calm</div>
+          <div class="comp-flow-meta">9 screens &middot; ~2 minutes &middot; Paywall at step 5</div>
+        </div>
+        <div class="comp-flow-pills">
+          <div class="comp-flow-pill"><div class="pv ok">9</div><div class="pl">Steps</div></div>
+          <div class="comp-flow-pill"><div class="pv bad">5</div><div class="pl">Paywall</div></div>
+        </div>
+      </div>
+      <div class="comp-flow-body">
+        <div class="step-flow">
+          <div class="step-dot neutral">Breathe</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Goals</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Social proof</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot signup">Account</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot paywall">Paywall</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Experience</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot value">Feed</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Tooltips</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Sleep</div>
+        </div>
+        <ul class="issue-list">
+          <li><strong>80% drop off within 30 minutes.</strong> Paywall arrives before any real value.</li>
+          <li>Goal quiz can be skipped entirely, making personalization meaningless.</li>
+          <li>Daily Reminder was buried in Settings. Less than 1% discovery rate. Users who set it retain 3x.</li>
+          <li>Compressed onboarding email from 27 to 15 days for <strong>4x revenue lift.</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- HEADSPACE -->
+    <div class="comp-flow reveal">
+      <div class="comp-flow-header">
+        <img src="competitor-logos/Mental-Health-Directory-Images-12.png" alt="Headspace" class="comp-flow-logo">
+        <div class="comp-flow-info">
+          <div class="comp-flow-name">Headspace</div>
+          <div class="comp-flow-meta">10 screens &middot; ~60 seconds &middot; Paywall at step 7 &middot; $2.75M/mo</div>
+        </div>
+        <div class="comp-flow-pills">
+          <div class="comp-flow-pill"><div class="pv ok">10</div><div class="pl">Steps</div></div>
+          <div class="comp-flow-pill"><div class="pv ok">7</div><div class="pl">Paywall</div></div>
+        </div>
+      </div>
+      <div class="comp-flow-body">
+        <div class="step-flow">
+          <div class="step-dot neutral">Breathe</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot signup">Signup</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Notifs</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Value slides</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Focus</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Overview</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot paywall">Paywall</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot value">Breathing</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Guest pass</div>
+        </div>
+        <ul class="issue-list">
+          <li><strong>Asks for notification permissions at step 3</strong>, before demonstrating any value. Industry data shows this reduces opt-in by up to 40%.</li>
+          <li>100% content locked. Moving from 80% to 100% locked produced "high double-digit lift" in paid conversions but destroyed trust.</li>
+          <li>Smart move: guided breathing exercise immediately after paywall. First value before home screen.</li>
+          <li>Lifecycle messaging via Braze: <strong>109% uplift in Week 1 retention.</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- WAKING UP -->
+    <div class="comp-flow reveal">
+      <div class="comp-flow-header">
+        <img src="competitor-logos/wakingup.webp" alt="Waking Up" class="comp-flow-logo">
+        <div class="comp-flow-info">
+          <div class="comp-flow-name">Waking Up</div>
+          <div class="comp-flow-meta">7 screens &middot; ~1 minute &middot; Paywall at step 4 &middot; $1M/mo</div>
+        </div>
+        <div class="comp-flow-pills">
+          <div class="comp-flow-pill"><div class="pv good">7</div><div class="pl">Steps</div></div>
+          <div class="comp-flow-pill"><div class="pv ok">4</div><div class="pl">Paywall</div></div>
+        </div>
+      </div>
+      <div class="comp-flow-body">
+        <div class="step-flow">
+          <div class="step-dot neutral">Welcome</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot signup">Account</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Sam intro</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot paywall">Paywall + scholarship</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Payment</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Experience</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot value">28-day course</div>
+        </div>
+        <ul class="issue-list">
+          <li><strong>Highest revenue per install</strong> in the category ($40/install/month). Short flow filters for serious users.</li>
+          <li>Minimal personalization. No questions about goals, experience, or preferences.</li>
+          <li>Scholarship option on the paywall is their strongest trust signal. 750K+ subscribers, near-zero ad spend.</li>
+          <li>Pacing too fast for beginners. By Day 14, Sam asks users to "examine the difference between attention and consciousness."</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- OPEN -->
+    <div class="comp-flow reveal">
+      <div class="comp-flow-header">
+        <img src="competitor-logos/images.png" alt="Open" class="comp-flow-logo">
+        <div class="comp-flow-info">
+          <div class="comp-flow-name">Open</div>
+          <div class="comp-flow-meta">14 screens &middot; ~3 minutes &middot; Paywall at step 13 &middot; Industry worst</div>
+        </div>
+        <div class="comp-flow-pills">
+          <div class="comp-flow-pill"><div class="pv bad">14</div><div class="pl">Steps</div></div>
+          <div class="comp-flow-pill"><div class="pv bad">13</div><div class="pl">Paywall</div></div>
+        </div>
+      </div>
+      <div class="comp-flow-body">
+        <div class="step-flow">
+          <div class="step-dot neutral">1</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">2</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">3</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">4</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">5</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">6</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">7</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">8</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">9</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">10</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">11</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot signup">Account</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot paywall">Paywall</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Survey</div>
+        </div>
+        <ul class="issue-list">
+          <li><strong>11 screens of cinematic brand narrative</strong> before the user sees any content. Estimated completion: under 50%.</li>
+          <li>Zero personalization questions. Mandatory account creation before any value.</li>
+          <li>$14.5M invested, world-class artists (James Blake). Only 15K ratings in 5+ years.</li>
+          <li>Trial-ending emails go to spam. Web-based signup creates cancellation confusion. Users charged $150/yr expecting monthly.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ENDEL -->
+    <div class="comp-flow reveal">
+      <div class="comp-flow-header">
+        <img src="competitor-logos/endel.svg" alt="Endel" class="comp-flow-logo">
+        <div class="comp-flow-info">
+          <div class="comp-flow-name">Endel</div>
+          <div class="comp-flow-meta">20 screens &middot; Excessive &middot; But $750K/mo revenue</div>
+        </div>
+        <div class="comp-flow-pills">
+          <div class="comp-flow-pill"><div class="pv bad">20</div><div class="pl">Steps</div></div>
+          <div class="comp-flow-pill"><div class="pv ok">12</div><div class="pl">Paywall</div></div>
+        </div>
+      </div>
+      <div class="comp-flow-body">
+        <div class="step-flow">
+          <div class="step-dot neutral">Welcome</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Value</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Value</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Health</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Motion</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Location</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Notifs</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Prefs</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">ADHD?</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">...</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot signup">Account</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot paywall">Paywall</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Referral</div>
+        </div>
+        <ul class="issue-list">
+          <li><strong>4 system permission requests</strong> in a row (Health, motion, location, notifications). Asks "Do you have ADD/ADHD?"</li>
+          <li>Smart: ambient soundscapes play during onboarding, so users experience the product before committing.</li>
+          <li>3 different prices depending on platform ($5.99 web, $12.99 iOS, $19.99 Android).</li>
+          <li>Despite 20 steps, filters for committed users who convert well. Each question visibly shapes the output.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SIDE-BY-SIDE COMPARISON ===== -->
+<section id="comparison" class="inset-section">
+  <div class="container-wide">
+    <div class="section-label reveal">Comparison</div>
+    <div class="section-title reveal">The full picture.</div>
+
+    <div class="dark-inset reveal">
+      <div style="position: relative; z-index: 1;">
+        <table class="dark-table">
+          <tr>
+            <th>App</th><th>Steps</th><th>Paywall</th><th>Trial</th>
+            <th>First Value</th><th>Personalization</th>
+          </tr>
+          <tr>
+            <td><div class="app-cell"><img src="competitor-logos/Calm_(company)_logo.svg.png" alt="Calm"><strong>Calm</strong></div></td>
+            <td>9</td><td class="bad">Step 5</td><td>7 days</td>
+            <td>After paywall</td><td>Goals (skippable)</td>
+          </tr>
+          <tr>
+            <td><div class="app-cell"><img src="competitor-logos/Mental-Health-Directory-Images-12.png" alt="Headspace"><strong>Headspace</strong></div></td>
+            <td>10</td><td>Step 7</td><td>14 days</td>
+            <td class="good">Breathing exercise</td><td>Focus areas</td>
+          </tr>
+          <tr>
+            <td><div class="app-cell"><img src="competitor-logos/wakingup.webp" alt="Waking Up"><strong>Waking Up</strong></div></td>
+            <td class="good">7</td><td class="bad">Step 4</td><td>30 days</td>
+            <td>28-day course</td><td class="bad">None</td>
+          </tr>
+          <tr>
+            <td><div class="app-cell"><img src="competitor-logos/images.png" alt="Open"><strong>Open</strong></div></td>
+            <td class="bad">14</td><td class="bad">Step 13</td><td>14 days</td>
+            <td class="bad">After full signup</td><td class="bad">None</td>
+          </tr>
+          <tr>
+            <td><div class="app-cell"><img src="competitor-logos/endel.svg" alt="Endel"><strong>Endel</strong></div></td>
+            <td class="bad">20</td><td>Step 12</td><td>7 days</td>
+            <td class="good">During onboarding</td><td class="good">Deep (ADHD, habits)</td>
+          </tr>
+          <tr class="highlight">
+            <td><div class="app-cell"><img src="app-icon.png" alt="The Possibility"><strong style="color: var(--teal);">Ours (A)</strong></div></td>
+            <td class="good" style="color: var(--teal);">9</td>
+            <td style="color: var(--teal);">Step 8</td>
+            <td style="color: var(--teal);">14 days</td>
+            <td class="good" style="color: var(--teal);">Screen 1 (stillness)</td>
+            <td class="good" style="color: var(--teal);">3 questions, 3 screens</td>
+          </tr>
+          <tr class="highlight">
+            <td><div class="app-cell"><img src="app-icon.png" alt="The Possibility"><strong style="color: var(--teal);">Ours (E)</strong></div></td>
+            <td class="good" style="color: var(--teal);">7</td>
+            <td style="color: var(--teal);">Step 6</td>
+            <td style="color: var(--teal);">14 days</td>
+            <td class="good" style="color: var(--teal);">Screen 1 (stillness)</td>
+            <td style="color: var(--teal);">1 combined screen</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FLOW OPTIONS ===== -->
+<section id="options">
+  <div class="container-wide">
+    <div class="section-label reveal">Strategic Options</div>
+    <div class="section-title reveal">Five ways to onboard.<br>Click any option to explore.</div>
+    <p class="section-desc reveal">Each option trades off emotional depth against conversion speed. Click to expand the strategic detail.</p>
+
+    <!-- OPTION A -->
+    <div class="option-card recommended expanded reveal" onclick="toggleOption(this)">
+      <div class="option-top">
+        <div class="option-letter">A</div>
+        <div class="option-meta">
+          <div class="option-name">The Stillness-First Flow <span class="option-pill rec">Recommended</span></div>
+          <div class="option-sub">The onboarding IS the first meditation. Two screens of silence before a single question.</div>
+        </div>
+        <div class="option-stats">
+          <div class="option-stat"><div class="os-val">9</div><div class="os-lbl">Screens</div></div>
+          <div class="option-stat"><div class="os-val">~13%</div><div class="os-lbl">Survival</div></div>
+        </div>
+        <div class="option-expand-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4.5L6 8.5L10 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="option-flow-bar">
+        <div class="step-flow">
+          <div class="step-dot value">Stillness</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot value">Jim</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Goals</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Exp</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Prefs</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Build</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot value">Reveal</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot paywall">Price</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot signup">Acct</div>
+        </div>
+      </div>
+      <div class="option-detail-drawer">
+        <div class="option-detail-inner">
+          <div class="option-detail-grid">
+            <div class="option-detail pros">
+              <h4>Strengths</h4>
+              <ul>
+                <li>No competitor opens with silence. Instant differentiation</li>
+                <li>Jim's face on screen 2 builds connection before any data ask</li>
+                <li>Paywall at step 8 = 7 screens of earned trust first</li>
+              </ul>
+            </div>
+            <div class="option-detail cons">
+              <h4>Risks</h4>
+              <ul>
+                <li>~13% theoretical survival at 9 steps</li>
+                <li>5-second delay on screen 1 may lose impatient users</li>
+                <li>No proven benchmark for "meditation as onboarding"</li>
+              </ul>
+            </div>
+          </div>
+          <div class="option-logic">Calm's breathing exercise was their highest-rated feature. Headspace's post-paywall guided breathing had their best first-session completion. This takes that insight further: the entire onboarding becomes the experience.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPTION B -->
+    <div class="option-card reveal" onclick="toggleOption(this)">
+      <div class="option-top">
+        <div class="option-letter">B</div>
+        <div class="option-meta">
+          <div class="option-name">The Express Lane <span class="option-pill safe">Safest Bet</span></div>
+          <div class="option-sub">Maximum speed. 5 screens. Collect personalization data through usage, not questions.</div>
+        </div>
+        <div class="option-stats">
+          <div class="option-stat"><div class="os-val">5</div><div class="os-lbl">Screens</div></div>
+          <div class="option-stat"><div class="os-val">~33%</div><div class="os-lbl">Survival</div></div>
+        </div>
+        <div class="option-expand-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4.5L6 8.5L10 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="option-flow-bar">
+        <div class="step-flow">
+          <div class="step-dot value">Jim</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Goals</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot paywall">Price</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot signup">Acct</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot value">Session</div>
+        </div>
+      </div>
+      <div class="option-detail-drawer">
+        <div class="option-detail-inner">
+          <div class="option-detail-grid">
+            <div class="option-detail pros">
+              <h4>Strengths</h4>
+              <ul>
+                <li>33% survival vs 13% at 9 steps. The math is clear</li>
+                <li>Mirrors Waking Up: $40/install/month, $1M/mo revenue</li>
+                <li>AI personalizes after session, not during onboarding</li>
+              </ul>
+            </div>
+            <div class="option-detail cons">
+              <h4>Risks</h4>
+              <ul>
+                <li>Loses the emotional depth that differentiates us</li>
+                <li>Paywall at step 3 before real value. Calm loses 80% here</li>
+                <li>Jim becomes a logo, not a presence</li>
+              </ul>
+            </div>
+          </div>
+          <div class="option-logic">Waking Up proves you can build $1M/mo with minimal onboarding. The risk: without Jim's presence, The Possibility becomes "another meditation app with a paywall."</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPTION C -->
+    <div class="option-card reveal" onclick="toggleOption(this)">
+      <div class="option-top">
+        <div class="option-letter">C</div>
+        <div class="option-meta">
+          <div class="option-name">The Endel Model <span class="option-pill bold">Bold Play</span></div>
+          <div class="option-sub">Deep personalization. Every question visibly shapes the experience. More steps, each one earned.</div>
+        </div>
+        <div class="option-stats">
+          <div class="option-stat"><div class="os-val">12</div><div class="os-lbl">Screens</div></div>
+          <div class="option-stat"><div class="os-val">~7%</div><div class="os-lbl">Survival</div></div>
+        </div>
+        <div class="option-expand-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4.5L6 8.5L10 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="option-flow-bar">
+        <div class="step-flow">
+          <div class="step-dot value">Still</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot value">Jim</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Goals</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Exp</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Sleep</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Stress</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Time</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Voice</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Build</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot value">Reveal</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot paywall">Price</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot signup">Acct</div>
+        </div>
+      </div>
+      <div class="option-detail-drawer">
+        <div class="option-detail-inner">
+          <div class="option-detail-grid">
+            <div class="option-detail pros">
+              <h4>Strengths</h4>
+              <ul>
+                <li>Endel does $750K/mo with 20 steps. Step count is not the variable</li>
+                <li>Rich data from day one makes Jim AI hyper-relevant</li>
+                <li>IKEA effect: effort invested = higher perceived value</li>
+              </ul>
+            </div>
+            <div class="option-detail cons">
+              <h4>Risks</h4>
+              <ul>
+                <li>~7% theoretical survival needs exceptional per-screen retention</li>
+                <li>Significant engineering to make answers visibly shape output</li>
+                <li>Open's 14-step failure: quantity without relevance is fatal</li>
+              </ul>
+            </div>
+          </div>
+          <div class="option-logic">Endel proves step count doesn't matter IF each question visibly shapes the output. The key: Jim AI must reference specific answers in the reveal ("You mentioned sleep, so we built your first week around evening wind-downs...").</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPTION D -->
+    <div class="option-card reveal" onclick="toggleOption(this)">
+      <div class="option-top">
+        <div class="option-letter">D</div>
+        <div class="option-meta">
+          <div class="option-name">The Free-First Funnel <span class="option-pill bold">High Risk</span></div>
+          <div class="option-sub">No paywall at all. Let users experience 3 to 5 free sessions, then introduce pricing.</div>
+        </div>
+        <div class="option-stats">
+          <div class="option-stat"><div class="os-val">6</div><div class="os-lbl">Screens</div></div>
+          <div class="option-stat"><div class="os-val">~26%</div><div class="os-lbl">Survival</div></div>
+        </div>
+        <div class="option-expand-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4.5L6 8.5L10 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="option-flow-bar">
+        <div class="step-flow">
+          <div class="step-dot value">Stillness</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot value">Jim</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Goals</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Exp</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot signup">Acct</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot value">Session</div>
+        </div>
+      </div>
+      <div class="option-detail-drawer">
+        <div class="option-detail-inner">
+          <div class="option-detail-grid">
+            <div class="option-detail pros">
+              <h4>Strengths</h4>
+              <ul>
+                <li>Every user experiences the product before seeing a price</li>
+                <li>Deepest trust before the ask. Aligns with Jim's philosophy</li>
+                <li>Natural word-of-mouth: sharing experience, not a pitch</li>
+              </ul>
+            </div>
+            <div class="option-detail cons">
+              <h4>Risks</h4>
+              <ul>
+                <li>Calm's freemium converts at only 2-4%. Gated trials: 10-15%</li>
+                <li>Free anchoring makes any price feel like a downgrade</li>
+                <li>Server/AI costs for users who may never pay</li>
+              </ul>
+            </div>
+          </div>
+          <div class="option-logic">The most generous and most expensive option. Calm's free tier trained users to expect free forever. Waking Up's scholarship is smarter: give freely to those who need it, but set the paid expectation upfront.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPTION E -->
+    <div class="option-card reveal" onclick="toggleOption(this)">
+      <div class="option-top">
+        <div class="option-letter">E</div>
+        <div class="option-meta">
+          <div class="option-name">The Hybrid <span class="option-pill safe">A/B Test This</span></div>
+          <div class="option-sub">Keep the emotional opening, compress the middle. Stillness + one question + pricing.</div>
+        </div>
+        <div class="option-stats">
+          <div class="option-stat"><div class="os-val">7</div><div class="os-lbl">Screens</div></div>
+          <div class="option-stat"><div class="os-val">~21%</div><div class="os-lbl">Survival</div></div>
+        </div>
+        <div class="option-expand-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4.5L6 8.5L10 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="option-flow-bar">
+        <div class="step-flow">
+          <div class="step-dot value">Stillness</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot value">Jim</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Goals+Exp</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot neutral">Build</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot value">Reveal</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot paywall">Price</div><span class="step-arrow">&rarr;</span>
+          <div class="step-dot signup">Acct</div>
+        </div>
+      </div>
+      <div class="option-detail-drawer">
+        <div class="option-detail-inner">
+          <div class="option-detail-grid">
+            <div class="option-detail pros">
+              <h4>Strengths</h4>
+              <ul>
+                <li>Best of both: emotional opening + fewer screens</li>
+                <li>21% survival vs 13%. Meaningful improvement</li>
+                <li>Matches Waking Up's step count with the emotional layer they lack</li>
+              </ul>
+            </div>
+            <div class="option-detail cons">
+              <h4>Risks</h4>
+              <ul>
+                <li>Combined question screen may feel rushed after stillness</li>
+                <li>Less personalization data = less specific AI reveal</li>
+                <li>"Processing" screen may feel unearned with one question</li>
+              </ul>
+            </div>
+          </div>
+          <div class="option-logic">The pragmatic middle path. Preserves the differentiator no competitor can copy (silence + Jim) while respecting the math. The strongest A/B test candidate against Option A.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Decision framework -->
+    <div class="dark-inset reveal" style="margin-top: 24px;">
+      <div style="position: relative; z-index: 1;">
+        <div style="font-size: 10px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,252,250,0.3); margin-bottom: 24px;">Decision Framework</div>
+        <table class="dark-table">
+          <tr>
+            <th>Option</th><th>Steps</th><th>Paywall</th><th>Survival</th><th>Differentiation</th><th>Best If...</th>
+          </tr>
+          <tr class="highlight">
+            <td><strong style="color: var(--teal);">A. Stillness-First</strong></td>
+            <td>9</td><td>Step 8</td><td>~13%</td>
+            <td class="good">Highest</td>
+            <td style="color: rgba(255,252,250,0.7);">Emotional depth is the core bet</td>
+          </tr>
+          <tr>
+            <td><strong>B. Express Lane</strong></td>
+            <td>5</td><td>Step 3</td><td class="good">~33%</td>
+            <td class="bad">Low</td>
+            <td style="color: rgba(255,252,250,0.7);">Speed to revenue matters most</td>
+          </tr>
+          <tr>
+            <td><strong>C. Endel Model</strong></td>
+            <td>12</td><td>Step 11</td><td>~7%</td>
+            <td class="good">High</td>
+            <td style="color: rgba(255,252,250,0.7);">AI personalization is the moat</td>
+          </tr>
+          <tr>
+            <td><strong>D. Free-First</strong></td>
+            <td>6</td><td style="color: var(--teal);">None</td><td class="good">~26%</td>
+            <td>Medium</td>
+            <td style="color: rgba(255,252,250,0.7);">Product quality drives conversion</td>
+          </tr>
+          <tr>
+            <td><strong>E. Hybrid</strong></td>
+            <td>7</td><td>Step 6</td><td>~21%</td>
+            <td class="good">High</td>
+            <td style="color: rgba(255,252,250,0.7);">Balancing emotion with pragmatism</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="verdict reveal" style="margin-top: 24px;">
+      <div class="verdict-label">OUR TAKE</div>
+      <p style="font-size: 14px; color: var(--text-2); line-height: 1.75; margin: 0;"><strong style="color: var(--text);">Launch with A, A/B test against E, let the data decide.</strong> All five share the same post-onboarding sequence: first session before home screen, daily reminder prompt (Calm's 3x retention insight), and push notification soft-ask (91.1% vs 43.9% baseline).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PULL QUOTE ===== -->
+<div class="pull-quote reveal">
+  <blockquote>"The question is not how many screens. It is whether each screen earns the right to ask for the next one."</blockquote>
+  <div class="attrib">The Onboarding Thesis</div>
+</div>
+
+<!-- ===== DESIGN PRINCIPLES ===== -->
+<section id="principles" class="inset-section">
+  <div class="container">
+    <div class="section-label reveal">Design Principles</div>
+    <div class="section-title reveal">Six rules. No exceptions.</div>
+
+    <div class="principle-grid reveal">
+      <div class="principle-card">
+        <div class="principle-num">01</div>
+        <div class="principle-title">Emotion before information</div>
+        <div class="principle-desc">First two screens contain zero data collection. They exist only to create a feeling.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">02</div>
+        <div class="principle-title">Every screen earns the next</div>
+        <div class="principle-desc">No screen assumes the user will continue. Screen-to-screen completion should exceed 90%.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">03</div>
+        <div class="principle-title">Stillness is a feature</div>
+        <div class="principle-desc">5-second delay on screen 01. Intentional processing pause on screen 06. Silence communicates confidence.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">04</div>
+        <div class="principle-title">No dark patterns, ever</div>
+        <div class="principle-desc">Free option presented with same visual dignity as premium. No grayed-out text, no guilt language, no "are you sure?" screens.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">05</div>
+        <div class="principle-title">Animation as communication</div>
+        <div class="principle-desc">Every animation has a purpose. Nothing moves without meaning. Celebration bursts mark real moments, not decoration.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-num">06</div>
+        <div class="principle-title">Account creation comes last</div>
+        <div class="principle-desc">2 to 3 minutes of emotional investment before asking for an email. Login walls backfire because they demand info before trust develops.</div>
+      </div>
+    </div>
+
+    <div class="gc reveal" style="margin-top: 24px; padding: 24px 28px;">
+      <div style="font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 12px;">Three Iron Rules</div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; gap: 10px; font-size: 13px; color: var(--text-2); line-height: 1.6;">
+          <span style="color: var(--release); font-weight: 700; flex-shrink: 0;">1</span>
+          <span><strong style="color: var(--text);">No notification permissions during onboarding.</strong> Defer until after first completed session. Soft-ask yields 91.1% vs 43.9%.</span>
+        </div>
+        <div style="display: flex; gap: 10px; font-size: 13px; color: var(--text-2); line-height: 1.6;">
+          <span style="color: var(--release); font-weight: 700; flex-shrink: 0;">2</span>
+          <span><strong style="color: var(--text);">No health or biometric permissions.</strong> Endel asks 4 in a row. We ask zero.</span>
+        </div>
+        <div style="display: flex; gap: 10px; font-size: 13px; color: var(--text-2); line-height: 1.6;">
+          <span style="color: var(--release); font-weight: 700; flex-shrink: 0;">3</span>
+          <span><strong style="color: var(--text);">First session before home screen.</strong> Headspace's pattern. Highest first-session conversion in the category.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TARGET METRICS ===== -->
+<section id="metrics">
+  <div class="container">
+    <div class="section-label reveal">Target Metrics</div>
+    <div class="section-title reveal">What success looks like.</div>
+
+    <div class="stat-grid reveal">
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--teal);">>90%</div>
+        <div class="stat-label">Screen-to-screen completion</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--teal);">>70%</div>
+        <div class="stat-label">Onboarding completion rate<br><span style="font-size: 10px; opacity: 0.7;">Calm: ~60%. Open: &lt;50%</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--become);">>80%</div>
+        <div class="stat-label">First session completion</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">10-15%</div>
+        <div class="stat-label">Trial start rate<br><span style="font-size: 10px; opacity: 0.7;">Industry median: 7%</span></div>
+      </div>
+    </div>
+
+    <div class="stat-grid reveal">
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--become);">45%+</div>
+        <div class="stat-label">Trial-to-paid conversion<br><span style="font-size: 10px; opacity: 0.7;">Industry median: 39.9%</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">40%+</div>
+        <div class="stat-label">Day 1 retention<br><span style="font-size: 10px; opacity: 0.7;">Industry median: 23-35%</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">>50%</div>
+        <div class="stat-label">Day 1 to Day 2 retention<br><span style="font-size: 10px; opacity: 0.7;">Calm: ~20%</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color: var(--teal);">>30%</div>
+        <div class="stat-label">Day 7 retention<br><span style="font-size: 10px; opacity: 0.7;">Industry avg: 10-15%</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXECUTIVE SUMMARY ===== -->
+<section style="padding: 100px 56px;">
+  <div class="container">
+    <div class="section-label reveal">Executive Summary</div>
+    <div class="section-title reveal">What we learned from tearing apart<br>every major competitor.</div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px;" class="reveal summary-grid">
+      <div class="gc" style="padding: 28px;">
+        <div style="font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--release); margin-bottom: 12px;">What fails</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px;">
+          <li style="font-size: 13px; color: var(--text-2); line-height: 1.6; padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--release); opacity: 0.5;"></span>Brand narrative before value (Open's 11 screens)</li>
+          <li style="font-size: 13px; color: var(--text-2); line-height: 1.6; padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--release); opacity: 0.5;"></span>Permission spam during onboarding (Endel's 4 in a row)</li>
+          <li style="font-size: 13px; color: var(--text-2); line-height: 1.6; padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--release); opacity: 0.5;"></span>Paywall before any value (Calm at step 5)</li>
+          <li style="font-size: 13px; color: var(--text-2); line-height: 1.6; padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--release); opacity: 0.5;"></span>100% content locking (Headspace)</li>
+        </ul>
+      </div>
+      <div class="gc" style="padding: 28px;">
+        <div style="font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--become); margin-bottom: 12px;">What works</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px;">
+          <li style="font-size: 13px; color: var(--text-2); line-height: 1.6; padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--become); opacity: 0.5;"></span>Value during onboarding (Endel's ambient sounds)</li>
+          <li style="font-size: 13px; color: var(--text-2); line-height: 1.6; padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--become); opacity: 0.5;"></span>First session right after paywall (Headspace's breathing)</li>
+          <li style="font-size: 13px; color: var(--text-2); line-height: 1.6; padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--become); opacity: 0.5;"></span>Scholarship/free option on paywall (Waking Up's trust)</li>
+          <li style="font-size: 13px; color: var(--text-2); line-height: 1.6; padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--become); opacity: 0.5;"></span>Compressed lifecycle emails (Calm's 4x revenue)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="gc reveal" style="margin-top: 16px; padding: 28px; text-align: center; border: 0.5px solid rgba(51,163,163,0.08);">
+      <p style="font-size: 15px; font-weight: 400; color: var(--text-2); line-height: 1.7; margin: 0; max-width: 600px; margin: 0 auto;"><strong style="color: var(--text);">Five options that combine every winning pattern while avoiding every mistake.</strong> The recommendation is Option A (stillness-first, 9 screens) with Option E (hybrid, 7 screens) as the A/B test. But the right answer comes from data, not conviction.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CLOSING ===== -->
+<div class="closing" style="text-align: center;">
+  <div class="wrap">
+    <img src="possibility-logo.svg" alt="The Possibility" class="closing-logo reveal" loading="lazy" onerror="this.style.display='none'">
+    <h2 class="reveal">The right flow is the one<br>that earns the next screen.</h2>
+    <p class="reveal">Five options. One shared truth: every screen must justify its existence. Launch with a hypothesis, test with data, and let users tell you which first impression converts.</p>
+    <div class="closing-gradient-bar reveal"></div>
+    <div class="closing-sign reveal" style="margin-top: 48px;">
+      <div style="font-weight: 600; color: rgba(255,252,250,0.72); margin-bottom: 4px;">Eric Yerke &amp; Dr. James Vineburgh</div>
+      <div>Agency OS</div>
+    </div>
+  </div>
+</div>
+
+<!-- Cross Navigation -->
+<div class="cross-nav reveal">
+  <a href="pricing-strategy.html" class="cross-nav-card">
+    <div class="cross-nav-body">
+      <div class="cross-nav-label">Continue Reading</div>
+      <div class="cross-nav-title">Pricing Strategy</div>
+      <div class="cross-nav-hint">Trial design, tier structure, and trust architecture</div>
+    </div>
+    <div class="cross-nav-arrow">&rarr;</div>
+  </a>
+</div>
+
+<!-- Footer -->
+<footer style="margin-left: 0;">
+  <div>The Possibility &middot; Onboarding Teardown &middot; March 2026 &middot; Confidential</div>
+</footer>
+
+</div><!-- end .main -->
+
+<script>
+// Scroll progress
+(function(){var b=document.getElementById('scrollProgress');if(!b)return;window.addEventListener('scroll',function(){b.style.width=(window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100)+'%'},{passive:true})})();
+
+// Active nav
+(function(){var l=document.querySelectorAll('.nav-link'),s=[];l.forEach(function(a){var i=a.getAttribute('href')?.replace('#',''),e=i?document.getElementById(i):null;if(e)s.push({link:a,el:e})});function u(){var y=window.scrollY+window.innerHeight*0.35,a=s[0];s.forEach(function(x){if(x.el.offsetTop<=y)a=x});l.forEach(function(x){x.classList.remove('active')});if(a)a.link.classList.add('active')}window.addEventListener('scroll',u,{passive:true});u()})();
+
+// Reveal
+(function(){var o=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){x.target.classList.add('visible');o.unobserve(x.target)}})},{threshold:0.08,rootMargin:'0px 0px -60px 0px'});document.querySelectorAll('.reveal').forEach(function(e){o.observe(e)})})();
+
+// Animated stat counters
+(function(){var s=document.querySelectorAll('.hero-stat .val');if(!s.length)return;var a=false;var o=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting&&!a){a=true;s.forEach(function(st){var t=st.textContent.trim(),su=t.replace(/[0-9]/g,''),ta=parseInt(t.replace(/[^0-9]/g,''),10);if(isNaN(ta))return;var d=1600,start=performance.now();function step(n){var el=n-start,p=Math.min(el/d,1),ea=1-Math.pow(1-p,3);st.textContent=Math.round(ea*ta)+su;if(p<1)requestAnimationFrame(step)}st.textContent='0'+su;requestAnimationFrame(step)});o.disconnect()}})},{threshold:0.3});var b=document.querySelector('.hero-stats-bar');if(b)o.observe(b)})();
+
+// Animate bars
+(function(){var t=document.querySelectorAll('.bar-track');if(!t.length)return;var o=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){var f=x.target.querySelector('.bar-fill[data-width]');if(f)f.style.width=f.dataset.width;o.unobserve(x.target)}})},{threshold:0.2});t.forEach(function(x){o.observe(x)})})();
+
+// Option card expand/collapse
+function toggleOption(card) {
+  card.classList.toggle('expanded');
+}
+
+// Mobile burger
+(function(){var b=document.getElementById('mobBurger'),o=document.getElementById('mobOverlay');if(!b||!o)return;b.addEventListener('click',function(){b.classList.toggle('active');o.classList.toggle('open');document.body.style.overflow=o.classList.contains('open')?'hidden':''});o.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){b.classList.remove('active');o.classList.remove('open');document.body.style.overflow=''})})})();
+</script>
+
+<!-- Visual Enhancements: Lenis + GSAP + ScrollTrigger -->
+<link rel="stylesheet" href="visual-enhancements.css">
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+<script src="visual-enhancements.js"></script>
+<script src="chat-widget.js" defer></script>
+
+<script src="/settings-widget.js" defer></script>
+</body>
+</html>
